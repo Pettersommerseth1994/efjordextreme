@@ -342,11 +342,12 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
   .logo-img{height:28px}
 }
 @media(max-width:450px){
-  .price-row .pv{font-size:21px}
-  .price-row .pv,.price-row{white-space:nowrap}
-  .price-old{font-size:12px;margin-right:8px}
+  .price-row{flex-direction:column;align-items:flex-start;gap:8px}
+  .price-row .pv{font-size:23px;white-space:nowrap}
+  .price-old{font-size:13px;margin-right:10px}
   .price-row .pl{font-size:11px}
-  .eb-pill{padding:3px 9px;margin-left:6px;font-size:10px}
+  .eb-pill{padding:3px 9px;margin-left:8px;font-size:10px}
+  .pcard{min-width:0}
 }
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
