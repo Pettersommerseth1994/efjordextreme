@@ -165,7 +165,7 @@ section{position:relative}
 
 /* PUBLIKUM: regel-stripe */
 .pub{background:var(--panel-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.rules{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:20px;overflow:hidden;margin-top:52px;background:var(--panel)}
+.rules{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:20px;overflow:hidden;margin-top:52px;background:var(--card)}
 .rule{padding:36px 30px 34px;border-left:1px solid var(--line);position:relative}
 .rule:first-child{border-left:none}
 .rule-n{font-family:var(--font);font-stretch:125%;font-weight:800;font-size:52px;line-height:1;color:transparent;-webkit-text-stroke:1.5px var(--slate);margin-bottom:20px}
@@ -293,6 +293,19 @@ footer{background:var(--bg);border-top:1px solid var(--line);padding:70px 40px 4
 .foot-col a:hover{color:var(--text)}
 .foot-bottom{max-width:1180px;margin:50px auto 0;padding-top:26px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--slate-light)}
 
+/* Fjellbølger (bakgrunnsanimasjon) */
+.fx{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+section>.wrap{position:relative;z-index:1}
+.fx .grad{position:absolute;top:-40%;left:-40%;width:180%;height:180%;background:radial-gradient(45% 40% at 50% 50%,rgba(44,44,56,.55) 0%,rgba(44,44,56,.2) 45%,transparent 72%);animation:gdrift 46s ease-in-out infinite alternate;will-change:transform}
+@keyframes gdrift{from{transform:translate(-6%,-4%) scale(1)}to{transform:translate(8%,6%) scale(1.18)}}
+.fx[data-pos="tl"] .grad{top:-70%;left:-65%}
+.fx[data-pos="tr"] .grad{top:-70%;left:-15%}
+.fx[data-pos="bl"] .grad{top:-10%;left:-65%}
+.fx[data-pos="br"] .grad{top:-10%;left:-15%}
+.cta>*{position:relative;z-index:1}
+.fx:not(.on) .grad{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.fx .grad{animation:none}}
+
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
 .reveal.in{opacity:1;transform:none}
 @keyframes rise{to{opacity:1;transform:none}}
@@ -417,6 +430,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
 
 <!-- SLIK FUNKER LØPET -->
 <section class="how section-pad" id="how">
+  <div class="fx" data-pos="tl" aria-hidden="true"></div>
   <div class="wrap">
     <div class="reveal">
       <div class="sec-eyebrow">Slik funker løpet</div>
@@ -451,6 +465,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
 
 <!-- DISTANSER -->
 <section class="modes section-pad" id="distanser">
+  <div class="fx" data-pos="tr" aria-hidden="true"></div>
   <div class="wrap">
     <div class="reveal">
       <div class="sec-eyebrow">Distanser</div>
@@ -491,6 +506,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
 
 <!-- NØKKELTALL + RACEFLOW -->
 <section class="specs section-pad" id="nokkeltall">
+  <div class="fx" data-pos="tr" aria-hidden="true"></div>
   <div class="wrap">
     <div class="reveal">
       <div class="sec-eyebrow">Nøkkeltall</div>
@@ -510,6 +526,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
 </section>
 <!-- RACE INFO -->
 <section class="section-pad" id="raceinfo">
+  <div class="fx" data-pos="bl" aria-hidden="true"></div>
   <div class="wrap">
     <div class="reveal">
       <div class="sec-eyebrow">Race info</div>
@@ -600,6 +617,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
 
 <!-- VÅR VISJON -->
 <section class="values-wrap section-pad" id="visjon">
+  <div class="fx" data-pos="br" aria-hidden="true"></div>
   <div class="wrap">
     <div class="reveal">
       <div class="sec-eyebrow">Vår visjon er å lage</div>
@@ -643,6 +661,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
 
 <!-- FOR PUBLIKUM -->
 <section class="pub section-pad" id="publikum">
+  <div class="fx" data-pos="tr" aria-hidden="true"></div>
   <div class="wrap">
     <div class="reveal">
       <div class="sec-eyebrow">For publikum</div>
@@ -691,6 +710,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
 </section>
 <!-- PÅMELDING -->
 <section class="shop section-pad" id="pamelding">
+  <div class="fx" data-pos="tl" aria-hidden="true"></div>
   <div class="wrap">
     <div class="reveal">
       <div class="sec-eyebrow">Påmelding</div>
@@ -733,6 +753,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
 
 <!-- SPØRSMÅL OG SVAR -->
 <section class="faq section-pad" id="faq">
+  <div class="fx" data-pos="br" aria-hidden="true"></div>
   <div class="wrap">
     <div class="reveal">
       <div class="sec-eyebrow">Q&amp;A</div>
@@ -779,7 +800,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
 </section>
 
 <!-- NYHETER -->
-<section class="section-pad" id="nyheter" style="padding-top:0">
+<section class="section-pad" id="nyheter">
   <div class="wrap">
     <div class="reveal">
       <div class="sec-eyebrow">Nyheter</div>
@@ -808,6 +829,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
 
 <!-- FRA DELTAKERNE 2025: KARUSELL -->
 <section class="quotes-wrap section-pad">
+  <div class="fx" data-pos="bl" aria-hidden="true"></div>
   <div class="wrap">
     <div class="car-head reveal">
       <div>
@@ -854,6 +876,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
 
 <!-- PARTNERE -->
 <section class="section-pad" id="partnere">
+  <div class="fx" data-pos="tr" aria-hidden="true"></div>
   <div class="wrap">
     <div class="reveal">
       <div class="sec-eyebrow">Partnere</div>
@@ -875,6 +898,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
 
 <!-- FRIVILLIGE -->
 <section class="section-pad" id="frivillige" style="padding-top:0">
+  <div class="fx" data-pos="bl" aria-hidden="true"></div>
   <div class="wrap">
     <div class="reveal">
       <div class="sec-eyebrow">Frivillige</div>
@@ -899,6 +923,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
 
 <!-- CTA -->
 <section class="cta">
+  <div class="fx" data-pos="c" aria-hidden="true"></div>
   <h2>Skaff deg billett til <em>årets eventyr</em></h2>
   <p>Verdens vakreste triatlon venter. Sikre deg plass til 2027.</p>
   <a class="btn-accent" href="#pamelding">Påmelding</a>
@@ -1002,6 +1027,21 @@ function ebTick(){
   document.getElementById('ebS').textContent = String(sec).padStart(2,'0');
 }
 ebTick(); setInterval(ebTick, 1000);
+
+// Subtil gradientlysning som driver sakte
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.fx').forEach(function(fx,idx){
+    var g=document.createElement('div');
+    g.className='grad';
+    g.style.animationDelay=(-idx*16)+'s';
+    fx.appendChild(g);
+    if(reduce){fx.classList.add('on');return;}
+    new IntersectionObserver(function(en){
+      en.forEach(function(e){ fx.classList.toggle('on', e.isIntersecting); });
+    },{rootMargin:'80px'}).observe(fx);
+  });
+})();
 
 // Start videoen så tidlig som mulig
 (function(){
