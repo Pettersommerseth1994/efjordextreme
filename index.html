@@ -355,6 +355,10 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
   .logo-img{height:28px}
 }
 @media(max-width:450px){
+  .mv-foot{flex-direction:column;align-items:stretch;gap:18px}
+  .mv-foot .mv-price{text-align:left}
+  .mv-foot .btn-accent{display:block;width:100%;text-align:center}
+  .eb-cta .btn-accent{display:block;width:100%;text-align:center}
   .price-row{flex-direction:column;align-items:flex-start;gap:8px}
   .price-row .pv{font-size:23px;white-space:nowrap}
   .price-old{font-size:13px;margin-right:10px}
@@ -406,6 +410,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
 
 <!-- EARLY BIRD -->
 <section class="eb" id="earlybird">
+  <div class="fx" data-pos="tr" aria-hidden="true"></div>
   <div class="wrap">
     <div class="eb-word reveal">Early Bird</div>
     <div class="eb-sub reveal">Påmelding 2027 · –20 % på alle distanser · Frem til 01.09.2026</div>
@@ -513,14 +518,14 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
       <h2 class="sec-title">Alt du trenger å vite, <em>kort fortalt</em></h2>
     </div>
     <div class="spec-grid reveal">
-      <div class="spec-cell"><div class="k">Dato</div><div class="v">07.08.27</div><div class="d">Lørdag</div></div>
+      <div class="spec-cell"><div class="k">Dato</div><div class="v">07.08.2027</div><div class="d">Lørdag</div></div>
       <div class="spec-cell"><div class="k">Sted</div><div class="v">Sætran kryss</div><div class="d">Kjøpsvikkrysset, Efjord</div></div>
       <div class="spec-cell"><div class="k">Registrering</div><div class="v">Kl. 08:00</div><div class="d">Ved start og T1/T2</div></div>
       <div class="spec-cell"><div class="k">Race start</div><div class="v">Kl. 09:00</div><div class="d">Alle distanser samtidig</div></div>
-      <div class="spec-cell"><div class="k">Deltakere</div><div class="v">Opptil 100</div><div class="d">Tre distanser</div></div>
-      <div class="spec-cell"><div class="k">Vanntemp</div><div class="v">≈ 17°C</div><div class="d">Våtdrakt påkrevd</div></div>
-      <div class="spec-cell"><div class="k">Sykkellys</div><div class="v">Påbudt</div><div class="d">Front og bak, tunnel</div></div>
-      <div class="spec-cell"><div class="k">Hjelm</div><div class="v">Påbudt</div><div class="d">Kontrolleres ved reg.</div></div>
+      <div class="spec-cell"><div class="k">Deltakere</div><div class="v">100+</div><div class="d">Tre distanser</div></div>
+      <div class="spec-cell"><div class="k">Forventet vanntemperatur</div><div class="v">≈ 17°C</div><div class="d">Våtdrakt påkrevd</div></div>
+      <div class="spec-cell"><div class="k">Km</div><div class="v">113 / 52</div><div class="d">70.3 / Olympisk</div></div>
+      <div class="spec-cell"><div class="k">Den</div><div class="v">3.</div><div class="d">utgaven av EET</div></div>
     </div>
   </div>
 </section>
