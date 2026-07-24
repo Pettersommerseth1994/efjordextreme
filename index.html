@@ -46,10 +46,17 @@ nav.scrolled{border-bottom:1px solid rgba(255,255,255,.1);padding:14px 40px;back
 .nav-links{display:flex;gap:32px;align-items:center;margin-left:auto}
 .nav-links a{color:var(--slate);font-size:14px;font-weight:600;letter-spacing:.02em;transition:color .25s}
 .nav-links a:hover{color:var(--text)}
-.nav-right{display:flex;align-items:center;gap:14px;margin-left:26px}
+.nav-right{display:flex;align-items:center;gap:14px;margin-left:0;max-width:0;overflow:hidden;transition:max-width .45s ease,margin-left .45s ease}
 .nav-cta{background:var(--grad);color:#0B0B0B!important;padding:10px 22px;border-radius:4px;corner-shape:squircle;font-size:13.5px;font-weight:800;letter-spacing:.02em;transition:transform .25s,filter .25s}
 .nav-cta:hover{transform:translateY(-1px);filter:brightness(1.1)}
 .menu-btn{display:none;background:none;border:none;cursor:pointer;font-size:22px;color:var(--text)}
+.nav-cta{opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .45s ease,transform .45s ease}
+nav.scrolled .nav-cta{opacity:1;transform:none;pointer-events:auto}
+nav.scrolled .nav-right{max-width:240px;margin-left:26px}
+@media(max-width:940px){
+  .nav-right{max-width:none;margin-left:auto;margin-right:20px;overflow:visible}
+  nav.scrolled .nav-right{max-width:none;margin-left:auto}
+}
 
 /* BUTTONS */
 .btn-accent{background:var(--grad);color:#0B0B0B;border:none;padding:15px 32px;border-radius:4px;corner-shape:squircle;font-family:var(--font);font-size:14.5px;font-weight:800;letter-spacing:.02em;cursor:pointer;display:inline-block;transition:transform .25s,filter .25s}
@@ -262,8 +269,8 @@ section{position:relative}
 
 /* PARTNERS */
 .plogos{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-top:56px}
-.plogos div{background:var(--panel);min-height:240px;display:flex;align-items:center;justify-content:center;padding:40px}
-.plogos img{max-height:110px;max-width:100%;width:auto;filter:grayscale(1) brightness(2.2);opacity:.85;transition:opacity .3s,filter .3s}
+.plogos div{background:var(--panel);min-height:340px;display:flex;align-items:center;justify-content:center;padding:48px}
+.plogos img{max-height:220px;max-width:100%;width:auto;filter:grayscale(1) brightness(2.2);opacity:.85;transition:opacity .3s,filter .3s}
 .plogos div:hover img{opacity:1;filter:grayscale(0) brightness(1)}
 .plogos .empty{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate-light)}
 
@@ -328,8 +335,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
   .shop-grid{grid-template-columns:1fr}
   .news-grid{grid-template-columns:1fr}
   .plogos{grid-template-columns:repeat(2,1fr)}
-  .plogos div{min-height:190px;padding:30px}
-  .plogos img{max-height:88px}
+  .plogos div{min-height:250px;padding:34px}
+  .plogos img{max-height:150px}
   .vol-grid{grid-template-columns:1fr;gap:32px}
   .foot-grid{grid-template-columns:1fr 1fr}
   .ri-content{grid-template-columns:1fr;gap:24px;padding-left:4px}
@@ -345,8 +352,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
   .rule{border-left:none!important;border-top:1px solid var(--line)}
   .rule:first-child{border-top:none}
   .plogos{grid-template-columns:repeat(2,1fr)}
-  .plogos div{min-height:140px;padding:22px}
-  .plogos img{max-height:64px}
+  .plogos div{min-height:200px;padding:26px}
+  .plogos img{max-height:120px}
   .band{height:44vh;min-height:280px}
   .band-cap{left:20px;bottom:18px}
   .foot-grid{grid-template-columns:1fr}
@@ -523,8 +530,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
       <div class="spec-cell"><div class="k">Registrering</div><div class="v">Kl. 08:00</div><div class="d">Ved start og T1/T2</div></div>
       <div class="spec-cell"><div class="k">Race start</div><div class="v">Kl. 09:00</div><div class="d">Alle distanser samtidig</div></div>
       <div class="spec-cell"><div class="k">Deltakere</div><div class="v">100+</div><div class="d">Tre distanser</div></div>
-      <div class="spec-cell"><div class="k">Forventet vanntemperatur</div><div class="v">≈ 17°C</div><div class="d">Våtdrakt påkrevd</div></div>
-      <div class="spec-cell"><div class="k">Km</div><div class="v">113 / 52</div><div class="d">70.3 / Olympisk</div></div>
+      <div class="spec-cell"><div class="k">Forventet vanntemperatur</div><div class="v">≈ 15°C</div><div class="d">Våtdrakt påkrevd</div></div>
+      <div class="spec-cell"><div class="k">Total lengde</div><div class="v">113 km / 52 km</div><div class="d">70.3 / Olympisk</div></div>
       <div class="spec-cell"><div class="k">Den</div><div class="v">3.</div><div class="d">utgaven av EET</div></div>
     </div>
   </div>
@@ -641,8 +648,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
       </div>
       <div class="val-card reveal">
         <div class="val-n">Verdi 3</div>
-        <h3>Triatlon er for alle</h3>
-        <p>Det handler om mestring, ikke bare prestasjon. Enten du er erfaren eller ny, er du velkommen til å utfordre dine egne grenser.</p>
+        <h3>Et triatlon for alle</h3>
+        <p>Beinhardt for eliten, oppnåelig for alle. Tre distanser gjør at du finner din utfordring, uansett nivå.</p>
       </div>
     </div>
   </div>
