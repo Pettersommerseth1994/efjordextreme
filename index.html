@@ -60,6 +60,7 @@ nav.scrolled .nav-right{max-width:240px;margin-left:26px}
 
 /* BUTTONS */
 .btn-accent{background:var(--grad);color:#0B0B0B;border:none;padding:15px 32px;border-radius:4px;corner-shape:squircle;font-family:var(--font);font-size:14.5px;font-weight:800;letter-spacing:.02em;cursor:pointer;display:inline-block;transition:transform .25s,filter .25s}
+.btn-accent.is-soon{background:var(--card);color:var(--slate);border:1px solid var(--line);cursor:not-allowed;pointer-events:none;filter:none}
 .btn-accent:hover{transform:translateY(-2px);filter:brightness(1.1)}
 .btn-outline{background:transparent;color:var(--text);border:1px solid var(--slate);padding:14px 30px;border-radius:100px;font-family:var(--font);font-size:14.5px;font-weight:700;letter-spacing:.02em;cursor:pointer;display:inline-block;transition:border-color .25s,background .25s,color .25s}
 .btn-outline:hover{border-color:var(--text);background:var(--text);color:var(--bg)}
@@ -437,7 +438,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
   </div>
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-inner">
-    <a href="#earlybird" class="hero-eb">Early birds 2027 er ute nå <b>–20 %</b></a>
+    <a href="#earlybird" class="hero-eb" id="heroEb">Early birds 2027 er ute nå <b>–20 %</b></a>
     <h1><span class="word" style="animation-delay:.15s">Verdens</span> <span class="word" style="animation-delay:.28s"><em>vakreste</em></span> <span class="word" style="animation-delay:.41s">triatlon</span></h1>
     <p class="lead">Svømming, sykling og løping gjennom rå fjell, fjord og arktisk natur. Ett løp, tre distanser, og noen av de mest spektakulære omgivelsene Nord-Norge har å by på.</p>
     <div class="hero-actions">
@@ -452,7 +453,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
   <div class="fx" data-pos="tr" aria-hidden="true"></div>
   <div class="wrap">
     <div class="eb-word reveal">Early Bird</div>
-    <div class="eb-sub reveal">Påmelding 2027 · –20 % til de 30 første · Uansett distanse</div>
+    <div class="eb-sub reveal" id="ebSub">Påmelding 2027 · –20 % · Salget varer ut september</div>
     <div class="eb-count reveal" aria-label="Nedtelling til early bird utløper">
       <div class="eb-unit"><div class="eb-n" id="ebD">00</div><div class="eb-l">Dager</div></div>
       <div class="eb-sep">:</div>
@@ -468,7 +469,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
       <div class="eb-row"><span class="n">Olympisk distanse</span><span class="p"><del>1 800 kr</del><b>1 440 kr</b></span></div>
     </div>
     <div class="eb-cta reveal"><a class="btn-accent" href="#pamelding">Sikre early bird</a></div>
-    <p class="eb-note reveal">Gjelder de 30 første påmeldingene, uansett distanse · Trekkes automatisk i kassen</p>
+    <p class="eb-note reveal" id="ebNote">Trekkes automatisk i kassen · Salget varer ut september</p>
   </div>
 </section>
 
@@ -583,7 +584,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
         </div>
         <div class="mv-foot">
           <div class="mv-price"><span class="price-old" id="mvOrd">2 200 kr</span><span id="mvPrice">1 760 kr</span><span class="eb-pill">–20 %</span></div>
-          <a class="btn-accent" id="mvBtn" href="https://www.efjordextreme.no/products/halvdistanse-triatlon">Meld deg på</a>
+          <a class="btn-accent js-reg" id="mvBtn" href="https://www.efjordextreme.no/products/halvdistanse-triatlon">Meld deg på</a>
         </div>
       </div>
     </div>
@@ -819,7 +820,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
           <button data-price="2 720 kr" data-ord="3 400 kr" data-url="https://www.efjordextreme.no/products/halvdistanse-relay">Lag</button>
         </div>
         <div class="price-row"><span class="pl">Early bird<span class="eb-pill">–20 %</span></span><span class="pv"><span class="price-old" id="ord703">2 200 kr</span><span id="price703">1 760 kr</span></span></div>
-        <a class="btn-accent" id="btn703" href="https://www.efjordextreme.no/products/halvdistanse-triatlon">Meld deg på</a>
+        <a class="btn-accent js-reg" id="btn703" href="https://www.efjordextreme.no/products/halvdistanse-triatlon">Meld deg på</a>
       </div>
       <div class="pcard">
         <div class="ptag">Olympisk</div>
@@ -831,7 +832,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
           <div class="pleg"><span class="pk">Run</span><span class="pv">10 km</span></div>
         </div>
         <div class="price-row" style="margin-top:auto"><span class="pl">Early bird<span class="eb-pill">–20 %</span></span><span class="pv"><span class="price-old">1 800 kr</span>1 440 kr</span></div>
-        <a class="btn-accent" href="https://www.efjordextreme.no/products/olympisk-distanse-triatlon">Meld deg på</a>
+        <a class="btn-accent js-reg" href="https://www.efjordextreme.no/products/olympisk-distanse-triatlon">Meld deg på</a>
       </div>
     </div>
   </div>
@@ -1109,8 +1110,42 @@ const step=()=>car.querySelector('.qcard').getBoundingClientRect().width+22;
 document.getElementById('carPrev').addEventListener('click',()=>car.scrollBy({left:-step(),behavior:'smooth'}));
 document.getElementById('carNext').addEventListener('click',()=>car.scrollBy({left:step(),behavior:'smooth'}));
 
-// Early bird-nedtelling. Endre fristen her:
-var EB_DEADLINE = new Date('2026-09-01T00:00:00+02:00');
+// Early bird, faser. Datoer kan endres her:
+var EB_OPEN  = new Date('2026-08-17T00:00:00+02:00'); // salget åpner
+var EB_CLOSE = new Date('2026-10-01T00:00:00+02:00'); // varer ut september
+function ebPhase(){ var now=new Date(); if(now<EB_OPEN) return 'before'; if(now<EB_CLOSE) return 'live'; return 'closed'; }
+var EB_DEADLINE = ebPhase()==='before' ? EB_OPEN : EB_CLOSE;
+
+(function ebSetup(){
+  var phase=ebPhase();
+  var hero=document.getElementById('heroEb');
+  var sub=document.getElementById('ebSub');
+  var note=document.getElementById('ebNote');
+  var count=document.querySelector('.eb-count');
+  var regBtns=document.querySelectorAll('.js-reg');
+  if(phase==='before'){
+    if(hero) hero.textContent='Early birds åpner 17. august';
+    if(sub) sub.textContent='Early birds åpner 17. august';
+    if(note) note.textContent='Salget varer ut september · –20 % på alle distanser';
+    if(count) count.setAttribute('aria-label','Nedtelling til early bird åpner');
+    regBtns.forEach(function(b){
+      b.textContent='Påmelding åpner snart';
+      b.classList.add('is-soon');
+      b.setAttribute('aria-disabled','true');
+      b.addEventListener('click',function(e){ e.preventDefault(); });
+    });
+  } else if(phase==='live'){
+    if(hero) hero.innerHTML='Early birds 2027 er ute nå <b>–20 %</b>';
+    if(sub) sub.textContent='Påmelding 2027 · –20 % · Salget varer ut september';
+    if(note) note.textContent='Trekkes automatisk i kassen · Salget varer ut september';
+    if(count) count.setAttribute('aria-label','Nedtelling til early bird utløper');
+  } else {
+    if(hero) hero.textContent='Early bird er avsluttet';
+    if(sub) sub.textContent='Early bird er avsluttet · Ordinær påmelding';
+    if(note) note.textContent='';
+  }
+})();
+
 function ebTick(){
   var ms = EB_DEADLINE - new Date();
   if(ms < 0) ms = 0;
