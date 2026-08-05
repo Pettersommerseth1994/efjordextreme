@@ -89,6 +89,10 @@ section{position:relative}
 .sec-eyebrow{font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--slate);margin-bottom:20px}
 
 /* Tilbakeblikk 2026 */
+.tb-cta{display:flex;justify-content:center;margin-top:28px}
+.tb-cta .btn-ghost{display:inline-block;border:1px solid var(--slate);color:var(--text);background:transparent;border-radius:100px;padding:14px 30px;font-family:var(--font);font-size:14.5px;font-weight:700;letter-spacing:.01em;transition:background .25s,color .25s}
+.tb-cta .btn-ghost:hover{background:var(--text);color:var(--bg)}
+@media(max-width:450px){.tb-cta .btn-ghost{display:block;width:100%;text-align:center}}
 .tb-lead{font-size:17px;line-height:1.7;color:var(--body);max-width:640px;margin-bottom:40px}
 .tb-carousel{position:relative}
 .tb-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;border-radius:20px}
@@ -101,7 +105,7 @@ section{position:relative}
 .tb-dots{display:flex;justify-content:center;gap:8px;margin-top:22px;flex-wrap:wrap}
 .tb-dot{width:7px;height:7px;border-radius:50%;background:var(--line);transition:background .25s}
 .tb-dot.sel{background:var(--text)}
-@media(max-width:640px){.tb-slide{height:clamp(260px,44vh,420px)}.tb-arrow{display:none}}
+@media(max-width:640px){.tb-slide{height:clamp(260px,44vh,420px)}.tb-arrow{width:40px;height:40px;font-size:19px}.tb-prev{left:8px}.tb-next{right:8px}}
 
 /* Wall of fame */
 .wof{margin-top:72px;border-top:1px solid var(--line);padding-top:56px}
@@ -518,12 +522,15 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
     <div class="reveal">
       <div class="sec-eyebrow">Tilbakeblikk</div>
       <h2 class="sec-title">Efjord Extreme <em>2026</em></h2>
-      <p class="tb-lead">Se tilbake på fjorårets utgave. Rått, vakkert og aldri stille, fra første tak i havet til siste meter over mål.</p>
+      <p class="tb-lead">Se tilbake på den andre utgaven av Efjord Extreme. Rått, vakkert og aldri stille, fra første tak i havet til siste meter over mål.</p>
     </div>
     <div class="tb-carousel reveal">
       <button class="tb-arrow tb-prev" id="tbPrev" aria-label="Forrige bilde">‹</button>
       <div class="tb-track" id="tbTrack"></div>
       <button class="tb-arrow tb-next" id="tbNext" aria-label="Neste bilde">›</button>
+    </div>
+    <div class="tb-cta reveal">
+      <a class="btn-ghost" href="https://drive.google.com/drive/folders/1rUvIb0yBhcwegPJ1vs9Bu-LumsUv-9o0" target="_blank" rel="noopener">Se alle bildene fra 2026 ↗</a>
     </div>
 
     <div class="wof reveal">
@@ -691,7 +698,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
     </a>
     <a class="rf-link reveal" style="margin-top:16px" href="https://cdn.shopify.com/s/files/1/0640/4925/0370/files/Race_guidelines.pdf.pdf?v=1784215661" target="_blank" rel="noopener">
       <div>
-        <div class="t">Race guidelines</div>
+        <div class="t">Race Guidelines 2026</div>
         <div class="d">Alt du trenger å vite om regler, sikkerhet og gjennomføring, samlet i ett dokument.</div>
       </div>
       <span class="arr">Åpne PDF ↗</span>
@@ -719,7 +726,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
       <div class="val-card reveal">
         <div class="val-n">Verdi 2</div>
         <h3>Ekte og rått</h3>
-        <p>Triatlon uten rød løper, slik det opprinnelig var ment. Brutalt, ærlig og uten snarveier. Du konkurrerer på naturens vilkår, mot deg selv og elementene.</p>
+        <p>Dette er et triatlon uten rød løper, slik det opprinnelig var ment. Brutalt, ærlig og uten snarveier. Du konkurrerer på naturens vilkår, mot deg selv og elementene.</p>
       </div>
       <div class="val-card reveal">
         <div class="val-n">Verdi 3</div>
