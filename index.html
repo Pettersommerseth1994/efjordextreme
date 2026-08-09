@@ -115,6 +115,18 @@ section{position:relative}
 @media(max-width:720px){.wof-cols{grid-template-columns:1fr;gap:16px}}
 .wof-col{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:30px 30px 24px}
 .wof-cat{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--slate);margin-bottom:20px}
+/* FILM */
+.film-stage{margin-top:44px;position:relative;isolation:isolate;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#000;aspect-ratio:16/9;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.film-video{display:block;width:100%;height:100%;object-fit:contain;background:#000;position:relative;z-index:1}
+.film-play{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:linear-gradient(180deg,rgba(11,11,11,.32) 0%,rgba(11,11,11,.5) 52%,rgba(11,11,11,.94) 100%);border:0;cursor:pointer;padding:0;transition:opacity .45s ease}
+.film-play[hidden]{display:none}
+.film-play.is-off{opacity:0;pointer-events:none}
+.film-disc{width:76px;height:76px;border-radius:50%;background:var(--grad);display:grid;place-items:center;transition:transform .3s ease,filter .3s ease}
+.film-play:hover .film-disc{transform:scale(1.07);filter:brightness(1.08)}
+.film-play:focus-visible{outline:2px solid var(--accent-bright);outline-offset:4px}
+.film-disc svg{margin-left:5px;display:block}
+.film-lbl{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--text)}
+@media(max-width:720px){.film-stage{margin-top:30px;border-radius:14px}.film-disc{width:60px;height:60px}.film-disc svg{width:20px;height:20px}}
 .podium{list-style:none;display:flex;flex-direction:column;gap:2px}
 .podium li{display:flex;align-items:baseline;gap:16px;padding:16px 0;border-top:1px solid var(--line)}
 .podium li:first-child{border-top:none}
@@ -438,7 +450,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
 <header class="hero" id="top">
   <div class="hero-video" aria-hidden="true">
     <video autoplay muted loop playsinline preload="auto" fetchpriority="high" aria-label="Efjord Extreme film">
-      <source src="https://cdn.shopify.com/videos/c/o/v/7a3982167139428a9cddbe5760b98ffe.mp4" type="video/mp4">
+      <source src="https://cdn.shopify.com/videos/c/o/v/545b382506644068a3fd0ebf8c61abdd.mp4" type="video/mp4">
     </video>
   </div>
   <div class="hero-scrim" aria-hidden="true"></div>
@@ -554,6 +566,28 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
           </ol>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- FILM -->
+<section class="section-pad" id="film">
+  <div class="fx" data-pos="bl" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="reveal">
+      <div class="sec-eyebrow">Aftermovie 2026</div>
+      <h2 class="sec-title">Se hele <em>filmen</em></h2>
+      <p class="sec-intro">Se tilbake p&aring; minner fra det andre Efjord Extreme som ble arrangert sommeren 2026.</p>
+    </div>
+    <div class="film-stage reveal">
+      <video id="filmVideo" class="film-video" controls playsinline preload="metadata" aria-label="Efjord Extreme 2026, aftermovie">
+        <source src="https://cdn.shopify.com/videos/c/o/v/b062c3a85d0b4804b150d61fd5744e70.mp4" type="video/mp4">
+        Nettleseren din st&oslash;tter ikke avspilling av video.
+      </video>
+      <button class="film-play" id="filmPlay" type="button" aria-label="Spill av filmen">
+        <span class="film-disc"><svg width="26" height="26" viewBox="0 0 24 24" fill="#0B0B0B" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+        <span class="film-lbl">Spill av</span>
+      </button>
     </div>
   </div>
 </section>
@@ -1190,6 +1224,26 @@ ebTick(); setInterval(ebTick, 1000);
   tryPlay();
   document.addEventListener('visibilitychange',tryPlay);
   vid.addEventListener('canplay',tryPlay,{once:true});
+})();
+
+// Filmseksjon: skjul play-overlegget når avspilling starter
+(function(){
+  var v=document.getElementById('filmVideo'), b=document.getElementById('filmPlay');
+  if(!v||!b) return;
+  // Uten JS beholder videoen sine native kontroller. Med JS skjuler vi dem
+  // til filmen starter, slik at play-overlegget står rent.
+  v.removeAttribute('controls');
+  var start=function(){
+    v.setAttribute('controls','');
+    b.classList.add('is-off');
+    setTimeout(function(){ b.hidden=true; },450);
+  };
+  b.addEventListener('click',function(){
+    v.muted=false;                       // filmen skal spilles med lyd
+    var pr=v.play();
+    if(pr&&pr.catch) pr.catch(start);    // blokkert: vis kontrollene så brukeren kan starte selv
+  });
+  v.addEventListener('play',start,{once:true});
 })();
 
 // Tilbakeblikk-karusell (bytt ut TB_IMAGES med dine 20 bilder senere)
