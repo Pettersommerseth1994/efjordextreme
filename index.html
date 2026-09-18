@@ -665,6 +665,360 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
     </div>
   </div>
 </section>
+<!-- EFJORD SCROLL: prikkeklode -> nål -> sirkulære klipp (design handoff Forte Digital, v2) -->
+<style>
+.ef-sec{position:relative;height:700vh;background:#000}
+.ef-stage{position:sticky;top:0;height:100vh;overflow:hidden}
+@supports (height:100dvh){.ef-stage{height:100dvh}}
+@media (max-width:760px){.ef-sec{height:520vh}}
+</style>
+<section class="ef-sec" data-ef>
+  <div class="ef-stage" data-stage></div>
+</section>
+<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" defer></script>
+<script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous" defer></script>
+<script>
+/* Efjord Extreme — dot globe -> pin -> clips. Real land geometry
+   (world-atlas 50m TopoJSON), sampled to a dot matrix on black.
+   Everything is a pure function of scroll progress p (0..1). */
+(function () {
+  'use strict';
+
+  var clamp = function (v, a, b) { return v < a ? a : v > b ? b : v; };
+  var seg = function (p, a, b) { return clamp((p - a) / (b - a), 0, 1); };
+  var lerp = function (a, b, t) { return a + (b - a) * t; };
+  var smooth = function (t) { return t * t * (3 - 2 * t); };
+
+  var NARVIK = [68.4385, 17.4272];
+
+  function el(tag, css) {
+    var e = document.createElement(tag);
+    if (css) e.setAttribute('style', css);
+    return e;
+  }
+
+  var RAD = Math.PI / 180;
+
+  function sampleLand(geo, box, step, RW, RH) {
+    var cv = document.createElement('canvas'); cv.width = RW; cv.height = RH;
+    var cx = cv.getContext('2d');
+    var proj = d3.geoEquirectangular().precision(0);
+    if (box) {
+      var sc = Math.min(RW / ((box[3] - box[1]) * RAD), RH / ((box[2] - box[0]) * RAD));
+      proj.scale(sc).translate([
+        RW / 2 - sc * ((box[1] + box[3]) / 2) * RAD,
+        RH / 2 + sc * ((box[0] + box[2]) / 2) * RAD
+      ]);
+    } else {
+      proj.translate([RW / 2, RH / 2]).scale(RW / (2 * Math.PI));
+    }
+    cx.fillStyle = '#fff';
+    d3.geoPath(proj, cx)(geo); cx.fill();
+    var data = cx.getImageData(0, 0, RW, RH).data;
+    var lat0 = box ? box[0] : -84, lat1 = box ? box[2] : 84.5;
+    var lng0 = box ? box[1] : -180, lng1 = box ? box[3] : 180;
+    var out = [], lat, lng;
+    for (lat = lat0; lat <= lat1; lat += step) {
+      var lonStep = step / Math.max(Math.cos(lat * RAD), 0.1);
+      for (lng = lng0; lng < lng1; lng += lonStep) {
+        var q = proj([lng, lat]); if (!q) continue;
+        var px = Math.floor(q[0]), py = Math.floor(q[1]);
+        if (px < 0 || px >= RW || py < 0 || py >= RH) continue;
+        if (data[(py * RW + px) * 4 + 3] > 90) out.push([lng * RAD, lat * RAD]);
+      }
+    }
+    return out;
+  }
+
+  function packTrig(pts) {
+    var n = pts.length, T = new Float64Array(n * 4), i;
+    for (i = 0; i < n; i++) {
+      T[i * 4] = Math.sin(pts[i][1]); T[i * 4 + 1] = Math.cos(pts[i][1]);
+      T[i * 4 + 2] = Math.sin(pts[i][0]); T[i * 4 + 3] = Math.cos(pts[i][0]);
+    }
+    return { n: n, trig: T, bufN: new Float32Array(n * 2), bufF: new Float32Array(n * 2) };
+  }
+
+  function mount(cfg) {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return null;
+    var section = cfg.root;
+    var stage = section.querySelector('[data-stage]');
+    if (!stage) { stage = el('div', 'position:sticky;top:0;height:100vh;overflow:hidden;'); section.appendChild(stage); }
+    var made = [];
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var CU = cfg.cues;
+    var CREAM = cfg.ink || '#F2F0E7';
+    var ACCENT = cfg.accent || '#F25037';
+    var CAPFONT = cfg.captionFont || 'Archivo, sans-serif';
+    var PINFONT = cfg.pinFont || 'Archivo, sans-serif';
+
+    stage.style.background = '#000';
+    var canvas = el('canvas', 'position:absolute;inset:0;width:100%;height:100%;');
+    stage.appendChild(canvas); made.push(canvas);
+    var ctx = canvas.getContext('2d');
+
+    var pin = el('div', 'position:absolute;left:0;top:0;opacity:0;will-change:transform,opacity;');
+    pin.innerHTML =
+      '<div style="position:absolute;left:-3px;top:-3px;width:6px;height:6px;border-radius:50%;background:' + ACCENT + ';"></div>' +
+      '<div data-stem style="position:absolute;left:0;bottom:0;width:1px;height:0;background:' + CREAM + ';"></div>' +
+      '<div data-arm style="position:absolute;left:0;width:0;height:1px;background:' + CREAM + ';"></div>' +
+      '<div data-label style="position:absolute;white-space:nowrap;background:#000;' +
+      'padding:0.24em 0.4em 0.3em;color:' + CREAM + ';font-family:' + PINFONT + ';' +
+      'font-size:clamp(18px,2vw,32px);line-height:1.1;letter-spacing:-0.005em;">Efjord' +
+      '<span style="display:block;font-size:0.56em;letter-spacing:0.02em;color:rgba(242,240,231,0.62);">Narvik</span></div>';
+    stage.appendChild(pin); made.push(pin);
+
+    var clips = cfg.clips.map(function (c) {
+      var wrap = el('div', 'position:absolute;inset:0;opacity:0;visibility:hidden;display:flex;' +
+        'align-items:center;justify-content:center;will-change:opacity;');
+      var frame = el('div', 'position:relative;width:min(86vmin,1116px);aspect-ratio:1;' +
+        'border-radius:50%;overflow:hidden;background:#000;will-change:transform;');
+      var v = el('video', 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;');
+      v.dataset.src = c.src;
+      v.muted = true; v.defaultMuted = true; v.loop = true; v.preload = 'none';
+      v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.playsInline = true;
+      frame.appendChild(v);
+      var veil = el('div', 'position:absolute;inset:0;pointer-events:none;background:' +
+        'radial-gradient(circle at 50% 50%, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.5) 46%, rgba(0,0,0,0.12) 78%, rgba(0,0,0,0) 100%);');
+      frame.appendChild(veil);
+      var cap = el('div', 'position:absolute;inset:0;display:flex;flex-direction:column;' +
+        'align-items:center;justify-content:center;text-align:center;padding:0 14%;' +
+        'font-family:' + CAPFONT + ';color:' + CREAM + ';will-change:opacity;');
+      cap.innerHTML =
+        '<div style="font-size:clamp(10px,1.05vw,14px);font-weight:500;letter-spacing:0.2em;' +
+        'text-transform:uppercase;color:rgba(242,240,231,0.72);">' + c.eyebrow + '</div>' +
+        '<div style="margin-top:0.7em;font-size:clamp(26px,4.4vw,64px);font-weight:700;' +
+        'line-height:0.96;letter-spacing:-0.02em;text-transform:uppercase;">' + c.place + '</div>';
+      frame.appendChild(cap);
+      wrap.appendChild(frame);
+      stage.appendChild(wrap); made.push(wrap);
+      v.addEventListener('error', function () {
+        frame.style.background = 'none';
+        veil.style.display = 'none';
+        v.style.display = 'none';
+      });
+      return { wrap: wrap, frame: frame, cap: cap, v: v, on: false };
+    });
+
+    var hint = el('div', 'position:absolute;left:0;right:0;bottom:clamp(20px,4vh,44px);display:flex;' +
+      'flex-direction:column;align-items:center;gap:9px;color:' + CREAM + ';pointer-events:none;');
+    hint.innerHTML = '<span style="font-size:clamp(11px,1vw,13px);letter-spacing:0.14em;opacity:0.55;">Rull</span>' +
+      '<span style="width:1px;height:clamp(24px,4vh,40px);background:currentColor;opacity:0.3;"></span>';
+    stage.appendChild(hint); made.push(hint);
+
+    var world = null, nordic = null, local = null, efjord = null;
+    fetch(cfg.topojson || 'https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-50m.json')
+      .then(function (r) { return r.json(); })
+      .then(function (topo) {
+        var land = topojson.merge(topo, topo.objects.countries.geometries);
+        world = packTrig(sampleLand(land, null, 0.7, 2048, 1024));
+        var nor = topojson.feature(topo, topo.objects.countries).features
+          .filter(function (f) { return f.properties && f.properties.name === 'Norway'; });
+        var norGeo = { type: 'FeatureCollection', features: nor };
+        nordic = packTrig(sampleLand(norGeo, [57.4, 3.8, 71.6, 31.6], 0.19, 1400, 1100));
+        local = packTrig(sampleLand(norGeo, [66.0, 11.0, 70.2, 21.0], 0.035, 1600, 1200));
+        efjord = packTrig(sampleLand(norGeo, [67.5, 14.2, 69.1, 18.6], 0.011, 1700, 1300));
+      });
+
+    var W = 0, H = 0, dpr = 1;
+    function resize() {
+      W = stage.clientWidth; H = stage.clientHeight;
+      dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    }
+    var ro = null;
+    if (window.ResizeObserver) { ro = new ResizeObserver(resize); ro.observe(stage); }
+
+    var t0 = performance.now();
+
+    function frame() {
+      if (stage.clientWidth !== W || stage.clientHeight !== H) resize();
+      if (!W || !H) return;
+      var rect = section.getBoundingClientRect();
+      var span = section.offsetHeight - window.innerHeight;
+      var p = clamp(-rect.top / (span || 1), 0, 1);
+      var t = (performance.now() - t0) / 1000;
+      if (rect.bottom < -240 || rect.top > window.innerHeight + 240) return;
+
+      var narrow = W < 760;
+      var base = Math.min(W, H) * (narrow ? 0.46 : 0.42);
+
+      var turn = smooth(seg(p, CU.turn, CU.pin));
+      var spin = reduce ? 40 : 40 + t * 3.2;
+      var lam = lerp(-spin % 360, -NARVIK[1], turn);
+      var phi = lerp(-18, -NARVIK[0], turn);
+      var zoomEnd = smooth(seg(p, CU.pin, CU.clips));
+      var rel = 1 + 0.9 * turn + (cfg.zoomDepth || 2.55) * zoomEnd;
+      var scale = base * rel;
+      var offX = (cfg.offset ? cfg.offset[0] : 0) * W * (1 - turn);
+      var offY = (cfg.offset ? cfg.offset[1] : 0) * H * (1 - turn);
+      var cx = W / 2 + offX, cy = H / 2 + offY;
+      var lamR = -lam * Math.PI / 180, phiR = -phi * Math.PI / 180;
+      var sinL = Math.sin(lamR), cosL = Math.cos(lamR);
+      var sinP = Math.sin(phiR), cosP = Math.cos(phiR);
+
+      var pla = NARVIK[0] * RAD, plo = NARVIK[1] * RAD;
+      var cDp = Math.cos(plo) * cosL + Math.sin(plo) * sinL;
+      var pinX = cx + scale * Math.cos(pla) * (Math.sin(plo) * cosL - Math.cos(plo) * sinL);
+      var pinY = cy - scale * (cosP * Math.sin(pla) - sinP * Math.cos(pla) * cDp);
+
+      var fade = cfg.fade || 0.055;
+      var grow = smooth(seg(p, cfg.clipWindows[0][0], cfg.clipWindows[0][0] + (cfg.grow || 0.085)));
+      var alphas = clips.map(function (c, i) {
+        var w = cfg.clipWindows[i];
+        return i === 0 ? (p >= w[0] ? 1 : 0) : smooth(seg(p, w[0] - fade, w[0] + fade));
+      });
+      var cover = 0, i2;
+      for (i2 = 0; i2 < alphas.length; i2++) cover = Math.max(cover, alphas[i2]);
+      var lastW = cfg.clipWindows[clips.length - 1];
+      var shrink = smooth(seg(p, lastW[1] - (cfg.shrink || 0.11), lastW[1]));
+      cover *= 1 - shrink;
+      var qAll = seg(p, cfg.clipWindows[0][0], lastW[1]);
+      var frameScale = 1.06 - 0.08 * qAll;
+      clips.forEach(function (c, i) {
+        var w = cfg.clipWindows[i];
+        var a = alphas[i];
+        var buried = false, showThrough = 0, k;
+        for (k = i + 1; k < alphas.length; k++) {
+          showThrough = Math.max(showThrough, alphas[k]);
+          if (alphas[k] > 0.999 && !clips[k].v.error) buried = true;
+        }
+        if (p > w[0] - 0.16 && !c.on) { c.on = true; c.v.preload = 'auto'; c.v.src = c.v.dataset.src; }
+        if (a < 0.004 || buried) {
+          if (c.wrap.style.visibility !== 'hidden') {
+            c.wrap.style.visibility = 'hidden'; c.wrap.style.opacity = 0; c.v.pause();
+          }
+          return;
+        }
+        c.wrap.style.visibility = 'visible';
+        c.wrap.style.opacity = a.toFixed(3);
+        if (c.v.paused) { var pr = c.v.play(); if (pr && pr.catch) pr.catch(function () {}); }
+        var s = frameScale;
+        var tx = 0, ty = 0, capA = a;
+        if (i === 0) {
+          var g = grow;
+          tx = (pinX - W / 2) * (1 - g); ty = (pinY - H / 2) * (1 - g);
+          s = lerp(0.012, s, g);
+          capA = a * smooth(seg(g, 0.6, 1));
+        }
+        if (shrink > 0) {
+          tx = (pinX - W / 2) * shrink; ty = (pinY - H / 2) * shrink;
+          s = lerp(s, 0.012, shrink);
+          capA *= 1 - smooth(seg(shrink, 0, 0.45));
+        }
+        c.frame.style.transform =
+          'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + s.toFixed(4) + ')';
+        c.cap.style.opacity = (capA * (1 - showThrough)).toFixed(3);
+      });
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      var gAlpha = 1 - 0.45 * cover;
+      if (world) {
+        var r = clamp(base / 620 * (1 + 0.32 * (rel - 1)), 0.62, 1.9) * (cfg.dotScale || 1);
+        var nordicA = smooth(clamp((rel - 1.35) / 0.8, 0, 1));
+        var localA = smooth(clamp((rel - 2.1) / 1.0, 0, 1));
+        var efjordA = efjord ? smooth(clamp((rel - 4.2) / 1.8, 0, 1)) : 0;
+        drawSet(world, r, 1 - 0.5 * nordicA);
+        if (nordicA > 0.01) drawSet(nordic, r * 0.9, nordicA * (1 - 0.35 * localA));
+        if (localA > 0.01) drawSet(local, r * 0.78, localA * (1 - 0.4 * efjordA));
+        if (efjordA > 0.01) drawSet(efjord, r * 0.62, efjordA);
+      }
+
+      function drawSet(set, r, setAlpha) {
+        var T = set.trig, N = set.bufN, F = set.bufF, n = set.n;
+        var nN = 0, nF = 0, i, sLa, cLa, sLo, cLo, cD, cosd, sx, sy;
+        for (i = 0; i < n; i++) {
+          sLa = T[i * 4]; cLa = T[i * 4 + 1]; sLo = T[i * 4 + 2]; cLo = T[i * 4 + 3];
+          cD = cLo * cosL + sLo * sinL;
+          cosd = sinP * sLa + cosP * cLa * cD;
+          if (cosd <= 0.03) continue;
+          sx = cx + scale * cLa * (sLo * cosL - cLo * sinL);
+          sy = cy - scale * (cosP * sLa - sinP * cLa * cD);
+          if (sx < -4 || sx > W + 4 || sy < -4 || sy > H + 4) continue;
+          if (cosd > 0.34) { N[nN++] = sx; N[nN++] = sy; } else { F[nF++] = sx; F[nF++] = sy; }
+        }
+        var d2 = r * 2;
+        var paint = function (buf, len, alpha) {
+          if (!len) return;
+          ctx.globalAlpha = alpha * gAlpha * setAlpha; ctx.beginPath();
+          for (var k = 0; k < len; k += 2) ctx.rect(buf[k] - r, buf[k + 1] - r, d2, d2);
+          ctx.fillStyle = CREAM; ctx.fill();
+        };
+        paint(F, nF, 0.3);
+        paint(N, nN, 1);
+        ctx.globalAlpha = 1;
+      }
+
+      var pinA = smooth(seg(p, CU.pin - 0.09, CU.pin)) * Math.max(1 - grow, shrink);
+      if (pinA > 0.004) {
+        var stem = (narrow ? 58 : 96) * pinA;
+        var arm = (narrow ? 44 : 76) * pinA;
+        pin.style.opacity = pinA.toFixed(3);
+        pin.style.transform = 'translate(' + pinX.toFixed(1) + 'px,' + pinY.toFixed(1) + 'px)';
+        pin.querySelector('[data-stem]').style.height = stem.toFixed(1) + 'px';
+        pin.querySelector('[data-stem]').style.bottom = 'auto';
+        pin.querySelector('[data-stem]').style.top = (-stem).toFixed(1) + 'px';
+        var armEl = pin.querySelector('[data-arm]');
+        armEl.style.width = arm.toFixed(1) + 'px';
+        armEl.style.top = (-stem).toFixed(1) + 'px';
+        var lab = pin.querySelector('[data-label]');
+        lab.style.left = (arm + 12).toFixed(1) + 'px';
+        lab.style.top = (-stem - 14).toFixed(1) + 'px';
+      } else if (pin.style.opacity !== '0') {
+        pin.style.opacity = 0;
+      }
+
+      hint.style.opacity = (1 - smooth(seg(p, 0.02, 0.09))).toFixed(3);
+    }
+
+    function loop() { frame(); raf = requestAnimationFrame(loop); }
+    var raf = requestAnimationFrame(loop);
+    window.addEventListener('resize', resize);
+    resize();
+
+    return {
+      destroy: function () {
+        cancelAnimationFrame(raf);
+        window.removeEventListener('resize', resize);
+        if (ro) ro.disconnect();
+        clips.forEach(function (c) {
+          c.v.pause(); c.v.removeAttribute('src'); c.v.load();
+        });
+        made.forEach(function (n) { if (n.parentNode) n.parentNode.removeChild(n); });
+      }
+    };
+  }
+
+  window.EfjordScroll = { mount: mount, NARVIK: NARVIK };
+})();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  window.efjord = EfjordScroll.mount({
+    root: document.querySelector('[data-ef]'),
+    topojson: 'assets/countries-50m.json',
+    ink: '#F2F0E7',
+    accent: '#F25037',
+    captionFont: 'Archivo, sans-serif',
+    pinFont: 'Archivo, sans-serif',
+    offset: [0.12, 0.06],
+    dotScale: 1,
+    zoomDepth: 2.55,
+    cues: { turn: 0.09, pin: 0.29, clips: 0.40 },
+    fade: 0.055,
+    grow: 0.085,
+    shrink: 0.11,
+    clips: [
+      { src: 'rute-media/swim.mp4', eyebrow: 'Svøm i', place: 'Efjord' },
+      { src: 'rute-media/bike.mp4', eyebrow: 'Sykle forbi', place: 'Stetinden' },
+      { src: 'rute-media/run.mp4', eyebrow: 'Løp opp', place: 'Verdenssvadet' },
+      { src: 'rute-media/erduklar.mp4', eyebrow: 'Er du klar for', place: 'Utfordringen?' }
+    ],
+    clipWindows: [[0.42, 0.57], [0.57, 0.715], [0.715, 0.86], [0.86, 1.0]]
+  });
+});
+</script>
 <!-- RACE INFO -->
 <section class="section-pad" id="raceinfo">
   <div class="fx" data-pos="bl" aria-hidden="true"></div>
@@ -1089,11 +1443,14 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
         <p style="font-size:15px;color:var(--slate);margin-top:14px">Du kan bidra med alt fra løypevakt og matstasjon til målområde, logistikk og rigg. Uansett erfaring er det plass til deg. Legg igjen kontaktinfoen din, så tar vi kontakt frem mot arrangementet.</p>
         <div class="vol-img" style="margin-top:28px"><img src="https://shop.efjordextreme.no/cdn/shop/files/IMG_1281.jpg?v=1773910454&width=1200" alt="Frivillige under Efjord Extreme" loading="lazy"></div>
       </div>
-      <form class="reveal" onsubmit="event.preventDefault();this.querySelector('button').textContent='Sendt ✓'">
-        <div><label for="v-navn">Navn</label><input id="v-navn" type="text" autocomplete="name"></div>
-        <div><label for="v-epost">E-post *</label><input id="v-epost" type="email" required autocomplete="email"></div>
-        <div><label for="v-tlf">Telefon</label><input id="v-tlf" type="tel" autocomplete="tel"></div>
-        <div><label for="v-kom">Kommentar</label><textarea id="v-kom" rows="5"></textarea></div>
+      <form class="reveal" action="https://shop.efjordextreme.no/contact#ContactFooter" method="post">
+        <input type="hidden" name="form_type" value="contact">
+        <input type="hidden" name="utf8" value="✓">
+        <input type="hidden" name="contact[Skjema]" value="Frivillig - efjordextreme.no">
+        <div><label for="v-navn">Navn</label><input id="v-navn" name="contact[name]" type="text" autocomplete="name"></div>
+        <div><label for="v-epost">E-post *</label><input id="v-epost" name="contact[email]" type="email" required autocomplete="email"></div>
+        <div><label for="v-tlf">Telefon</label><input id="v-tlf" name="contact[phone]" type="tel" autocomplete="tel"></div>
+        <div><label for="v-kom">Kommentar</label><textarea id="v-kom" name="contact[body]" rows="5"></textarea></div>
         <button class="btn-outline" type="submit">Send</button>
       </form>
     </div>
