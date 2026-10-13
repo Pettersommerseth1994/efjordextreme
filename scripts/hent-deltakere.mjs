@@ -15,11 +15,13 @@ const RACEDAG = new Date('2027-08-07');
 const SALG_START = '2026-08-01T00:00:00+02:00';
 const API = '2026-10';
 
-const DISTANSER = {
-  'halvdistanse-triatlon': '70.3',
-  'halvdistanse-relay': '70.3 lag',
-  'olympisk-distanse-triatlon': 'Olympisk +',
-};
+// Distansen leses fra produkttittelen på ordrelinjen (krever ikke read_products)
+function distanseFra(tittel) {
+  const t = tittel ?? '';
+  if (/olympisk/i.test(t)) return 'Olympisk +';
+  if (/halvdistanse|70\.3/i.test(t)) return /\blag\b|relay|stafett/i.test(t) ? '70.3 lag' : '70.3';
+  return null;
+}
 
 const LAND = [
   [/sverige|sweden|stockholm|göteborg|gothenburg|kiruna|luleå|malmö/i, 'Sverige'],
@@ -70,7 +72,7 @@ const QUERY = `query($cursor: String, $q: String) {
       cancelledAt
       displayFinancialStatus
       lineItems(first: 20) {
-        nodes { currentQuantity product { handle } customAttributes { key value } }
+        nodes { currentQuantity title customAttributes { key value } }
       }
     }
   }
@@ -125,7 +127,7 @@ function deltakere(ordrer) {
     if (new Date(o.createdAt) < new Date(SALG_START)) continue;
     if (o.cancelledAt || ['REFUNDED', 'VOIDED'].includes(o.displayFinancialStatus)) continue;
     for (const li of o.lineItems.nodes) {
-      const distanse = DISTANSER[li.product?.handle];
+      const distanse = distanseFra(li.title);
       if (!distanse || li.currentQuantity < 1) continue;
       const a = Object.fromEntries(li.customAttributes.map((x) => [x.key, x.value]));
       if (distanse === '70.3 lag') {
