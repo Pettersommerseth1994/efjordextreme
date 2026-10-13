@@ -1,17 +1,51 @@
 {
   "_forklaring": "Manuelle rettelser som brukes hver gang deltakerlisten oppdateres. Navn må skrives slik de står i Shopify.",
-  "inkluder": ["Markus Holmer", "Kristina Ober"],
+  "inkluder": [
+    "Markus Holmer"
+  ],
+  "inkluder_ordrer": [
+    "#1126"
+  ],
+  "ekstra": [],
+  "_ekstra_eksempel": {
+    "navn": "Fornavn Etternavn",
+    "alder": 35,
+    "kjonn": "Kvinne",
+    "distanse": "70.3",
+    "sted": "Berlin, Germany",
+    "nr": 150
+  },
   "personer": {
-    "Kristina Ober": { "sted": "Berlin, Germany" },
-    "Preben Riska": { "distanse": "Olympisk +" },
-    "Bruce Dias": { "sted": "Kidlington, Storbritannia" },
-    "Ida Evjen": { "sted": "Bodø" },
-    "Simon Frantzen": { "sted": "Narvik" },
-    "Matthew Hine": { "sted": "Harrow, Storbritannia" },
-    "Darinna Kellere": { "sted": "Narvik" },
-    "Susanne Arntzen Langnes": { "sted": "Ankenes" },
-    "Kristoffer Martens": { "sted": "Trondheim" },
-    "Henry Sharples": { "sted": "Botley Oxford, Storbritannia" }
+    "Kristina Ober": {
+      "sted": "Berlin, Germany"
+    },
+    "Preben Riska": {
+      "distanse": "Olympisk +"
+    },
+    "Bruce Dias": {
+      "sted": "Kidlington, Storbritannia"
+    },
+    "Ida Evjen": {
+      "sted": "Bodø"
+    },
+    "Simon Frantzen": {
+      "sted": "Narvik"
+    },
+    "Matthew Hine": {
+      "sted": "Harrow, Storbritannia"
+    },
+    "Darinna Kellere": {
+      "sted": "Narvik"
+    },
+    "Susanne Arntzen Langnes": {
+      "sted": "Ankenes"
+    },
+    "Kristoffer Martens": {
+      "sted": "Trondheim"
+    },
+    "Henry Sharples": {
+      "sted": "Botley Oxford, Storbritannia"
+    }
   },
   "steder": {
     "SKARSTAD !": "Skarstad"

@@ -37,6 +37,7 @@ const STEDER = JSON.parse(readFileSync(new URL('./steder.json', import.meta.url)
 const KORR = JSON.parse(readFileSync(new URL('./korrigeringer.json', import.meta.url), 'utf8'));
 const nokkel = (navn) => (navn ?? '').replace(/\s+/g, ' ').trim().toLowerCase();
 const INKLUDER = new Set((KORR.inkluder ?? []).map(nokkel));
+const INKLUDER_ORDRER = new Set((KORR.inkluder_ordrer ?? []).map((o) => '#' + String(o).replace(/\D/g, '')));
 const PERSONER = Object.fromEntries(Object.entries(KORR.personer ?? {}).map(([k, v]) => [nokkel(k), v]));
 // Personer på inkluder-listen hentes også hvis de meldte seg på før salgsstart
 const HENT_FRA = INKLUDER.size ? '2026-01-01T00:00:00+01:00' : null;
@@ -163,7 +164,7 @@ function deltakere(ordrer) {
           distanse, lag: null, fra: a['Hvor kommer du fra?'] });
       }
       for (const p of personer) {
-        const tvungen = INKLUDER.has(nokkel(p.navn));
+        const tvungen = INKLUDER.has(nokkel(p.navn)) || INKLUDER_ORDRER.has(o.name);
         const grunn = !distanse ? 'ukjent produkt' : forTidlig ? 'før salgsstart' : ugyldig ?? (li.currentQuantity < 1 ? 'fjernet fra ordren' : null);
         if (grunn && !tvungen) {
           if (distanse || li.title) utelatt.push({ ordre: o.name, grunn, produkt: li.title });
@@ -185,7 +186,10 @@ function korriger(p) {
 
 const tell = (liste) => liste.reduce((m, k) => (k ? ((m[k] = (m[k] ?? 0) + 1), m) : m), {});
 
-const alle = deltakere(await hentOrdrer(await token())).map(korriger).map((p) => ({ ...p, ...plasser(p.fra) }));
+// Deltakere som ikke finnes som ordre i Shopify legges inn manuelt i korrigeringer.json
+const ekstra = (KORR.ekstra ?? []).map((e) => ({ navn: e.navn, alder: e.alder ?? null, kjonn: e.kjonn, distanse: e.distanse,
+  lag: e.lag ?? null, fra: e.sted, nr: e.nr ?? null }));
+const alle = [...deltakere(await hentOrdrer(await token())), ...ekstra].map(korriger).map((p) => ({ ...p, ...plasser(p.fra) }));
 
 const data = {
   oppdatert: new Date().toISOString(),
