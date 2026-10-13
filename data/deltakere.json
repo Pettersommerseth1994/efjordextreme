@@ -1,15 +1,15 @@
 {
- "oppdatert": "2026-10-13T16:25:13.487Z",
+ "oppdatert": "2026-10-13T16:36:14.399Z",
  "kapasitet": 100,
- "antall": 72,
+ "antall": 73,
  "statistikk": {
   "kjonn": {
    "Mann": 50,
-   "Kvinne": 22
+   "Kvinne": 23
   },
   "distanse": {
    "70.3": 46,
-   "Olympisk +": 26
+   "Olympisk +": 27
   },
   "fylker": {
    "Nordland": 28,
@@ -25,7 +25,8 @@
   },
   "utland": {
    "Sverige": 3,
-   "Storbritannia": 4
+   "Storbritannia": 4,
+   "Tyskland": 1
   },
   "ukjent_sted": 1
  },
@@ -372,6 +373,13 @@
    "alder": 43,
    "sted": "Bodø",
    "distanse": "70.3"
+  },
+  {
+   "nr": 63,
+   "navn": "Kristina Ober",
+   "alder": 47,
+   "sted": "Berlin, Germany",
+   "distanse": "Olympisk +"
   },
   {
    "nr": 77,

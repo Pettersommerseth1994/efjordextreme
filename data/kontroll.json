@@ -1,6 +1,6 @@
 {
- "oppdatert": "2026-10-13T16:25:13.487Z",
- "antall": 72,
+ "oppdatert": "2026-10-13T16:36:14.399Z",
+ "antall": 73,
  "utelatt": [
   {
    "ordre": "#1064",
@@ -18,5 +18,7 @@
    "produkt": "70.3 / Halvdistanse – Lag"
   }
  ],
- "inkluder_ikke_funnet": 1
+ "inkluder_ikke_funnet": 1,
+ "tilganger": "read_orders",
+ "eldste_ordre": "2026-08-17T01:36:35Z"
 }
