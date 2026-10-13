@@ -6,16 +6,7 @@
   "inkluder_ordrer": [
     "#1126"
   ],
-  "ekstra": [
-    {
-      "navn": "Kristina Ober",
-      "alder": 47,
-      "kjonn": "Kvinne",
-      "distanse": "Olympisk +",
-      "sted": "Berlin, Germany",
-      "nr": 63
-    }
-  ],
+  "ekstra": [],
   "_ekstra_eksempel": {
     "navn": "Fornavn Etternavn",
     "alder": 35,
