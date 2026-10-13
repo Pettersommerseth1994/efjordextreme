@@ -1,0 +1,37 @@
+name: Oppdater deltakere
+
+on:
+  schedule:
+    - cron: '17 * * * *'   # hver time, 17 minutter over
+  workflow_dispatch:        # gir en «Run workflow»-knapp i GitHub
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deltakere
+  cancel-in-progress: false
+
+jobs:
+  oppdater:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Hent påmeldinger fra Shopify
+        run: node scripts/hent-deltakere.mjs
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
+
+      - name: Lagre hvis noe er endret
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add data/deltakere.json
+          git diff --cached --quiet || (git commit -m "Oppdater deltakere" && git push)
