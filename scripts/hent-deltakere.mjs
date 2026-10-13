@@ -33,8 +33,12 @@ const LAND = [
 
 const STEDER = JSON.parse(readFileSync(new URL('./steder.json', import.meta.url), 'utf8'));
 
-const store = process.env.SHOPIFY_STORE;
-if (!store) throw new Error('Mangler SHOPIFY_STORE');
+const store = (process.env.SHOPIFY_STORE ?? '').trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+const mangler = ['SHOPIFY_STORE', 'SHOPIFY_CLIENT_ID', 'SHOPIFY_CLIENT_SECRET'].filter((k) => !(process.env[k] ?? '').trim());
+if (!process.env.SHOPIFY_ADMIN_TOKEN && mangler.length) {
+  console.error(`FEIL: Disse secrets mangler eller er tomme i GitHub: ${mangler.join(', ')}`);
+  process.exit(1);
+}
 
 async function token() {
   if (process.env.SHOPIFY_ADMIN_TOKEN) return process.env.SHOPIFY_ADMIN_TOKEN;
@@ -43,12 +47,19 @@ async function token() {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
       grant_type: 'client_credentials',
-      client_id: process.env.SHOPIFY_CLIENT_ID ?? '',
-      client_secret: process.env.SHOPIFY_CLIENT_SECRET ?? '',
+      client_id: process.env.SHOPIFY_CLIENT_ID.trim(),
+      client_secret: process.env.SHOPIFY_CLIENT_SECRET.trim(),
     }),
   });
-  if (!r.ok) throw new Error(`Fikk ikke tilgangsnøkkel fra Shopify (${r.status})`);
-  return (await r.json()).access_token;
+  const tekst = await r.text();
+  if (!r.ok) {
+    console.error(`FEIL: Shopify ga ikke tilgangsnøkkel (HTTP ${r.status}) for butikken ${store}.`);
+    console.error('Svar fra Shopify: ' + (tekst.match(/<title>([^<]*)<\/title>/)?.[1] ?? tekst.slice(0, 500)));
+    process.exit(1);
+  }
+  const j = JSON.parse(tekst);
+  console.log(`Fikk tilgangsnøkkel. Tilganger: ${j.scope ?? 'ukjent'}`);
+  return j.access_token;
 }
 
 const QUERY = `query($cursor: String, $q: String) {
@@ -74,8 +85,14 @@ async function hentOrdrer(tok) {
       headers: { 'Content-Type': 'application/json', 'X-Shopify-Access-Token': tok },
       body: JSON.stringify({ query: QUERY, variables: { cursor, q: `created_at:>='${SALG_START}'` } }),
     });
-    const j = await r.json();
-    if (!r.ok || j.errors) throw new Error('Shopify-feil: ' + JSON.stringify(j.errors ?? r.status));
+    const tekst = await r.text();
+    let j = null;
+    try { j = JSON.parse(tekst); } catch {}
+    if (!r.ok || !j || j.errors) {
+      console.error(`FEIL: Henting av ordrer feilet (HTTP ${r.status}).`);
+      console.error('Svar fra Shopify: ' + tekst.slice(0, 800));
+      process.exit(1);
+    }
     ut.push(...j.data.orders.nodes);
     cursor = j.data.orders.pageInfo.hasNextPage ? j.data.orders.pageInfo.endCursor : null;
   } while (cursor);
