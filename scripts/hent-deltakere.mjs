@@ -114,8 +114,12 @@ function plasser(tekst) {
   const t = (tekst ?? '').trim();
   if (!t) return { fylke: null, land: null };
   for (const [re, land] of LAND) if (re.test(t)) return { fylke: null, land };
-  const biter = [t, ...t.split(/[,/()\-]| og /)].map((s) => s.trim().toLowerCase()).filter(Boolean);
-  for (const b of biter) if (STEDER[b]) return { fylke: STEDER[b], land: 'Norge' };
+  // Prøv hele teksten, så ord-grupper på 3, 2 og 1 ord ("Kragerø i Telemark", "Tromsø Triathlonklubb")
+  const ord = t.toLowerCase().replace(/[^a-zæøåäöü\s-]/g, ' ').split(/\s+/).filter(Boolean);
+  const kandidater = [ord.join(' ')];
+  for (let i = 0; i < ord.length; i++) for (const len of [3, 2, 1]) if (i + len <= ord.length) kandidater.push(ord.slice(i, i + len).join(' '));
+  for (const k of kandidater) if (STEDER[k]) return { fylke: STEDER[k], land: 'Norge' };
+  if (/\bnorge\b|\bnorway\b/i.test(t)) return { fylke: null, land: 'Norge' };
   return { fylke: null, land: null };
 }
 

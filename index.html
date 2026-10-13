@@ -923,8 +923,11 @@ document.addEventListener('DOMContentLoaded', function(){
   // Farge per andel, samme trinn som i forklaringen
   function color(p){ return p === 0 ? '#2b2b34' : p < 5 ? '#7a5238' : p <= 20 ? '#a64d14' : '#F55303'; }
 
+  // Andeler regnes av dem som har oppgitt et sted vi kjenner igjen
+  function kjent(){ return Math.max(0, DATA.antall - (DATA.statistikk.ukjent_sted || 0)); }
+
   function renderDemografi(){
-    var s = DATA.statistikk, n = DATA.antall;
+    var s = DATA.statistikk, n = kjent();
     var fy = Object.keys(s.fylker).map(function(k){ return [k, s.fylker[k]]; }).sort(function(a, b){ return b[1] - a[1]; });
     var ut = Object.keys(s.utland || {}).map(function(k){ return [k, s.utland[k]]; }).sort(function(a, b){ return b[1] - a[1]; });
     var utN = ut.reduce(function(a, x){ return a + x[1]; }, 0);
@@ -937,7 +940,8 @@ document.addEventListener('DOMContentLoaded', function(){
     var land = ut.map(function(x){ return x[0]; });
     document.getElementById('dkAbroadList').textContent = land.length > 1 ? land.slice(0, -1).join(', ') + ' og ' + land[land.length - 1] : (land[0] || 'Ingen så langt');
     document.getElementById('dkAbroad').hidden = !utN;
-    document.getElementById('dkNoUt').textContent = (100 - pct(utN, n)) + ' % fra Norge · ' + pct(utN, n) + ' % fra utlandet';
+    var uk = s.ukjent_sted || 0;
+    document.getElementById('dkNoUt').textContent = (100 - pct(utN, n)) + ' % fra Norge · ' + pct(utN, n) + ' % fra utlandet' + (uk ? ' · ' + uk + ' uten oppgitt sted' : '');
   }
 
   function drawMap(){
@@ -945,7 +949,7 @@ document.addEventListener('DOMContentLoaded', function(){
     mapDrawn = true;
     fetch('assets/fylker.json').then(function(r){ return r.json(); }).then(function(topo){
       var geo = topojson.feature(topo, topo.objects[Object.keys(topo.objects)[0]]);
-      var W = 520, H = 620, s = DATA.statistikk, n = DATA.antall;
+      var W = 520, H = 620, s = DATA.statistikk, n = kjent();
       var antall = function(name){ return s.fylker[name] || 0; };
       var proj = d3.geoTransverseMercator().rotate([-15, 0]).fitExtent([[10, 10], [W - 10, H - 10]], geo);
       var path = d3.geoPath(proj);
