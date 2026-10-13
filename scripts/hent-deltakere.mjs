@@ -86,14 +86,14 @@ const QUERY = `query($cursor: String, $q: String) {
   }
 }`;
 
-async function hentOrdrer(tok) {
+async function hentSide(tok, q) {
   const ut = [];
   let cursor = null;
   do {
     const r = await fetch(`https://${store}/admin/api/${API}/graphql.json`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Shopify-Access-Token': tok },
-      body: JSON.stringify({ query: QUERY, variables: { cursor, q: `created_at:>='${HENT_FRA ?? SALG_START}'` } }),
+      body: JSON.stringify({ query: QUERY, variables: { cursor, q } }),
     });
     const tekst = await r.text();
     let j = null;
@@ -107,6 +107,15 @@ async function hentOrdrer(tok) {
     cursor = j.data.orders.pageInfo.hasNextPage ? j.data.orders.pageInfo.endCursor : null;
   } while (cursor);
   return ut;
+}
+
+// Arkiverte ordrer (status closed) kommer ikke alltid med i et vanlig søk, så de hentes i tillegg
+async function hentOrdrer(tok) {
+  const fra = `created_at:>='${HENT_FRA ?? SALG_START}'`;
+  const alle = [...await hentSide(tok, fra), ...await hentSide(tok, `${fra} status:closed`)];
+  const unike = new Map(alle.map((o) => [o.name, o]));
+  console.log(`Hentet ${unike.size} ordrer`);
+  return [...unike.values()];
 }
 
 function alder(fodt) {
