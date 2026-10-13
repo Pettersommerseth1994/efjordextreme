@@ -14,9 +14,6 @@ const RACEDAG = new Date('2027-08-07');
 // Bare påmeldinger fra og med 1. august 2026 (norsk tid) og frem til i dag
 const SALG_START = '2026-08-01T00:00:00+02:00';
 const API = '2026-10';
-// Uten samtykke vises deltakeren bare i statistikken, ikke i listen
-const KREV_SAMTYKKE = process.env.KREV_SAMTYKKE !== 'nei';
-const SAMTYKKE_FELT = 'Vis i deltakerlisten';
 
 const DISTANSER = {
   'halvdistanse-triatlon': '70.3',
@@ -114,18 +111,17 @@ function deltakere(ordrer) {
       const distanse = DISTANSER[li.product?.handle];
       if (!distanse || li.currentQuantity < 1) continue;
       const a = Object.fromEntries(li.customAttributes.map((x) => [x.key, x.value]));
-      const samtykke = a[SAMTYKKE_FELT] === 'Ja';
       if (distanse === '70.3 lag') {
         const fra = a['Hvor kommer dere fra?'];
         for (let i = 1; i <= 3; i++) {
           const navn = pen(a[`Fullt navn på deltaker ${i}`]);
           if (!navn) continue;
           ut.push({ navn, alder: alder(a[`Fødselsdag til deltaker ${i}`]), kjonn: a[`Kjønn på deltaker ${i}`],
-            distanse, lag: pen(a['Lagnavn']) || null, fra, samtykke });
+            distanse, lag: pen(a['Lagnavn']) || null, fra });
         }
       } else {
         ut.push({ navn: pen(a['Fullt navn']), alder: alder(a['Fødselsdag']), kjonn: a['Kjønn'],
-          distanse, lag: null, fra: a['Hvor kommer du fra?'], samtykke });
+          distanse, lag: null, fra: a['Hvor kommer du fra?'] });
       }
     }
   }
@@ -148,7 +144,6 @@ const data = {
     ukjent_sted: alle.filter((p) => !p.land).length,
   },
   deltakere: alle
-    .filter((p) => p.samtykke || !KREV_SAMTYKKE)
     .map((p) => ({ navn: p.navn, alder: p.alder, sted: pen(p.fra) || '–', distanse: p.distanse, ...(p.lag ? { lag: p.lag } : {}) }))
     .sort((a, b) => (a.navn.split(' ').at(-1) + a.navn).localeCompare(b.navn.split(' ').at(-1) + b.navn, 'nb')),
 };
