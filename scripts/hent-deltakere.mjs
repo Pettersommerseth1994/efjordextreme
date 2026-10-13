@@ -34,6 +34,12 @@ const LAND = [
 ];
 
 const STEDER = JSON.parse(readFileSync(new URL('./steder.json', import.meta.url), 'utf8'));
+const KORR = JSON.parse(readFileSync(new URL('./korrigeringer.json', import.meta.url), 'utf8'));
+const nokkel = (navn) => (navn ?? '').replace(/\s+/g, ' ').trim().toLowerCase();
+const INKLUDER = new Set((KORR.inkluder ?? []).map(nokkel));
+const PERSONER = Object.fromEntries(Object.entries(KORR.personer ?? {}).map(([k, v]) => [nokkel(k), v]));
+// Personer på inkluder-listen hentes også hvis de meldte seg på før salgsstart
+const HENT_FRA = INKLUDER.size ? '2026-01-01T00:00:00+01:00' : null;
 
 const store = (process.env.SHOPIFY_STORE ?? '').trim().replace(/^https?:\/\//, '').replace(/\/.*$/, '');
 const mangler = ['SHOPIFY_STORE', 'SHOPIFY_CLIENT_ID', 'SHOPIFY_CLIENT_SECRET'].filter((k) => !(process.env[k] ?? '').trim());
@@ -68,6 +74,7 @@ const QUERY = `query($cursor: String, $q: String) {
   orders(first: 100, after: $cursor, query: $q, sortKey: CREATED_AT) {
     pageInfo { hasNextPage endCursor }
     nodes {
+      name
       createdAt
       cancelledAt
       displayFinancialStatus
@@ -85,7 +92,7 @@ async function hentOrdrer(tok) {
     const r = await fetch(`https://${store}/admin/api/${API}/graphql.json`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Shopify-Access-Token': tok },
-      body: JSON.stringify({ query: QUERY, variables: { cursor, q: `created_at:>='${SALG_START}'` } }),
+      body: JSON.stringify({ query: QUERY, variables: { cursor, q: `created_at:>='${HENT_FRA ?? SALG_START}'` } }),
     });
     const tekst = await r.text();
     let j = null;
@@ -124,36 +131,61 @@ function plasser(tekst) {
 }
 
 const pen = (s) => (s ?? '').replace(/\s+/g, ' ').trim();
+// Navn skrevet med bare små eller bare store bokstaver får stor forbokstav ("jan ivar andreassen" -> "Jan Ivar Andreassen")
+const navnPen = (s) => {
+  const t = pen(s);
+  if (t !== t.toLowerCase() && t !== t.toUpperCase()) return t;
+  return t.toLowerCase().replace(/(^|[\s-])(\p{L})/gu, (m, a, b) => a + b.toUpperCase());
+};
+
+// Ordrenummer 1066 blir startnummer 66, 1155 blir 155
+const nummer = (navn) => { const n = parseInt(String(navn ?? '').replace(/\D/g, ''), 10); return isNaN(n) ? null : n >= 1000 ? n - 1000 : n; };
+
+const utelatt = [];
 
 function deltakere(ordrer) {
   const ut = [];
   for (const o of ordrer) {
-    if (new Date(o.createdAt) < new Date(SALG_START)) continue;
-    if (o.cancelledAt || ['REFUNDED', 'VOIDED'].includes(o.displayFinancialStatus)) continue;
+    const forTidlig = new Date(o.createdAt) < new Date(SALG_START);
+    const ugyldig = o.cancelledAt ? 'kansellert' : ['REFUNDED', 'VOIDED'].includes(o.displayFinancialStatus) ? 'refundert' : null;
     for (const li of o.lineItems.nodes) {
       const distanse = distanseFra(li.title);
-      if (!distanse || li.currentQuantity < 1) continue;
       const a = Object.fromEntries(li.customAttributes.map((x) => [x.key, x.value]));
+      const personer = [];
       if (distanse === '70.3 lag') {
-        const fra = a['Hvor kommer dere fra?'];
         for (let i = 1; i <= 3; i++) {
-          const navn = pen(a[`Fullt navn på deltaker ${i}`]);
-          if (!navn) continue;
-          ut.push({ navn, alder: alder(a[`Fødselsdag til deltaker ${i}`]), kjonn: a[`Kjønn på deltaker ${i}`],
-            distanse, lag: pen(a['Lagnavn']) || null, fra });
+          const navn = navnPen(a[`Fullt navn på deltaker ${i}`]);
+          if (navn) personer.push({ navn, alder: alder(a[`Fødselsdag til deltaker ${i}`]), kjonn: a[`Kjønn på deltaker ${i}`],
+            distanse, lag: pen(a['Lagnavn']) || null, fra: a['Hvor kommer dere fra?'] });
         }
       } else {
-        ut.push({ navn: pen(a['Fullt navn']), alder: alder(a['Fødselsdag']), kjonn: a['Kjønn'],
+        personer.push({ navn: navnPen(a['Fullt navn']), alder: alder(a['Fødselsdag']), kjonn: a['Kjønn'],
           distanse, lag: null, fra: a['Hvor kommer du fra?'] });
+      }
+      for (const p of personer) {
+        const tvungen = INKLUDER.has(nokkel(p.navn));
+        const grunn = !distanse ? 'ukjent produkt' : forTidlig ? 'før salgsstart' : ugyldig ?? (li.currentQuantity < 1 ? 'fjernet fra ordren' : null);
+        if (grunn && !tvungen) {
+          if (distanse || li.title) utelatt.push({ ordre: o.name, grunn, produkt: li.title });
+          continue;
+        }
+        ut.push({ ...p, nr: nummer(o.name) });
       }
     }
   }
   return ut;
 }
 
+// Manuelle rettelser fra korrigeringer.json
+function korriger(p) {
+  const k = PERSONER[nokkel(p.navn)] ?? {};
+  const fra = k.sted ?? KORR.steder?.[pen(p.fra)] ?? p.fra;
+  return { ...p, ...k, fra, distanse: k.distanse ?? p.distanse };
+}
+
 const tell = (liste) => liste.reduce((m, k) => (k ? ((m[k] = (m[k] ?? 0) + 1), m) : m), {});
 
-const alle = deltakere(await hentOrdrer(await token())).map((p) => ({ ...p, ...plasser(p.fra) }));
+const alle = deltakere(await hentOrdrer(await token())).map(korriger).map((p) => ({ ...p, ...plasser(p.fra) }));
 
 const data = {
   oppdatert: new Date().toISOString(),
@@ -167,7 +199,7 @@ const data = {
     ukjent_sted: alle.filter((p) => !p.land).length,
   },
   deltakere: alle
-    .map((p) => ({ navn: p.navn, alder: p.alder, sted: pen(p.fra) || '–', distanse: p.distanse, ...(p.lag ? { lag: p.lag } : {}) }))
+    .map((p) => ({ nr: p.nr, navn: p.navn, alder: p.alder, sted: pen(p.fra) || '–', distanse: p.distanse, ...(p.lag ? { lag: p.lag } : {}) }))
     .sort((a, b) => (a.navn.split(' ').at(-1) + a.navn).localeCompare(b.navn.split(' ').at(-1) + b.navn, 'nb')),
 };
 
@@ -179,4 +211,13 @@ try {
 
 mkdirSync('data', { recursive: true });
 writeFileSync('data/deltakere.json', JSON.stringify(data, null, 1) + '\n');
+// Kontrollrapport uten personopplysninger: hvilke ordrer som ble utelatt og hvorfor
+const funnet = new Set(alle.map((p) => nokkel(p.navn)));
+writeFileSync('data/kontroll.json', JSON.stringify({
+  oppdatert: data.oppdatert,
+  antall: data.antall,
+  utelatt,
+  inkluder_ikke_funnet: [...INKLUDER].filter((n) => !funnet.has(n)).length,
+}, null, 1) + '\n');
+console.log(`Utelatt: ${utelatt.length} ordrelinjer. Se data/kontroll.json`);
 console.log(`${data.antall} deltakere, ${data.deltakere.length} i listen, ${data.statistikk.ukjent_sted} uten kjent sted`);

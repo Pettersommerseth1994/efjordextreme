@@ -33,5 +33,5 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
-          git add data/deltakere.json
+          git add data/deltakere.json data/kontroll.json
           git diff --cached --quiet || (git commit -m "Oppdater deltakere" && git push)

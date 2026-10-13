@@ -1,0 +1,19 @@
+{
+  "_forklaring": "Manuelle rettelser som brukes hver gang deltakerlisten oppdateres. Navn må skrives slik de står i Shopify.",
+  "inkluder": ["Markus Holmer", "Kristina Ober"],
+  "personer": {
+    "Kristina Ober": { "sted": "Berlin, Germany" },
+    "Preben Riska": { "distanse": "Olympisk +" },
+    "Bruce Dias": { "sted": "Kidlington, Storbritannia" },
+    "Ida Evjen": { "sted": "Bodø" },
+    "Simon Frantzen": { "sted": "Narvik" },
+    "Matthew Hine": { "sted": "Harrow, Storbritannia" },
+    "Darinna Kellere": { "sted": "Narvik" },
+    "Susanne Arntzen Langnes": { "sted": "Ankenes" },
+    "Kristoffer Martens": { "sted": "Trondheim" },
+    "Henry Sharples": { "sted": "Botley Oxford, Storbritannia" }
+  },
+  "steder": {
+    "SKARSTAD !": "Skarstad"
+  }
+}
