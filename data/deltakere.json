@@ -1,5 +1,5 @@
 {
- "oppdatert": "2026-10-13T12:27:40.465Z",
+ "oppdatert": "2026-10-13T16:20:43.102Z",
  "kapasitet": 100,
  "antall": 71,
  "statistikk": {
@@ -8,448 +8,520 @@
    "Kvinne": 22
   },
   "distanse": {
-   "70.3": 46,
-   "Olympisk +": 25
+   "70.3": 45,
+   "Olympisk +": 26
   },
   "fylker": {
-   "Nordland": 16,
-   "Telemark": 3,
-   "Oslo": 2,
+   "Nordland": 27,
+   "Telemark": 4,
+   "Oslo": 3,
    "Vestland": 3,
-   "Akershus": 3,
+   "Akershus": 5,
+   "Troms": 5,
    "Agder": 3,
-   "Trøndelag": 8,
+   "Trøndelag": 9,
    "Møre og Romsdal": 1,
-   "Troms": 3
+   "Rogaland": 1
   },
   "utland": {
    "Sverige": 3,
-   "Storbritannia": 1
+   "Storbritannia": 4
   },
-  "ukjent_sted": 25
+  "ukjent_sted": 1
  },
  "deltakere": [
   {
+   "nr": 128,
    "navn": "Ola Håkon Aglen",
    "alder": 32,
    "sted": "Namsos",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 130,
    "navn": "Ingrid Marie Alm",
    "alder": 40,
    "sted": "Bodø",
    "distanse": "70.3"
   },
   {
+   "nr": 91,
    "navn": "Elin Amlie",
    "alder": 28,
    "sted": "Porsgrunn",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 84,
    "navn": "Elise Marie Andreassen",
    "alder": 31,
    "sted": "Tromsø Triathlonklubb",
    "distanse": "Olympisk +"
   },
   {
-   "navn": "jan ivar andreassen",
+   "nr": 114,
+   "navn": "Jan Ivar Andreassen",
    "alder": 55,
    "sted": "Laksvatn",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 134,
    "navn": "Karoline Andreassen",
    "alder": 31,
    "sted": "Bodø",
    "distanse": "70.3"
   },
   {
+   "nr": 71,
    "navn": "Christian Aronsen",
    "alder": 50,
    "sted": "Bergen",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 69,
    "navn": "Kåre Anda Aronsen",
    "alder": 43,
    "sted": "Oslo (Bodø)",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 83,
    "navn": "Morten Aronsen",
    "alder": 33,
-   "sted": "SKARSTAD !",
+   "sted": "Skarstad",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 67,
    "navn": "Charlene Rosenvinge Bjarnesen",
    "alder": 36,
    "sted": "Sortland",
    "distanse": "70.3"
   },
   {
+   "nr": 136,
    "navn": "Emilie Dahl",
    "alder": 32,
    "sted": "Harstad",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 132,
    "navn": "Sandra Danielsen",
    "alder": 22,
    "sted": "Mo i Rana",
    "distanse": "70.3"
   },
   {
+   "nr": 110,
    "navn": "Bruce Dias",
    "alder": 26,
-   "sted": "–",
+   "sted": "Kidlington, Storbritannia",
    "distanse": "70.3"
   },
   {
+   "nr": 98,
    "navn": "Kjartan Eide",
    "alder": 33,
    "sted": "Trondheim",
    "distanse": "70.3"
   },
   {
+   "nr": 135,
    "navn": "Ida Evjen",
    "alder": 26,
-   "sted": "–",
+   "sted": "Bodø",
    "distanse": "70.3"
   },
   {
+   "nr": 76,
    "navn": "Nora Fjärdbo",
    "alder": 36,
    "sted": "Norge",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 66,
    "navn": "Matias Flatebø",
    "alder": 27,
    "sted": "Siljan",
    "distanse": "70.3"
   },
   {
+   "nr": 127,
    "navn": "Tor Emil Fløan",
    "alder": 39,
    "sted": "Vestvågøy Triathlonklubb",
    "distanse": "70.3"
   },
   {
+   "nr": 82,
    "navn": "Simon Frantzen",
    "alder": 24,
-   "sted": "–",
+   "sted": "Narvik",
    "distanse": "70.3"
   },
   {
+   "nr": 102,
    "navn": "Paul Green",
    "alder": 26,
    "sted": "Horsham, England",
    "distanse": "70.3"
   },
   {
+   "nr": 79,
    "navn": "Felicia Furumo Grønvold",
    "alder": 24,
    "sted": "Skjomen",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 72,
    "navn": "Are Gundersen",
    "alder": 28,
    "sted": "Porsgrunn",
    "distanse": "70.3"
   },
   {
+   "nr": 123,
    "navn": "Henrik Westgaard Hanssen",
    "alder": 20,
    "sted": "Ankenes",
    "distanse": "70.3"
   },
   {
+   "nr": 131,
    "navn": "Abigail Vethe Harbun",
    "alder": 23,
    "sted": "Voss",
    "distanse": "70.3"
   },
   {
+   "nr": 106,
    "navn": "Julia Hillström",
    "alder": 21,
    "sted": "Sverige",
    "distanse": "70.3"
   },
   {
+   "nr": 97,
    "navn": "Lukas Hillström",
    "alder": 23,
    "sted": "Sverige",
    "distanse": "70.3"
   },
   {
+   "nr": 109,
    "navn": "Matthew Hine",
    "alder": 26,
-   "sted": "–",
+   "sted": "Harrow, Storbritannia",
    "distanse": "70.3"
   },
   {
+   "nr": 115,
    "navn": "Tom Eirik Hveding",
    "alder": 52,
    "sted": "Trondheim",
    "distanse": "70.3"
   },
   {
+   "nr": 113,
    "navn": "Emil Aune Jakobsen",
    "alder": 28,
    "sted": "Bærums Verk",
    "distanse": "70.3"
   },
   {
+   "nr": 75,
    "navn": "Leif Inge Johannessen",
    "alder": 36,
    "sted": "Ankenes",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 70,
    "navn": "Owe Johansen",
    "alder": 44,
    "sted": "Bodø",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 124,
    "navn": "Joakim Haga Johnstad",
    "alder": 40,
    "sted": "Øygarden",
    "distanse": "70.3"
   },
   {
+   "nr": 129,
    "navn": "Rikke Ugstad Jørgensen",
    "alder": 25,
    "sted": "Asker",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 119,
    "navn": "Martin Andre Knutsen Kalvåg",
    "alder": 22,
    "sted": "Drag, Hamarøy",
    "distanse": "70.3"
   },
   {
+   "nr": 107,
    "navn": "Darinna Kellere",
    "alder": 18,
-   "sted": "–",
+   "sted": "Narvik",
    "distanse": "70.3"
   },
   {
+   "nr": 89,
    "navn": "Jenny Elise Kittilsen",
    "alder": 27,
    "sted": "Kragerø i Telemark",
    "distanse": "70.3"
   },
   {
+   "nr": 65,
    "navn": "Lars-Erik Kjesbu",
    "alder": 33,
    "sted": "Sortland",
    "distanse": "70.3"
   },
   {
+   "nr": 100,
    "navn": "Simen Klatran",
    "alder": 33,
    "sted": "Nittedal",
    "distanse": "70.3"
   },
   {
+   "nr": 121,
    "navn": "Isak Magnus Kvivesen",
    "alder": 23,
    "sted": "Grimstad",
    "distanse": "70.3"
   },
   {
+   "nr": 86,
    "navn": "Susanne Arntzen Langnes",
    "alder": 37,
-   "sted": "–",
+   "sted": "Ankenes",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 103,
    "navn": "Laurits Lind",
    "alder": 26,
    "sted": "Ballangen",
    "distanse": "70.3"
   },
   {
+   "nr": 87,
    "navn": "Kristoffer Martens",
    "alder": 38,
-   "sted": "–",
+   "sted": "Trondheim",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 120,
    "navn": "Selmer Helgesen Neergaard",
    "alder": 20,
    "sted": "Andenes",
    "distanse": "70.3"
   },
   {
+   "nr": 105,
    "navn": "Erica Nilsen",
    "alder": 18,
    "sted": "Kjøpsvik/Narvik",
    "distanse": "70.3"
   },
   {
+   "nr": 112,
    "navn": "Esben Nilsen",
    "alder": 36,
    "sted": "Harstad",
    "distanse": "70.3"
   },
   {
+   "nr": 104,
    "navn": "Trym Halset Nilsfors",
    "alder": 24,
    "sted": "Narvik",
    "distanse": "70.3"
   },
   {
+   "nr": 73,
    "navn": "Matias Nylander",
    "alder": 42,
    "sted": "Bærum",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 101,
    "navn": "Torje Nymo",
    "alder": 43,
    "sted": "Bodø",
    "distanse": "70.3"
   },
   {
+   "nr": 77,
    "navn": "David Olsson",
    "alder": 33,
    "sted": "Sverige",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 99,
    "navn": "Erling Pedersen",
    "alder": 28,
    "sted": "Farsund",
    "distanse": "70.3"
   },
   {
+   "nr": 85,
    "navn": "Anton Martin Ringøen",
    "alder": 28,
    "sted": "Kristiansand",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 78,
    "navn": "Preben Riska",
    "alder": 34,
    "sted": "Oslo",
-   "distanse": "70.3"
+   "distanse": "Olympisk +"
   },
   {
+   "nr": 108,
    "navn": "Erlend Rømma",
    "alder": 35,
    "sted": "Åfjord, Trøndelag",
    "distanse": "70.3"
   },
   {
+   "nr": 118,
    "navn": "Stig Ove Dahlen Selnes",
    "alder": 33,
    "sted": "Namsos",
    "distanse": "70.3"
   },
   {
+   "nr": 125,
    "navn": "Henry Sharples",
    "alder": 26,
-   "sted": "–",
+   "sted": "Botley Oxford, Storbritannia",
    "distanse": "70.3"
   },
   {
+   "nr": 93,
    "navn": "Daniel Sinnes",
    "alder": 27,
    "sted": "Bryne",
    "distanse": "70.3"
   },
   {
+   "nr": 96,
    "navn": "Christian Selfors Sjøseth",
    "alder": 38,
    "sted": "Bodø",
    "distanse": "70.3"
   },
   {
+   "nr": 94,
    "navn": "Jørgen Sjøseth",
    "alder": 40,
    "sted": "Glomfjord",
    "distanse": "70.3"
   },
   {
+   "nr": 90,
    "navn": "Vilja Skjærvik",
    "alder": 26,
    "sted": "–",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 116,
    "navn": "SIlje Marie Skogvold",
    "alder": 49,
    "sted": "Kjøpsvik",
    "distanse": "70.3"
   },
   {
+   "nr": 117,
    "navn": "Anders Skylstad",
    "alder": 52,
    "sted": "Trondheim",
    "distanse": "70.3"
   },
   {
+   "nr": 81,
    "navn": "Haakon Sommerseth",
    "alder": 31,
    "sted": "Norge",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 68,
    "navn": "Ingrid Straume",
    "alder": 41,
    "sted": "Bosatt Oslo, fra Bygland i Setesdal",
    "distanse": "70.3"
   },
   {
+   "nr": 74,
    "navn": "Erik Kjønnø Støa",
    "alder": 26,
    "sted": "3474 Åros",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 133,
    "navn": "Erin Salbu Talmatch",
    "alder": 34,
    "sted": "Bodø/Bergen",
    "distanse": "70.3"
   },
   {
+   "nr": 92,
    "navn": "Simon Roald Trå",
    "alder": 31,
    "sted": "Ålesund",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 80,
    "navn": "Matilda Utheim",
    "alder": 18,
    "sted": "Narvik",
    "distanse": "70.3"
   },
   {
+   "nr": 95,
    "navn": "Toyvo Vågan",
    "alder": 37,
    "sted": "Bodø",
    "distanse": "70.3"
   },
   {
+   "nr": 111,
    "navn": "Børge Weines",
    "alder": 47,
    "sted": "Harstad",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 88,
    "navn": "Joakim Wergeland",
    "alder": 39,
    "sted": "Trondheim",
    "distanse": "Olympisk +"
   },
   {
+   "nr": 122,
    "navn": "Susanne Wergeland",
    "alder": 42,
    "sted": "Levanger",
