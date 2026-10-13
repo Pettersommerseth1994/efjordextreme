@@ -1,7 +1,352 @@
 {
- "oppdatert": "2026-10-13T16:36:14.399Z",
+ "oppdatert": "2026-10-13T16:48:06.112Z",
  "antall": 73,
  "utelatt": [
+  {
+   "ordre": "#1002",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1003",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1004",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1005",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1006",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1007",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1008",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1009",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1010",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1011",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1012",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1013",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1014",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1015",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1016",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1017",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1018",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1019",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1020",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1021",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1022",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Lag"
+  },
+  {
+   "ordre": "#1022",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Lag"
+  },
+  {
+   "ordre": "#1022",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Lag"
+  },
+  {
+   "ordre": "#1023",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1024",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1025",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1026",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1027",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1028",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1029",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1030",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1031",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1032",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1033",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1034",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1035",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1036",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1037",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1038",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1039",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1040",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Lag"
+  },
+  {
+   "ordre": "#1040",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Lag"
+  },
+  {
+   "ordre": "#1040",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Lag"
+  },
+  {
+   "ordre": "#1041",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1042",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1043",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1044",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1045",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1046",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1047",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1048",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1049",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1050",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1051",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1052",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1053",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1054",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1055",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1056",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1057",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1058",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Lag"
+  },
+  {
+   "ordre": "#1058",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Lag"
+  },
+  {
+   "ordre": "#1058",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Lag"
+  },
+  {
+   "ordre": "#1059",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Individuell"
+  },
+  {
+   "ordre": "#1060",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
+  {
+   "ordre": "#1061",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Lag"
+  },
+  {
+   "ordre": "#1061",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Lag"
+  },
+  {
+   "ordre": "#1061",
+   "grunn": "før salgsstart",
+   "produkt": "70.3 / Halvdistanse – Lag"
+  },
+  {
+   "ordre": "#1062",
+   "grunn": "før salgsstart",
+   "produkt": "Olympisk distanse – Individuell"
+  },
   {
    "ordre": "#1064",
    "grunn": "refundert",
@@ -19,6 +364,6 @@
   }
  ],
  "inkluder_ikke_funnet": 1,
- "tilganger": "read_orders",
- "eldste_ordre": "2026-08-17T01:36:35Z"
+ "tilganger": "read_all_orders,read_orders",
+ "eldste_ordre": "2026-01-29T11:24:36Z"
 }

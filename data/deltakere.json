@@ -1,15 +1,15 @@
 {
- "oppdatert": "2026-10-13T16:36:14.399Z",
+ "oppdatert": "2026-10-13T16:48:06.112Z",
  "kapasitet": 100,
  "antall": 73,
  "statistikk": {
   "kjonn": {
-   "Mann": 50,
-   "Kvinne": 23
+   "Kvinne": 23,
+   "Mann": 50
   },
   "distanse": {
-   "70.3": 46,
-   "Olympisk +": 27
+   "Olympisk +": 27,
+   "70.3": 46
   },
   "fylker": {
    "Nordland": 28,
@@ -24,9 +24,9 @@
    "Rogaland": 1
   },
   "utland": {
+   "Tyskland": 1,
    "Sverige": 3,
-   "Storbritannia": 4,
-   "Tyskland": 1
+   "Storbritannia": 4
   },
   "ukjent_sted": 1
  },
