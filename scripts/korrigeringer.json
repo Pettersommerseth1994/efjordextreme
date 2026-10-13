@@ -6,7 +6,16 @@
   "inkluder_ordrer": [
     "#1126"
   ],
-  "ekstra": [],
+  "ekstra": [
+    {
+      "navn": "Kristina Ober",
+      "alder": 47,
+      "kjonn": "Kvinne",
+      "distanse": "Olympisk +",
+      "sted": "Berlin, Germany",
+      "nr": 63
+    }
+  ],
   "_ekstra_eksempel": {
     "navn": "Fornavn Etternavn",
     "alder": 35,
@@ -49,5 +58,6 @@
   },
   "steder": {
     "SKARSTAD !": "Skarstad"
-  }
+  },
+  "_ekstra_forklaring": "Brukes bare hvis personen ikke allerede finnes i Shopify-dataene, så det blir ingen duplikater."
 }

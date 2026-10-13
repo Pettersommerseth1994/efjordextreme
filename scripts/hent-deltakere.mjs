@@ -49,6 +49,9 @@ if (!process.env.SHOPIFY_ADMIN_TOKEN && mangler.length) {
   process.exit(1);
 }
 
+let TILGANGER = null;
+let ELDSTE = null;
+
 async function token() {
   if (process.env.SHOPIFY_ADMIN_TOKEN) return process.env.SHOPIFY_ADMIN_TOKEN;
   const r = await fetch(`https://${store}/admin/oauth/access_token`, {
@@ -68,6 +71,10 @@ async function token() {
   }
   const j = JSON.parse(tekst);
   console.log(`Fikk tilgangsnøkkel. Tilganger: ${j.scope ?? 'ukjent'}`);
+  TILGANGER = j.scope ?? null;
+  if (TILGANGER && !TILGANGER.includes('read_all_orders')) {
+    console.warn('ADVARSEL: Appen mangler read_all_orders. Ordrer eldre enn 60 dager blir ikke med.');
+  }
   return j.access_token;
 }
 
@@ -115,6 +122,7 @@ async function hentOrdrer(tok) {
   const alle = [...await hentSide(tok, fra), ...await hentSide(tok, `${fra} status:closed`)];
   const unike = new Map(alle.map((o) => [o.name, o]));
   console.log(`Hentet ${unike.size} ordrer`);
+  ELDSTE = [...unike.values()].map((o) => o.createdAt).sort()[0] ?? null;
   return [...unike.values()];
 }
 
@@ -196,9 +204,11 @@ function korriger(p) {
 const tell = (liste) => liste.reduce((m, k) => (k ? ((m[k] = (m[k] ?? 0) + 1), m) : m), {});
 
 // Deltakere som ikke finnes som ordre i Shopify legges inn manuelt i korrigeringer.json
-const ekstra = (KORR.ekstra ?? []).map((e) => ({ navn: e.navn, alder: e.alder ?? null, kjonn: e.kjonn, distanse: e.distanse,
+const fraShopify = deltakere(await hentOrdrer(await token()));
+const finnes = new Set(fraShopify.map((p) => nokkel(p.navn)));
+const ekstra = (KORR.ekstra ?? []).filter((e) => !finnes.has(nokkel(e.navn))).map((e) => ({ navn: e.navn, alder: e.alder ?? null, kjonn: e.kjonn, distanse: e.distanse,
   lag: e.lag ?? null, fra: e.sted, nr: e.nr ?? null }));
-const alle = [...deltakere(await hentOrdrer(await token())), ...ekstra].map(korriger).map((p) => ({ ...p, ...plasser(p.fra) }));
+const alle = [...fraShopify, ...ekstra].map(korriger).map((p) => ({ ...p, ...plasser(p.fra) }));
 
 const data = {
   oppdatert: new Date().toISOString(),
@@ -231,6 +241,8 @@ writeFileSync('data/kontroll.json', JSON.stringify({
   antall: data.antall,
   utelatt,
   inkluder_ikke_funnet: [...INKLUDER].filter((n) => !funnet.has(n)).length,
+  tilganger: TILGANGER,
+  eldste_ordre: ELDSTE,
 }, null, 1) + '\n');
 console.log(`Utelatt: ${utelatt.length} ordrelinjer. Se data/kontroll.json`);
 console.log(`${data.antall} deltakere, ${data.deltakere.length} i listen, ${data.statistikk.ukjent_sted} uten kjent sted`);
