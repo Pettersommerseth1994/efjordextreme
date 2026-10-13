@@ -1,6 +1,6 @@
 {
- "oppdatert": "2026-10-13T16:20:43.102Z",
- "antall": 71,
+ "oppdatert": "2026-10-13T16:25:13.487Z",
+ "antall": 72,
  "utelatt": [
   {
    "ordre": "#1064",
@@ -16,12 +16,7 @@
    "ordre": "#1064",
    "grunn": "refundert",
    "produkt": "70.3 / Halvdistanse – Lag"
-  },
-  {
-   "ordre": "#1126",
-   "grunn": "refundert",
-   "produkt": "70.3 / Halvdistanse – Individuell"
   }
  ],
- "inkluder_ikke_funnet": 2
+ "inkluder_ikke_funnet": 1
 }
