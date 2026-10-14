@@ -1,5 +1,5 @@
 {
- "oppdatert": "2026-10-14T08:42:52.590Z",
+ "oppdatert": "2026-10-14T08:50:15.926Z",
  "kapasitet": 100,
  "antall": 73,
  "statistikk": {
@@ -17,7 +17,7 @@
    "Oslo": 3,
    "Vestland": 3,
    "Akershus": 5,
-   "Troms": 5,
+   "Troms": 6,
    "Agder": 3,
    "Trøndelag": 9,
    "Møre og Romsdal": 1,
@@ -28,7 +28,7 @@
    "Sverige": 3,
    "Storbritannia": 4
   },
-  "ukjent_sted": 1,
+  "ukjent_sted": 0,
   "kryss": [
    [
     "Kvinne",
@@ -541,7 +541,7 @@
    "nr": 90,
    "navn": "Vilja Skjærvik",
    "alder": 26,
-   "sted": "–",
+   "sted": "Tromsø",
    "distanse": "Olympisk +"
   },
   {
