@@ -226,14 +226,7 @@ const data = {
     .sort((a, b) => (a.navn.split(' ').at(-1) + a.navn).localeCompare(b.navn.split(' ').at(-1) + b.navn, 'nb')),
 };
 
-// Behold forrige tidsstempel hvis ingenting er endret, så det ikke blir en commit hver time
-try {
-  const forrige = JSON.parse(readFileSync('data/deltakere.json', 'utf8'));
-  const uendret = JSON.stringify({ ...forrige, oppdatert: 0 }) === JSON.stringify({ ...data, oppdatert: 0 });
-  // Uten endringer beholdes tidspunktet, men det fornyes minst én gang i uken så siden ikke ser utdatert ut
-  const enUke = 7 * 24 * 60 * 60 * 1000;
-  if (uendret && Date.now() - new Date(forrige.oppdatert) < enUke) data.oppdatert = forrige.oppdatert;
-} catch {}
+// Tidspunktet viser siste kjøring, så det oppdateres hver gang jobben går
 
 mkdirSync('data', { recursive: true });
 writeFileSync('data/deltakere.json', JSON.stringify(data, null, 1) + '\n');
