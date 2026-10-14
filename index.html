@@ -1697,20 +1697,327 @@ document.addEventListener('DOMContentLoaded', function () {
         </div></div></div>
       </div>
     </div>
-    <a class="rf-link reveal" style="margin-top:36px" href="https://efjordextreme.raceflow.no/">
-      <div>
-        <div class="t">Deltakerliste 2026 og høydeprofil</div>
-        <div class="d">Se hvem som er påmeldt, og hvor mange høydemeter som venter, live på RaceFlow.</div>
+    <!-- LØYPEKART OG HØYDEPROFIL: data fra assets/ruter.json (Kartverket + NVDB) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
+    <style>
+    .lk{margin-top:64px}
+    .lk-top{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:26px}
+    .lk-title{font-family:var(--font);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:clamp(22px,2.6vw,32px);letter-spacing:-.01em;color:var(--text)}
+    .lk-filt{display:flex;gap:10px;flex-wrap:wrap}
+    .lk-filt .seg{margin:0}
+    .lk-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+    .lk-stat{background:var(--panel);padding:16px 18px}
+    .lk-stat .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);margin-bottom:6px}
+    .lk-stat .v{font-family:var(--font);font-stretch:125%;font-weight:800;font-size:20px;color:var(--text)}
+    .lk-klikk{border:none;text-align:left;cursor:pointer;color:inherit;font:inherit;transition:background .2s}
+    .lk-klikk:hover,.lk-klikk.on{background:#1b1b20}
+    .lk-klikk .k{display:flex;justify-content:space-between;gap:8px}
+    .lk-vis{color:var(--accent-bright);letter-spacing:.08em;opacity:0;transition:opacity .2s}
+    .lk-klikk:hover .lk-vis,.lk-klikk.on .lk-vis{opacity:1}
+    .lk-klikk.on{box-shadow:inset 0 -2px 0 var(--accent)}
+    .lk-ene{grid-template-columns:1fr!important}
+    .lk-hl{animation:lkHl 1.6s ease-in-out infinite}
+    @keyframes lkHl{50%{opacity:.55}}
+    .lk-map{height:440px;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#141417;position:relative;z-index:0}
+    .lk-map .leaflet-container{background:#141417;font-family:var(--font)}
+    .lk-dark .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.82) contrast(.92) saturate(.4)}
+    .lk-gray .leaflet-tile-pane{filter:grayscale(1) brightness(.95)}
+    .lk-map .leaflet-control-attribution{background:rgba(11,11,11,.7);color:var(--slate);font-size:10px}
+    .lk-map .leaflet-control-attribution a{color:var(--body)}
+    .lk-map .leaflet-control-zoom a{background:#1d1d23;color:var(--text);border-color:var(--line)}
+    .lk-pin{background:var(--text);color:var(--bg);font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.06em;padding:3px 7px;border-radius:100px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.5)}
+    .lk-pin.o{background:var(--accent);color:#0B0B0B}
+    .lk-prof{position:relative;user-select:none}
+    .lk-prof svg{display:block;width:100%;height:auto;overflow:visible}
+    .lk-prof .ax{font-family:var(--mono);font-size:10px;fill:var(--slate-light)}
+    .lk-prof .grid{stroke:#24242c;stroke-width:1}
+    .lk-prof .lk-band{fill:rgba(255,255,255,.05)}
+    .lk-prof .lk-bandl{font-family:var(--mono);font-size:9px;fill:var(--slate);letter-spacing:.04em}
+    .lk-tip{position:absolute;top:0;pointer-events:none;background:rgba(20,20,23,.94);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-family:var(--mono);font-size:11.5px;color:var(--text);white-space:nowrap;transform:translateX(-50%);opacity:0;transition:opacity .15s}
+    .lk-tip small{display:block;color:var(--slate);font-size:10.5px}
+    .lk-empty{border:1px dashed var(--line);border-radius:16px;padding:60px 20px;text-align:center;color:var(--slate)}
+    .lk-empty b{display:block;color:var(--text);font-family:var(--font);font-stretch:125%;text-transform:uppercase;font-size:18px;margin-bottom:6px}
+    .lk-legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--slate);margin-top:10px}
+    .lk-legend i{display:inline-block;width:18px;height:3px;border-radius:2px;vertical-align:middle;margin-right:7px}
+    .lk-src{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--slate-light);margin-top:14px}
+    .lk-list{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+    .lk-list div{display:flex;justify-content:space-between;gap:10px;padding:9px 2px;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--body);cursor:pointer}
+    .lk-list div:hover{color:var(--text)}
+    .lk-list span:last-child{font-family:var(--mono);font-size:12px;color:var(--slate)}
+    .lk-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);margin:22px 0 8px}
+    /* Varianter */
+    .lk-v1 .lk-stats{margin-bottom:16px}.lk-v1 .lk-prof{margin-top:18px}
+    /* Variant 2: kart og profil til venstre, fakta og lister til høyre */
+    .lk-v2 .lk-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:22px;align-items:start}
+    .lk-v2 .lk-map{height:430px;border-radius:16px 16px 0 0}
+    .lk-v2 .lk-under{background:var(--panel);border:1px solid var(--line);border-top:none;border-radius:0 0 16px 16px;padding:16px 14px 4px}
+    .lk-v2 .lk-stats{grid-template-columns:1fr 1fr;margin-bottom:14px}
+    .lk-acc{border:1px solid var(--line);border-radius:14px;background:var(--panel);margin-top:12px;overflow:visible}
+    .lk-acc summary{list-style:none;display:flex;align-items:center;gap:10px;padding:15px 16px;cursor:pointer;color:var(--text);font-weight:700;font-size:15px}
+    .lk-acc summary::-webkit-details-marker{display:none}
+    .lk-acc summary .c{margin-left:auto;font-family:var(--mono);font-weight:400;font-size:11.5px;color:var(--slate);letter-spacing:.04em}
+    .lk-acc summary i{width:9px;height:9px;border-right:1.5px solid var(--slate);border-bottom:1.5px solid var(--slate);transform:rotate(45deg) translateY(-3px);transition:transform .3s}
+    .lk-acc[open] summary i{transform:rotate(225deg) translate(-2px,-1px)}
+    .lk-rows{padding:0 16px 8px}
+    .lk-row{position:relative;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-top:1px solid var(--line);font-size:14px;color:var(--body);cursor:pointer;flex-wrap:wrap}
+    .lk-row:hover{color:var(--text)}
+    .lk-row .n{display:inline-flex;align-items:center;gap:8px}
+    .lk-row .m{font-family:var(--mono);font-size:12px;color:var(--slate)}
+    .lk-i{position:relative;display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border:1.5px solid var(--slate);border-radius:50%;font-family:Georgia,serif;font-style:italic;font-weight:700;font-size:11px;line-height:1;color:var(--text);cursor:help;transition:border-color .2s,background .2s}
+    .lk-i:hover,.lk-i:focus{border-color:var(--accent);background:rgba(245,83,3,.15);outline:none}
+    .lk-tt{position:absolute;left:50%;bottom:calc(100% + 10px);transform:translateX(-50%) translateY(4px);width:230px;padding:10px 12px;background:#F6F5F3;color:#0B0B0B;border-radius:10px;font-family:var(--font);font-style:normal;font-weight:600;font-size:12.5px;line-height:1.45;text-align:left;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:20;box-shadow:0 12px 30px rgba(0,0,0,.45)}
+    .lk-tt::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#F6F5F3}
+    .lk-i:hover .lk-tt,.lk-i:focus .lk-tt{opacity:1;transform:translateX(-50%) translateY(0)}
+    .lk-slist{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:4px 16px}
+    .lk-slist div{display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid var(--line);font-size:14px;color:var(--slate)}
+    .lk-slist div:first-child{border-top:none}
+    .lk-slist b{color:var(--text);font-family:var(--font);font-stretch:125%;font-weight:800;font-size:16px}
+    .lk-warn{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:4px 14px 14px 4px;background:var(--panel);padding:14px 16px;margin-bottom:14px}
+    .lk-wrow{display:flex;flex-direction:column;gap:2px;padding:9px 0;border-top:1px solid var(--line);cursor:pointer}
+    .lk-wrow:first-of-type{border-top:none}
+    .lk-wrow b{color:var(--text);font-size:14px}.lk-wrow span{color:var(--slate);font-size:13px;line-height:1.45}
+    .lk-w4 > .lk-stats{grid-template-columns:repeat(4,1fr);margin-bottom:16px}.lk-w4 .lk-grid{grid-template-columns:2.2fr 1fr}.lk-w4 .lk-acc:first-child{margin-top:0}
+    .lk-spor{position:relative;flex-basis:100%;height:4px;border-radius:2px;background:#24242c;margin-top:2px}
+    .lk-spor b{position:absolute;top:-2px;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--accent)}
+    .lk-w1 .lk-acc:first-of-type,.lk-w5 .lk-acc:first-of-type{margin-top:0}
+    @media(max-width:860px){.lk-v2 .lk-grid,.lk-w4 .lk-grid{grid-template-columns:1fr}.lk-w4 > .lk-stats{grid-template-columns:1fr 1fr}.lk-v2 .lk-map{height:340px}}
+    .lk-v3 .lk-wrap3{display:grid;grid-template-columns:2.4fr 1fr;gap:16px;align-items:stretch}.lk-v3 .lk-map{height:auto;min-height:300px}
+    .lk-v3 .lk-prof{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:30px 20px 10px}.lk-v3 .lk-stats{margin-top:16px}
+    .lk-v4 .lk-map{height:520px}.lk-v4 .lk-prof{margin-top:-1px;background:var(--panel);border:1px solid var(--line);border-top:none;border-radius:0 0 16px 16px;padding:18px 16px 6px}.lk-v4 .lk-map{border-radius:16px 16px 0 0}
+    .lk-v5 .lk-wrap5{position:relative}.lk-v5 .lk-map{height:600px}
+    .lk-v5 .lk-over{position:absolute;left:16px;right:16px;bottom:16px;z-index:500;background:rgba(15,15,18,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:14px;padding:14px 16px 4px}
+    .lk-v5 .lk-card{position:absolute;left:16px;top:16px;z-index:500;width:300px}.lk-v5 .lk-card .lk-stats{grid-template-columns:1fr 1fr}.lk-v5 .lk-stat .v{font-size:17px;white-space:nowrap}
+    @media(max-width:860px){
+      .lk-stats{grid-template-columns:1fr 1fr}
+      .lk-v2 .lk-grid{grid-template-columns:1fr}
+      .lk-v3 .lk-wrap3{grid-template-columns:1fr}.lk-v3 .lk-map{height:300px}
+      .lk-v5 .lk-card{position:static;width:auto;margin-bottom:12px}.lk-v5 .lk-over{position:static;margin-top:12px}.lk-v5 .lk-map{height:380px}
+      .lk-map{height:340px}
+    }
+    </style>
+    <div class="lk reveal" id="lopekart">
+      <div class="lk-top">
+        <div>
+          <div class="sec-eyebrow" style="margin-bottom:10px">Løypekart og høydeprofil</div>
+          <div class="lk-title">Bli kjent med løypa</div>
+        </div>
+        <div class="lk-filt">
+          <div class="seg" id="lkDist"><button class="sel" data-v="703">70.3</button><button data-v="oly">Olympisk +</button></div>
+          <div class="seg" id="lkLeg"><button data-v="swim">Swim</button><button class="sel" data-v="bike">Bike</button><button data-v="run">Run</button></div>
+        </div>
       </div>
-      <span class="arr">efjordextreme.raceflow.no →</span>
-    </a>
-    <a class="rf-link reveal" style="margin-top:16px" href="https://cdn.shopify.com/s/files/1/0640/4925/0370/files/Race_guidelines.pdf.pdf?v=1784215661" target="_blank" rel="noopener">
-      <div>
-        <div class="t">Race Guidelines 2026</div>
-        <div class="d">Alt du trenger å vite om regler, sikkerhet og gjennomføring, samlet i ett dokument.</div>
-      </div>
-      <span class="arr">Åpne PDF ↗</span>
-    </a>
+      <div id="lkBody"></div>
+      <div class="lk-src">Høydedata: Kartverket og Statens vegvesen (NVDB). Kart: © Kartverket.</div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous" defer></script>
+    <script>
+    /* Løypekart og høydeprofil. Fem varianter for testing; velg med knappen nederst lokalt. */
+    document.addEventListener('DOMContentLoaded', function(){
+      var root = document.getElementById('lopekart');
+      if(!root) return;
+      var DATA = null, S = { dist: '703', leg: 'bike' }, map = null, hoverMark = null, route = null, hl = null;
+      var NAVN = { swim: 'svømmeløypa', bike: 'sykkelløypa', run: 'løpeløypa' };
+      var fmt = function(n, d){ return n.toLocaleString('nb-NO', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }); };
+      var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
+
+      function velg(id, key){
+        var box = document.getElementById(id);
+        box.querySelectorAll('button').forEach(function(b){
+          b.addEventListener('click', function(){
+            box.querySelectorAll('button').forEach(function(x){ x.classList.toggle('sel', x === b); });
+            S[key] = b.dataset.v; tegn();
+          });
+        });
+      }
+      velg('lkDist', 'dist'); velg('lkLeg', 'leg');
+
+      function rute(){ return DATA && DATA.ruter[S.leg + (S.dist === '703' ? '703' : 'oly')]; }
+      function punkt(r, km){ var i = Math.max(0, Math.min(r.p.length - 1, Math.round(km / r.steg))); return r.p[i]; }
+      function segVed(r, km){ return r.segmenter.find(function(s){ return km >= s.fra && km <= s.til; }); }
+
+      function stats(r){
+        // Distanse viser hele løypa, høyeste punkt og bratteste 500 m vises i kartet
+        var felt = r.fakta ? r.fakta.map(function(f, i){ return [f[0], f[1], i ? '' : 'alt']; }) :
+          [['Distanse', fmt(r.km, 1) + ' km', 'alt'], ['Stigning', fmt(r.opp) + ' m', ''], ['Høyeste punkt', fmt(r.maks) + ' moh.', r.toppKm + '|' + r.toppKm], ['Bratteste 500 m', fmt(r.bratt, 1) + ' %', r.brattKm + '|' + (r.brattKm + 0.5)]];
+        return '<div class="lk-stats">' + felt
+          .map(function(x){ return x[2] ? '<button type="button" class="lk-stat lk-klikk" data-hl="' + x[2] + '"><div class="k">' + x[0] + '<span class="lk-vis" aria-hidden="true">Vis i kart</span></div><div class="v">' + x[1] + '</div></button>' : '<div class="lk-stat"><div class="k">' + x[0] + '</div><div class="v">' + x[1] + '</div></div>'; }).join('') + '</div>';
+      }
+      // Fremhever et punkt eller en strekning i kartet, som for tunneler og bruer
+      function fremhev(r, fra, til){
+        if(!map) return;
+        if(hl){ map.removeLayer(hl); hl = null; }
+        if(fra === 'alt'){ map.flyToBounds(route.getBounds(), { padding: [24, 24], duration: .8 }); return; }
+        var a = Math.round(fra / r.steg), b = Math.max(a + 1, Math.round(til / r.steg));
+        var ll = r.p.slice(a, b + 1).map(function(p){ return [p[0], p[1]]; });
+        if(ll.length < 3){
+          hl = L.circleMarker(ll[0], { radius: 11, color: '#F6F5F3', weight: 3, fillColor: '#F55303', fillOpacity: 1, className: 'lk-hl' }).addTo(map);
+          map.flyTo(ll[0], 13, { duration: .8 });
+        } else {
+          hl = L.layerGroup([L.polyline(ll, { color: '#0B0B0B', weight: 11, opacity: .6 }), L.polyline(ll, { color: '#F6F5F3', weight: 6, className: 'lk-hl' })]).addTo(map);
+          map.flyToBounds(L.latLngBounds(ll), { padding: [90, 90], maxZoom: 14, duration: .8 });
+        }
+        vis(r, (fra + til) / 2);
+      }
+      // Advarsler som vises med «i» i listen, i kartet og i høydeprofilen
+      var VARSEL = {
+        'Stetindtunnelen': 'Vær forsiktig i denne tunnelen, den kan være mørk og glatt.',
+        'Kjerringstraumen': 'Vær forsiktig på denne bruen, her er kjørebanen ujevn og humpete.'
+      };
+      var info = function(navn){ return VARSEL[navn] ? '<span class="lk-i" tabindex="0" role="button" aria-label="' + esc(VARSEL[navn]) + '">i<span class="lk-tt">' + esc(VARSEL[navn]) + '</span></span>' : ''; };
+
+      // Slå sammen passeringer av samme tunnel eller bru (ruta går tur/retur)
+      function grupper(r, type){
+        var g = [];
+        r.segmenter.forEach(function(s){
+          if(s.type !== type) return;
+          var x = g.find(function(y){ return y.navn === s.navn; });
+          if(!x){ x = { navn: s.navn, lengde: 0, km: [], fra: s.fra, til: s.til }; g.push(x); }
+          x.lengde = Math.max(x.lengde, s.til - s.fra); x.km.push((s.fra + s.til) / 2);
+        });
+        return g;
+      }
+      function rader(r, type, medSpor){
+        return grupper(r, type).map(function(x){
+          var spor = medSpor ? '<span class="lk-spor">' + x.km.map(function(k){ return '<b style="left:' + (k / r.km * 100) + '%"></b>'; }).join('') + '</span>' : '';
+          var lengde = x.lengde >= 1 ? fmt(x.lengde, 1) + ' km' : fmt(Math.round(x.lengde * 1000 / 10) * 10) + ' m';
+          return '<div class="lk-row" data-km="' + x.km[0] + '" data-hl="' + x.fra + '|' + x.til + '"><span class="n">' + esc(x.navn) + info(x.navn) + '</span><span class="m">' + lengde + (x.km.length > 1 ? ' · ' + x.km.length + '×' : '') + '</span>' + spor + '</div>';
+        }).join('');
+      }
+      function trekk(r, type, tittel, open, medSpor){
+        var g = grupper(r, type); if(!g.length) return '';
+        var tot = r.segmenter.filter(function(s){ return s.type === type; }).reduce(function(a, s){ return a + s.til - s.fra; }, 0);
+        return '<details class="lk-acc"' + (open ? ' open' : '') + '><summary><span>' + tittel + '</span><span class="c">' + g.length + (type === 'tunnel' ? ' · ' + fmt(tot, 1) + ' km totalt' : '') + '</span><i aria-hidden="true"></i></summary><div class="lk-rows">' + rader(r, type, medSpor) + '</div></details>';
+      }
+      function statsListe(r){
+        return '<div class="lk-slist">' + [['Distanse', fmt(r.km, 1) + ' km'], ['Stigning', fmt(r.opp) + ' m'], ['Høyeste punkt', fmt(r.maks) + ' moh.'], ['Bratteste 500 m', fmt(r.bratt, 1) + ' %']]
+          .map(function(x){ return '<div><span>' + x[0] + '</span><b>' + x[1] + '</b></div>'; }).join('') + '</div>';
+      }
+      function viktig(r){
+        var v = r.segmenter.filter(function(s, i, a){ return VARSEL[s.navn] && a.findIndex(function(y){ return y.navn === s.navn; }) === i; });
+        if(!v.length) return '';
+        return '<div class="lk-warn"><div class="lk-h" style="margin-top:0">Verdt å vite</div>' + v.map(function(s){ return '<div class="lk-wrow" data-km="' + ((s.fra + s.til) / 2) + '"><b>' + esc(s.navn) + '</b><span>' + esc(VARSEL[s.navn]) + '</span></div>'; }).join('') + '</div>';
+      }
+      var legend = '<div class="lk-legend"><span><i style="background:#F55303"></i>Løypa</span><span><i style="background:repeating-linear-gradient(90deg,#F6F5F3 0 5px,transparent 5px 9px)"></i>Tunnel</span><span><i style="background:#7fb8ff"></i>Bru</span></div>';
+
+      function tegn(){
+        var body = document.getElementById('lkBody');
+        if(map){ map.remove(); map = null; }
+        var r = rute();
+        if(!r){
+          body.className = '';
+          body.innerHTML = '<div class="lk-empty"><b>Kommer snart</b>Kart og høydeprofil for ' + NAVN[S.leg] + ' på ' + (S.dist === '703' ? '70.3' : 'Olympisk +') + ' legges ut så snart løypa er klar.</div>';
+          return;
+        }
+        body.className = 'lk-v2 lk-w4';
+        var venstre = '<div class="lk-left"><div class="lk-map lk-dark" id="lkMap"></div><div class="lk-prof lk-under" id="lkProf"></div>' + legend + '</div>';
+        var hoyre = trekk(r, 'tunnel', 'Tunneler', true) + trekk(r, 'bru', 'Bruer', true);
+        body.innerHTML = stats(r) + '<div class="lk-grid' + (hoyre ? '' : ' lk-ene') + '">' + venstre + (hoyre ? '<div class="lk-right">' + hoyre + '</div>' : '') + '</div>';
+        profil(r, { hoyde: 150 });
+        kart(r);
+        body.querySelectorAll('.lk-row, .lk-wrow').forEach(function(d){
+          d.addEventListener('mouseenter', function(){ vis(r, +d.dataset.km); });
+          d.addEventListener('click', function(e){ if(e.target.closest('.lk-i')) return; var x = d.dataset.hl.split('|'); fremhev(r, +x[0], +x[1]); });
+        });
+        body.querySelectorAll('.lk-klikk').forEach(function(b){
+          b.addEventListener('click', function(){
+            body.querySelectorAll('.lk-klikk').forEach(function(x){ x.classList.toggle('on', x === b); });
+            var x = b.dataset.hl.split('|');
+            if(x[0] === 'alt') fremhev(r, 'alt'); else fremhev(r, +x[0], +x[1]);
+          });
+        });
+        body.querySelectorAll('details.lk-acc').forEach(function(d){ d.addEventListener('toggle', function(){ if(map) map.invalidateSize(); }); });
+      }
+
+      // Høydeprofil som SVG, med tunneler som bånd og markør som følger musa
+      var prof = null;
+      function profil(r, o){
+        var el = document.getElementById('lkProf'), W = Math.max(320, el.clientWidth || 1000), H = o.hoyde, pl = 38, pr = 8, pt = 22, pb = 22;
+        var maks = Math.max(60, Math.ceil(r.maks / 50) * 50);
+        var X = function(km){ return pl + km / r.km * (W - pl - pr); }, Y = function(z){ return pt + (1 - Math.max(0, z) / maks) * (H - pt - pb); };
+        var d = r.p.map(function(p, i){ return (i ? 'L' : 'M') + X(Math.min(i * r.steg, r.km)).toFixed(1) + ' ' + Y(p[2]).toFixed(1); }).join('');
+        var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '">';
+        s += '<defs><linearGradient id="lkG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F55303" stop-opacity=".45"/><stop offset="1" stop-color="#F55303" stop-opacity="0"/></linearGradient></defs>';
+        for(var g = 0; g <= maks; g += maks > 200 ? 100 : 20){ s += '<line class="grid" x1="' + pl + '" x2="' + (W - pr) + '" y1="' + Y(g) + '" y2="' + Y(g) + '"/><text class="ax" x="' + (pl - 6) + '" y="' + (Y(g) + 3) + '" text-anchor="end">' + g + '</text>'; }
+        r.segmenter.forEach(function(sg){ if(sg.type !== 'tunnel') return; s += '<rect class="lk-band" x="' + X(sg.fra) + '" y="' + pt + '" width="' + Math.max(1, X(sg.til) - X(sg.fra)) + '" height="' + (H - pt - pb) + '"/>'; });
+        if(o.farget){
+          for(var i = 1; i < r.p.length; i++){
+            var z0 = r.p[i - 1][2], z1 = r.p[i][2], k = (z1 - z0) / (r.steg * 1000) * 100, a = Math.abs(k);
+            var c = a < 2 ? '#3a3a44' : a < 4 ? '#7a4a2a' : a < 6 ? '#b8501a' : '#F55303';
+            s += '<path d="M' + X((i - 1) * r.steg) + ' ' + Y(z0) + 'L' + X(Math.min(i * r.steg, r.km)) + ' ' + Y(z1) + 'L' + X(Math.min(i * r.steg, r.km)) + ' ' + Y(0) + 'L' + X((i - 1) * r.steg) + ' ' + Y(0) + 'Z" fill="' + c + '" stroke="' + c + '" stroke-width="0.8"/>';
+          }
+          r.segmenter.forEach(function(sg){ if(sg.type === 'tunnel' && sg.til - sg.fra > 1.2) s += '<text class="lk-bandl" x="' + X((sg.fra + sg.til) / 2) + '" y="' + (pt - 6) + '" text-anchor="middle">' + esc(sg.navn.replace('tunnelen', '')) + '</text>'; });
+        } else {
+          s += '<path d="' + d + 'L' + X(r.km) + ' ' + Y(0) + 'L' + X(0) + ' ' + Y(0) + 'Z" fill="url(#lkG)"/><path d="' + d + '" fill="none" stroke="#F55303" stroke-width="2" vector-effect="non-scaling-stroke"/>';
+        }
+        for(var km = 0, st = r.km > 40 ? 10 : r.km > 15 ? 2 : r.km > 3 ? 1 : 0.5; km <= r.km + 1e-9; km += st) s += '<text class="ax" x="' + X(km) + '" y="' + (H - 6) + '" text-anchor="middle">' + (r.type === 'swim' ? fmt(km * 1000) + ' m' : km + ' km') + '</text>';
+        s += '<line id="lkLine" x1="0" x2="0" y1="' + pt + '" y2="' + (H - pb) + '" stroke="#F6F5F3" stroke-width="1" opacity="0" vector-effect="non-scaling-stroke"/></svg><div class="lk-tip" id="lkTip"></div>';
+        el.innerHTML = s;
+        prof = { X: X, el: el, W: W, pl: pl, pr: pr, r: r, o: o };
+        var svg = el.querySelector('svg');
+        var flytt = function(e){
+          var b = svg.getBoundingClientRect(), x = ((e.touches ? e.touches[0].clientX : e.clientX) - b.left) / b.width * W;
+          vis(r, Math.max(0, Math.min(r.km, (x - pl) / (W - pl - pr) * r.km)));
+        };
+        svg.addEventListener('mousemove', flytt); svg.addEventListener('touchmove', flytt, { passive: true });
+        svg.addEventListener('mouseleave', skjul);
+      }
+      function vis(r, km){
+        var p = punkt(r, km), sg = segVed(r, km);
+        var line = document.getElementById('lkLine'), tip = document.getElementById('lkTip');
+        if(line && prof){
+          var x = prof.X(km); line.setAttribute('x1', x); line.setAttribute('x2', x); line.setAttribute('opacity', 1);
+          tip.style.left = (x / prof.W * 100) + '%'; tip.style.opacity = 1;
+          tip.innerHTML = (r.type === 'swim' ? fmt(km * 1000) + ' m' : fmt(km, 1) + ' km · ' + fmt(p[2]) + ' moh.') + (sg ? '<small>' + esc(sg.navn) + (VARSEL[sg.navn] ? ' · Vær forsiktig' : '') + '</small>' : '');
+        }
+        if(hoverMark){ hoverMark.setLatLng([p[0], p[1]]); hoverMark.setStyle({ opacity: 1, fillOpacity: 1 }); }
+      }
+      function skjul(){
+        var line = document.getElementById('lkLine'), tip = document.getElementById('lkTip');
+        if(line) line.setAttribute('opacity', 0); if(tip) tip.style.opacity = 0;
+        if(hoverMark) hoverMark.setStyle({ opacity: 0, fillOpacity: 0 });
+      }
+
+      var rt; addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(function(){ if(prof && document.getElementById('lkProf')) profil(prof.r, prof.o); }, 150); });
+
+      // Kart med Kartverkets topografiske kart
+      function kart(r){
+        if(!window.L) return setTimeout(function(){ kart(r); }, 200);
+        var el = document.getElementById('lkMap');
+        map = L.map(el, { scrollWheelZoom: false, zoomControl: true, attributionControl: false }); hl = null;
+        L.tileLayer('https://cache.kartverket.no/v1/wmts/1.0.0/' + 'topo' + '/default/webmercator/{z}/{y}/{x}.png', { maxZoom: 17, attribution: '© <a href="https://www.kartverket.no/">Kartverket</a>' }).addTo(map);
+        var ll = r.p.map(function(p){ return [p[0], p[1]]; });
+        L.polyline(ll, { color: '#0B0B0B', weight: 7, opacity: .55 }).addTo(map);
+        route = L.polyline(ll, { color: '#F55303', weight: 4 }).addTo(map);
+        r.segmenter.forEach(function(sg){
+          var a = Math.round(sg.fra / r.steg), b = Math.round(sg.til / r.steg) + 1;
+          L.polyline(ll.slice(a, b), sg.type === 'tunnel' ? { color: '#F6F5F3', weight: 3, dashArray: '4 6' } : { color: '#7fb8ff', weight: 4 }).addTo(map).bindTooltip(sg.navn + (VARSEL[sg.navn] ? '<br><small>' + esc(VARSEL[sg.navn]) + '</small>' : ''));
+        });
+        var pin = function(p, t, cls){ L.marker([p[0], p[1]], { icon: L.divIcon({ className: '', html: '<span class="lk-pin ' + (cls || '') + '">' + t + '</span>', iconSize: null, iconAnchor: [0, 0] }) }).addTo(map); };
+        pin(r.p[0], r.type === 'swim' ? 'Start' : 'Start / mål', 'o');
+        r.snu.forEach(function(km){ pin(punkt(r, km), 'Snu · ' + fmt(km, 1) + ' km'); });
+        (r.pins || []).forEach(function(x){ pin(punkt(r, x.km), esc(x.tekst)); });
+        // Svømming: bøyer og Australian exit
+        if(r.exit) pin(r.exit, 'Australian exit');
+        (r.bojer || []).forEach(function(b){ L.circleMarker([b[0], b[1]], { radius: 7, color: '#0B0B0B', weight: 2, fillColor: b[2], fillOpacity: 1 }).addTo(map).bindTooltip('Bøye'); });
+        hoverMark = L.circleMarker(ll[0], { radius: 7, color: '#0B0B0B', weight: 2, fillColor: '#F6F5F3', fillOpacity: 0, opacity: 0 }).addTo(map);
+        map.fitBounds(route.getBounds(), { padding: [24, 24] });
+        // Hold over løypa i kartet for å se samme punkt i profilen
+        route.on('mousemove', function(e){
+          var best = 0, bd = 1e9;
+          for(var i = 0; i < ll.length; i += 2){ var dx = ll[i][0] - e.latlng.lat, dy = (ll[i][1] - e.latlng.lng) * .37, dd = dx * dx + dy * dy; if(dd < bd){ bd = dd; best = i; } }
+          vis(r, best * r.steg);
+        });
+        route.on('mouseout', skjul);
+        // Tilpass utsnittet når kartet faktisk er synlig (seksjonen tones inn ved scroll)
+        var pad = { padding: [24, 24] };
+        var tilpass = function(){ if(map){ map.invalidateSize(); map.fitBounds(route.getBounds(), pad); } };
+        setTimeout(tilpass, 250);
+        if('IntersectionObserver' in window){ var io = new IntersectionObserver(function(e){ if(e[0].isIntersecting){ setTimeout(tilpass, 700); io.disconnect(); } }); io.observe(el); }
+      }
+
+      fetch('assets/ruter.json').then(function(r){ return r.json(); }).then(function(d){ DATA = d; tegn(); }).catch(function(){ root.hidden = true; });
+    });
+    </script>
   </div>
 </section>
 
