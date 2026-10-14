@@ -1,5 +1,5 @@
 {
- "oppdatert": "2026-10-13T16:48:06.112Z",
+ "oppdatert": "2026-10-14T08:42:52.590Z",
  "kapasitet": 100,
  "antall": 73,
  "statistikk": {
@@ -28,7 +28,93 @@
    "Sverige": 3,
    "Storbritannia": 4
   },
-  "ukjent_sted": 1
+  "ukjent_sted": 1,
+  "kryss": [
+   [
+    "Kvinne",
+    "Olympisk +",
+    "40–49",
+    2
+   ],
+   [
+    "Mann",
+    "70.3",
+    "30–39",
+    9
+   ],
+   [
+    "Mann",
+    "70.3",
+    "Under 30",
+    19
+   ],
+   [
+    "Kvinne",
+    "70.3",
+    "30–39",
+    3
+   ],
+   [
+    "Kvinne",
+    "70.3",
+    "40–49",
+    3
+   ],
+   [
+    "Mann",
+    "Olympisk +",
+    "40–49",
+    4
+   ],
+   [
+    "Mann",
+    "Olympisk +",
+    "50–59",
+    2
+   ],
+   [
+    "Mann",
+    "Olympisk +",
+    "Under 30",
+    2
+   ],
+   [
+    "Mann",
+    "Olympisk +",
+    "30–39",
+    9
+   ],
+   [
+    "Kvinne",
+    "Olympisk +",
+    "30–39",
+    4
+   ],
+   [
+    "Kvinne",
+    "Olympisk +",
+    "Under 30",
+    4
+   ],
+   [
+    "Kvinne",
+    "70.3",
+    "Under 30",
+    7
+   ],
+   [
+    "Mann",
+    "70.3",
+    "40–49",
+    3
+   ],
+   [
+    "Mann",
+    "70.3",
+    "50–59",
+    2
+   ]
+  ]
  },
  "deltakere": [
   {
