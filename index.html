@@ -475,7 +475,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
   </div>
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-inner">
-    <a href="#billetter" class="hero-eb" id="heroEb">Påmelding 2027 er åpen</a>
+    <a href="#pamelding" class="hero-eb" id="heroEb">Påmelding 2027 er åpen</a>
     <h1><span class="word" style="animation-delay:.15s">Verdens</span> <span class="word" style="animation-delay:.28s"><em>vakreste</em></span> <span class="word" style="animation-delay:.41s">triatlon</span></h1>
     <p class="lead">Svømming, sykling og løping gjennom rå fjell, fjord og arktisk natur. Ett løp, tre distanser, og noen av de mest spektakulære omgivelsene Nord-Norge har å by på.</p>
     <div class="hero-actions">
@@ -484,95 +484,6 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--text);outline-offse
     </div>
   </div>
 </header>
-
-<!-- BILLETTER -->
-<style>
-.tk .wrap{position:relative;z-index:1}
-.tk-head{text-align:center}
-.tk-badge{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text);border:1px solid var(--line);border-radius:100px;padding:8px 18px;margin-bottom:26px}
-.tk-badge i{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 rgba(245,83,3,.6);animation:tkPuls 1.8s ease-out infinite}
-@keyframes tkPuls{to{box-shadow:0 0 0 10px rgba(245,83,3,0)}}
-.tk .eb-word{font-size:clamp(38px,7vw,100px);white-space:normal}
-.tk-meter{max-width:720px;margin:48px auto 0}
-.tk-left{display:flex;align-items:baseline;justify-content:center;gap:14px;flex-wrap:wrap}
-.tk-n{font-family:var(--mono);font-weight:600;font-size:clamp(56px,8vw,92px);line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums}
-.tk-of{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--slate)}
-.tk-bar{position:relative;height:6px;border-radius:3px;background:#24242c;overflow:hidden;margin-top:22px}
-.tk-bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--grad);border-radius:3px;transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
-.tk-meta{display:flex;justify-content:space-between;margin-top:10px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate-light)}
-.tk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px}
-.tk-card{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px 24px 22px;transition:border-color .3s,transform .3s}
-.tk-card:hover{border-color:var(--slate);transform:translateY(-3px)}
-.tk-tag{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate);margin-bottom:12px}
-.tk-name{font-family:var(--font);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:22px;color:var(--text);line-height:1.05}
-.tk-legs{font-family:var(--mono);font-size:12.5px;color:var(--slate);margin:10px 0 26px}
-.tk-foot{margin-top:auto;display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-top:1px solid var(--line);padding-top:18px}
-.tk-price{font-family:var(--font);font-stretch:125%;font-weight:800;font-size:24px;color:var(--text)}
-.tk-go{font-size:14px;font-weight:700;color:var(--accent-bright);white-space:nowrap}
-.tk-card.ut{pointer-events:none;opacity:.5}
-@media(max-width:860px){.tk-grid{grid-template-columns:1fr}}
-</style>
-<section class="eb tk" id="billetter">
-  <div class="fx" data-pos="tr" aria-hidden="true"></div>
-  <div class="wrap">
-    <div class="tk-head reveal">
-      <div class="tk-badge"><i aria-hidden="true"></i><span id="tkBadge">Påmelding 2027 er åpen</span></div>
-      <div class="eb-word" id="tkWord">Påmelding 2027</div>
-      <div class="eb-sub">Lørdag 7. august 2027 · Efjord &amp; Stetind Resort</div>
-    </div>
-    <div class="tk-meter reveal" id="tkMeter" hidden>
-      <div class="tk-left"><span class="tk-n" id="tkLeft">–</span><span class="tk-of" id="tkOf">plasser igjen</span></div>
-      <div class="tk-bar"><i id="tkBar"></i></div>
-      <div class="tk-meta"><span id="tkTaken"></span><span id="tkCap"></span></div>
-    </div>
-    <div class="tk-grid reveal">
-      <a class="tk-card" href="https://shop.efjordextreme.no/products/halvdistanse-triatlon?variant=42469952749634">
-        <div class="tk-tag">70.3 · Individuell</div>
-        <div class="tk-name">Halvdistanse</div>
-        <div class="tk-legs">1,9 km svøm · 90 km sykkel · 20 km løp</div>
-        <div class="tk-foot"><span class="tk-price">2 200 kr</span><span class="tk-go">Meld deg på <span aria-hidden="true">→</span></span></div>
-      </a>
-      <a class="tk-card" href="https://shop.efjordextreme.no/products/halvdistanse-relay?variant=42470115803202">
-        <div class="tk-tag">70.3 · Lag</div>
-        <div class="tk-name">Halvdistanse, lag</div>
-        <div class="tk-legs">Del etappene på to eller tre</div>
-        <div class="tk-foot"><span class="tk-price">3 400 kr</span><span class="tk-go">Meld deg på <span aria-hidden="true">→</span></span></div>
-      </a>
-      <a class="tk-card" href="https://shop.efjordextreme.no/products/olympisk-distanse-triatlon?variant=42470117834818">
-        <div class="tk-tag">Olympisk +</div>
-        <div class="tk-name">Olympisk +</div>
-        <div class="tk-legs">1,5 km svøm · 58 km sykkel · 10 km løp</div>
-        <div class="tk-foot"><span class="tk-price">1 800 kr</span><span class="tk-go">Meld deg på <span aria-hidden="true">→</span></span></div>
-      </a>
-    </div>
-    <p class="eb-note reveal">Inkludert: tidtaking, bilder fra profesjonelle fotografer og Efjord Extreme T-skjorte</p>
-  </div>
-</section>
-<script>
-/* Billetter: viser hvor mange plasser som er igjen, fra data/deltakere.json */
-document.addEventListener('DOMContentLoaded', function(){
-  fetch('data/deltakere.json', {cache: 'no-cache'}).then(function(r){ return r.json(); }).then(function(d){
-    var cap = d.kapasitet || 100, n = d.antall || 0, igjen = Math.max(0, cap - n);
-    var hero = document.getElementById('heroEb');
-    document.getElementById('tkMeter').hidden = false;
-    document.getElementById('tkLeft').textContent = igjen;
-    document.getElementById('tkOf').textContent = igjen === 1 ? 'plass igjen' : 'plasser igjen';
-    document.getElementById('tkTaken').textContent = n + ' påmeldt';
-    document.getElementById('tkCap').textContent = cap + ' plasser totalt';
-    setTimeout(function(){ document.getElementById('tkBar').style.width = Math.min(100, n / cap * 100) + '%'; }, 300);
-    if(igjen === 0){
-      document.getElementById('tkWord').textContent = 'Utsolgt';
-      document.getElementById('tkBadge').textContent = 'Alle plasser er tatt';
-      document.querySelectorAll('.tk-card').forEach(function(c){ c.classList.add('ut'); c.querySelector('.tk-go').textContent = 'Utsolgt'; });
-      if(hero) hero.textContent = 'Påmelding 2027 er utsolgt';
-    } else if(igjen <= 30){
-      document.getElementById('tkWord').textContent = 'Snart utsolgt';
-      document.getElementById('tkBadge').textContent = 'Bare ' + igjen + ' plasser igjen';
-      if(hero) hero.innerHTML = 'Påmelding 2027 · <b>bare ' + igjen + ' plasser igjen</b>';
-    }
-  }).catch(function(){});
-});
-</script>
 
 <!-- SLIK FUNKER LØPET -->
 <section class="how section-pad" id="how">
