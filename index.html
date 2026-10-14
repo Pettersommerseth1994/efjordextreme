@@ -1838,7 +1838,7 @@ document.addEventListener('DOMContentLoaded', function () {
       function stats(r){
         // Distanse viser hele løypa, høyeste punkt og bratteste 500 m vises i kartet
         var felt = r.fakta ? r.fakta.map(function(f, i){ return [f[0], f[1], i ? '' : 'alt']; }) :
-          [['Distanse', fmt(r.km, 1) + ' km', 'alt'], ['Stigning', fmt(r.opp) + ' m', ''], ['Høyeste punkt', fmt(r.maks) + ' moh.', r.toppKm + '|' + r.toppKm], ['Bratteste 500 m', fmt(r.bratt, 1) + ' %', r.brattKm + '|' + (r.brattKm + 0.5)]];
+          [['Distanse', (r.visKm || fmt(r.km, 1)) + ' km', 'alt'], ['Stigning', fmt(r.opp) + ' m', ''], ['Høyeste punkt', fmt(r.maks) + ' moh.', r.toppKm + '|' + r.toppKm], ['Bratteste 500 m', fmt(r.bratt, 1) + ' %', r.brattKm + '|' + (r.brattKm + 0.5)]];
         return '<div class="lk-stats">' + felt
           .map(function(x){ return x[2] ? '<button type="button" class="lk-stat lk-klikk" data-hl="' + x[2] + '"><div class="k">' + x[0] + '<span class="lk-vis" aria-hidden="true">Vis i kart</span></div><div class="v">' + x[1] + '</div></button>' : '<div class="lk-stat"><div class="k">' + x[0] + '</div><div class="v">' + x[1] + '</div></div>'; }).join('') + '</div>';
       }
