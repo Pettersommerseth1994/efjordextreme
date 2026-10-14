@@ -229,7 +229,10 @@ const data = {
 // Behold forrige tidsstempel hvis ingenting er endret, så det ikke blir en commit hver time
 try {
   const forrige = JSON.parse(readFileSync('data/deltakere.json', 'utf8'));
-  if (JSON.stringify({ ...forrige, oppdatert: 0 }) === JSON.stringify({ ...data, oppdatert: 0 })) data.oppdatert = forrige.oppdatert;
+  const uendret = JSON.stringify({ ...forrige, oppdatert: 0 }) === JSON.stringify({ ...data, oppdatert: 0 });
+  // Uten endringer beholdes tidspunktet, men det fornyes minst én gang i uken så siden ikke ser utdatert ut
+  const enUke = 7 * 24 * 60 * 60 * 1000;
+  if (uendret && Date.now() - new Date(forrige.oppdatert) < enUke) data.oppdatert = forrige.oppdatert;
 } catch {}
 
 mkdirSync('data', { recursive: true });
