@@ -148,6 +148,7 @@ function plasser(tekst) {
   return { fylke: null, land: null };
 }
 
+const aldersgruppe = (a) => a == null ? 'Ukjent' : a < 30 ? 'Under 30' : a < 40 ? '30–39' : a < 50 ? '40–49' : a < 60 ? '50–59' : '60+';
 const pen = (s) => (s ?? '').replace(/\s+/g, ' ').trim();
 // Navn skrevet med bare små eller bare store bokstaver får stor forbokstav ("jan ivar andreassen" -> "Jan Ivar Andreassen")
 const navnPen = (s) => {
@@ -220,6 +221,9 @@ const data = {
     fylker: tell(alle.map((p) => p.fylke)),
     utland: tell(alle.map((p) => (p.land && p.land !== 'Norge' ? p.land : null))),
     ukjent_sted: alle.filter((p) => !p.land).length,
+    // Antall per kjønn, øvelse og aldersgruppe, uten navn, brukes til filtrering i Fordeling
+    kryss: Object.entries(tell(alle.map((p) => [p.kjonn ?? 'Ukjent', p.distanse, aldersgruppe(p.alder)].join('|'))))
+      .map(([k, n]) => [...k.split('|'), n]),
   },
   deltakere: alle
     .map((p) => ({ nr: p.nr, navn: p.navn, alder: p.alder, sted: pen(p.fra) || '–', distanse: p.distanse, ...(p.lag ? { lag: p.lag } : {}) }))
