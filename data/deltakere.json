@@ -1,15 +1,15 @@
 {
- "oppdatert": "2026-10-15T10:01:39.683Z",
+ "oppdatert": "2026-10-15T14:03:54.303Z",
  "kapasitet": 100,
- "antall": 73,
+ "antall": 76,
  "statistikk": {
   "kjonn": {
-   "Kvinne": 23,
-   "Mann": 50
+   "Kvinne": 24,
+   "Mann": 52
   },
   "distanse": {
-   "Olympisk +": 27,
-   "70.3": 46
+   "Olympisk +": 28,
+   "70.3": 48
   },
   "fylker": {
    "Nordland": 28,
@@ -17,18 +17,19 @@
    "Oslo": 3,
    "Vestland": 3,
    "Akershus": 5,
-   "Troms": 6,
+   "Troms": 7,
    "Agder": 3,
    "Trøndelag": 9,
    "Møre og Romsdal": 1,
-   "Rogaland": 1
+   "Rogaland": 1,
+   "Finnmark": 1
   },
   "utland": {
    "Tyskland": 1,
    "Sverige": 3,
    "Storbritannia": 4
   },
-  "ukjent_sted": 0,
+  "ukjent_sted": 1,
   "kryss": [
    [
     "Kvinne",
@@ -40,13 +41,13 @@
     "Mann",
     "70.3",
     "30–39",
-    9
+    10
    ],
    [
     "Mann",
     "70.3",
     "Under 30",
-    19
+    20
    ],
    [
     "Kvinne",
@@ -94,7 +95,7 @@
     "Kvinne",
     "Olympisk +",
     "Under 30",
-    4
+    5
    ],
    [
     "Kvinne",
@@ -286,6 +287,13 @@
    "distanse": "70.3"
   },
   {
+   "nr": 139,
+   "navn": "Kjersti Johanne Heitmann",
+   "alder": 25,
+   "sted": "Alta",
+   "distanse": "Olympisk +"
+  },
+  {
    "nr": 106,
    "navn": "Julia Hillström",
    "alder": 21,
@@ -468,6 +476,13 @@
    "distanse": "Olympisk +"
   },
   {
+   "nr": 137,
+   "navn": "Clayton Alves de Oliveira",
+   "alder": 34,
+   "sted": "Brasil",
+   "distanse": "70.3"
+  },
+  {
    "nr": 77,
    "navn": "David Olsson",
    "alder": 33,
@@ -592,6 +607,13 @@
    "alder": 31,
    "sted": "Ålesund",
    "distanse": "Olympisk +"
+  },
+  {
+   "nr": 138,
+   "navn": "Aleksander Tøllefsen",
+   "alder": 24,
+   "sted": "Harstad",
+   "distanse": "70.3"
   },
   {
    "nr": 80,
