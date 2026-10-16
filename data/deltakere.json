@@ -1,15 +1,15 @@
 {
- "oppdatert": "2026-10-16T07:17:18.713Z",
+ "oppdatert": "2026-10-16T13:18:58.865Z",
  "kapasitet": 100,
- "antall": 76,
+ "antall": 77,
  "statistikk": {
   "kjonn": {
    "Kvinne": 24,
-   "Mann": 52
+   "Mann": 53
   },
   "distanse": {
    "Olympisk +": 28,
-   "70.3": 48
+   "70.3": 49
   },
   "fylker": {
    "Nordland": 28,
@@ -17,7 +17,7 @@
    "Oslo": 3,
    "Vestland": 3,
    "Akershus": 5,
-   "Troms": 7,
+   "Troms": 8,
    "Agder": 3,
    "Trøndelag": 9,
    "Møre og Romsdal": 1,
@@ -47,7 +47,7 @@
     "Mann",
     "70.3",
     "Under 30",
-    20
+    21
    ],
    [
     "Kvinne",
@@ -480,6 +480,13 @@
    "navn": "Clayton Alves de Oliveira",
    "alder": 34,
    "sted": "Brasil",
+   "distanse": "70.3"
+  },
+  {
+   "nr": 140,
+   "navn": "Vegard Olsen",
+   "alder": 23,
+   "sted": "Harstad",
    "distanse": "70.3"
   },
   {
