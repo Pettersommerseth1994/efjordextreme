@@ -15,7 +15,7 @@
    "Nordland": 28,
    "Telemark": 4,
    "Oslo": 3,
-   "Vestland": 3,
+   "Vestland": 4,
    "Akershus": 5,
    "Troms": 8,
    "Agder": 3,
@@ -29,7 +29,7 @@
    "Sverige": 3,
    "Storbritannia": 4
   },
-  "ukjent_sted": 1,
+  "ukjent_sted": 0,
   "kryss": [
    [
     "Kvinne",
@@ -478,8 +478,8 @@
   {
    "nr": 137,
    "navn": "Clayton Alves de Oliveira",
-   "alder": 34,
-   "sted": "Brasil",
+   "alder": 44,
+   "sted": "Stanghelle, Norge",
    "distanse": "70.3"
   },
   {
@@ -539,7 +539,7 @@
    "distanse": "70.3"
   },
   {
-   "nr": 93,
+   "nr": 95,
    "navn": "Daniel Sinnes",
    "alder": 27,
    "sted": "Bryne",
@@ -630,7 +630,7 @@
    "distanse": "70.3"
   },
   {
-   "nr": 95,
+   "nr": 93,
    "navn": "Toyvo Vågan",
    "alder": 37,
    "sted": "Bodø",
