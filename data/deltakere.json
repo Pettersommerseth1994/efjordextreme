@@ -1,15 +1,15 @@
 {
- "oppdatert": "2026-10-16T13:18:58.865Z",
+ "oppdatert": "2026-10-16T18:07:48.063Z",
  "kapasitet": 100,
- "antall": 77,
+ "antall": 78,
  "statistikk": {
   "kjonn": {
    "Kvinne": 24,
-   "Mann": 53
+   "Mann": 54
   },
   "distanse": {
    "Olympisk +": 28,
-   "70.3": 49
+   "70.3": 50
   },
   "fylker": {
    "Nordland": 28,
@@ -17,7 +17,7 @@
    "Oslo": 3,
    "Vestland": 4,
    "Akershus": 5,
-   "Troms": 8,
+   "Troms": 9,
    "Agder": 3,
    "Trøndelag": 9,
    "Møre og Romsdal": 1,
@@ -41,13 +41,13 @@
     "Mann",
     "70.3",
     "30–39",
-    10
+    9
    ],
    [
     "Mann",
     "70.3",
     "Under 30",
-    21
+    22
    ],
    [
     "Kvinne",
@@ -107,7 +107,7 @@
     "Mann",
     "70.3",
     "40–49",
-    3
+    4
    ],
    [
     "Mann",
@@ -614,6 +614,13 @@
    "alder": 31,
    "sted": "Ålesund",
    "distanse": "Olympisk +"
+  },
+  {
+   "nr": 141,
+   "navn": "Magnus Tveten",
+   "alder": 24,
+   "sted": "Harstad",
+   "distanse": "70.3"
   },
   {
    "nr": 138,
