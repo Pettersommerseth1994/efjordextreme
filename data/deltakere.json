@@ -1,14 +1,14 @@
 {
- "oppdatert": "2026-10-17T10:53:01.387Z",
+ "oppdatert": "2026-10-17T14:15:01.096Z",
  "kapasitet": 100,
- "antall": 78,
+ "antall": 80,
  "statistikk": {
   "kjonn": {
    "Kvinne": 24,
-   "Mann": 54
+   "Mann": 56
   },
   "distanse": {
-   "Olympisk +": 28,
+   "Olympisk +": 30,
    "70.3": 50
   },
   "fylker": {
@@ -17,7 +17,7 @@
    "Oslo": 3,
    "Vestland": 4,
    "Akershus": 5,
-   "Troms": 9,
+   "Troms": 10,
    "Agder": 3,
    "Trøndelag": 9,
    "Møre og Romsdal": 1,
@@ -83,7 +83,7 @@
     "Mann",
     "Olympisk +",
     "30–39",
-    9
+    11
    ],
    [
     "Kvinne",
@@ -427,6 +427,13 @@
    "distanse": "Olympisk +"
   },
   {
+   "nr": 142,
+   "navn": "Torstein Eidnes Mellem",
+   "alder": 37,
+   "sted": "Harstad",
+   "distanse": "Olympisk +"
+  },
+  {
    "nr": 120,
    "navn": "Selmer Helgesen Neergaard",
    "alder": 20,
@@ -599,6 +606,13 @@
    "navn": "Erik Kjønnø Støa",
    "alder": 26,
    "sted": "3474 Åros",
+   "distanse": "Olympisk +"
+  },
+  {
+   "nr": 143,
+   "navn": "Eivind Svaleng",
+   "alder": 36,
+   "sted": "Norge",
    "distanse": "Olympisk +"
   },
   {
