@@ -1,15 +1,15 @@
 {
- "oppdatert": "2026-10-19T17:32:39.959Z",
+ "oppdatert": "2026-10-19T22:26:38.345Z",
  "kapasitet": 100,
- "antall": 80,
+ "antall": 81,
  "statistikk": {
   "kjonn": {
    "Kvinne": 24,
-   "Mann": 56
+   "Mann": 57
   },
   "distanse": {
    "Olympisk +": 30,
-   "70.3": 50
+   "70.3": 51
   },
   "fylker": {
    "Nordland": 28,
@@ -17,7 +17,7 @@
    "Oslo": 3,
    "Vestland": 4,
    "Akershus": 5,
-   "Troms": 11,
+   "Troms": 12,
    "Agder": 3,
    "Trøndelag": 9,
    "Møre og Romsdal": 1,
@@ -41,7 +41,7 @@
     "Mann",
     "70.3",
     "30–39",
-    9
+    10
    ],
    [
     "Mann",
@@ -529,6 +529,13 @@
    "navn": "Erlend Rømma",
    "alder": 35,
    "sted": "Åfjord, Trøndelag",
+   "distanse": "70.3"
+  },
+  {
+   "nr": 144,
+   "navn": "Anders Seglsten",
+   "alder": 33,
+   "sted": "Tromsø",
    "distanse": "70.3"
   },
   {
