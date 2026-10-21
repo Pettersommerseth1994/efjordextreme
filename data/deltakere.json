@@ -1,15 +1,15 @@
 {
- "oppdatert": "2026-10-21T13:53:50.452Z",
+ "oppdatert": "2026-10-21T18:43:16.028Z",
  "kapasitet": 100,
- "antall": 81,
+ "antall": 84,
  "statistikk": {
   "kjonn": {
-   "Kvinne": 24,
-   "Mann": 57
+   "Kvinne": 25,
+   "Mann": 59
   },
   "distanse": {
    "Olympisk +": 30,
-   "70.3": 51
+   "70.3": 54
   },
   "fylker": {
    "Nordland": 28,
@@ -29,7 +29,7 @@
    "Sverige": 3,
    "Storbritannia": 4
   },
-  "ukjent_sted": 0,
+  "ukjent_sted": 3,
   "kryss": [
    [
     "Kvinne",
@@ -114,6 +114,24 @@
     "70.3",
     "50–59",
     2
+   ],
+   [
+    "Kvinne",
+    "70.3 lag",
+    "40–49",
+    1
+   ],
+   [
+    "Mann",
+    "70.3 lag",
+    "30–39",
+    1
+   ],
+   [
+    "Mann",
+    "70.3 lag",
+    "40–49",
+    1
    ]
   ]
  },
@@ -243,6 +261,22 @@
    "alder": 39,
    "sted": "Vestvågøy Triathlonklubb",
    "distanse": "70.3"
+  },
+  {
+   "nr": 145,
+   "navn": "Remi E Flått",
+   "alder": 39,
+   "sted": "By1",
+   "distanse": "70.3 lag",
+   "lag": "Triologi"
+  },
+  {
+   "nr": 145,
+   "navn": "Synne E Flått",
+   "alder": 41,
+   "sted": "By1",
+   "distanse": "70.3 lag",
+   "lag": "Triologi"
   },
   {
    "nr": 82,
@@ -607,6 +641,14 @@
    "alder": 41,
    "sted": "Bosatt Oslo, fra Bygland i Setesdal",
    "distanse": "70.3"
+  },
+  {
+   "nr": 145,
+   "navn": "Vidar L Strøm",
+   "alder": 41,
+   "sted": "By1",
+   "distanse": "70.3 lag",
+   "lag": "Triologi"
   },
   {
    "nr": 74,
