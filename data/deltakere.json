@@ -1,18 +1,18 @@
 {
- "oppdatert": "2026-10-21T18:43:16.028Z",
+ "oppdatert": "2026-10-21T22:25:51.072Z",
  "kapasitet": 100,
- "antall": 84,
+ "antall": 86,
  "statistikk": {
   "kjonn": {
    "Kvinne": 25,
-   "Mann": 59
+   "Mann": 61
   },
   "distanse": {
    "Olympisk +": 30,
-   "70.3": 54
+   "70.3": 56
   },
   "fylker": {
-   "Nordland": 28,
+   "Nordland": 30,
    "Telemark": 4,
    "Oslo": 3,
    "Vestland": 4,
@@ -41,13 +41,13 @@
     "Mann",
     "70.3",
     "30–39",
-    10
+    11
    ],
    [
     "Mann",
     "70.3",
     "Under 30",
-    22
+    23
    ],
    [
     "Kvinne",
@@ -176,6 +176,13 @@
    "navn": "Karoline Andreassen",
    "alder": 31,
    "sted": "Bodø",
+   "distanse": "70.3"
+  },
+  {
+   "nr": 146,
+   "navn": "Ruben Antonsen",
+   "alder": 38,
+   "sted": "Leknes I Lofoten",
    "distanse": "70.3"
   },
   {
@@ -360,6 +367,13 @@
    "navn": "Tom Eirik Hveding",
    "alder": 52,
    "sted": "Trondheim",
+   "distanse": "70.3"
+  },
+  {
+   "nr": 147,
+   "navn": "Kristoffer Håkonsen",
+   "alder": 29,
+   "sted": "Leknes",
    "distanse": "70.3"
   },
   {
