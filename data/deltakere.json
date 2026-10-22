@@ -1,18 +1,18 @@
 {
- "oppdatert": "2026-10-21T22:25:51.072Z",
+ "oppdatert": "2026-10-22T01:35:19.990Z",
  "kapasitet": 100,
- "antall": 86,
+ "antall": 87,
  "statistikk": {
   "kjonn": {
-   "Kvinne": 25,
+   "Kvinne": 26,
    "Mann": 61
   },
   "distanse": {
    "Olympisk +": 30,
-   "70.3": 56
+   "70.3": 57
   },
   "fylker": {
-   "Nordland": 30,
+   "Nordland": 31,
    "Telemark": 4,
    "Oslo": 3,
    "Vestland": 4,
@@ -101,7 +101,7 @@
     "Kvinne",
     "70.3",
     "Under 30",
-    7
+    8
    ],
    [
     "Mann",
@@ -486,6 +486,13 @@
    "navn": "Selmer Helgesen Neergaard",
    "alder": 20,
    "sted": "Andenes",
+   "distanse": "70.3"
+  },
+  {
+   "nr": 148,
+   "navn": "Kristina Nicolaisen",
+   "alder": 20,
+   "sted": "Kjøpsvik",
    "distanse": "70.3"
   },
   {
