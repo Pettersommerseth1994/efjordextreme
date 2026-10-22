@@ -1,5 +1,5 @@
 {
- "oppdatert": "2026-10-22T11:09:43.829Z",
+ "oppdatert": "2026-10-22T11:13:51.097Z",
  "kapasitet": 100,
  "antall": 88,
  "personer": 90,
@@ -18,7 +18,7 @@
    "Oslo": 3,
    "Vestland": 4,
    "Akershus": 5,
-   "Troms": 13,
+   "Troms": 14,
    "Agder": 3,
    "Trøndelag": 9,
    "Møre og Romsdal": 1,
@@ -348,6 +348,13 @@
    "distanse": "70.3"
   },
   {
+   "nr": 149,
+   "navn": "Mona Holmer",
+   "alder": 21,
+   "sted": "Bjerkvik",
+   "distanse": "70.3"
+  },
+  {
    "nr": 115,
    "navn": "Tom Eirik Hveding",
    "alder": 52,
@@ -472,13 +479,6 @@
    "alder": 37,
    "sted": "Harstad",
    "distanse": "Olympisk +"
-  },
-  {
-   "nr": 149,
-   "navn": "Mona",
-   "alder": 21,
-   "sted": "Bjerkvik",
-   "distanse": "70.3"
   },
   {
    "nr": 120,
@@ -680,7 +680,7 @@
    "nr": 150,
    "navn": "Jan Hugo Svendsen",
    "alder": 56,
-   "sted": "Norge",
+   "sted": "Harstad",
    "distanse": "70.3"
   },
   {
