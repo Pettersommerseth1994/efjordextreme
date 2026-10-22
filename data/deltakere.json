@@ -1,7 +1,8 @@
 {
- "oppdatert": "2026-10-22T01:35:19.990Z",
+ "oppdatert": "2026-10-22T05:40:27.321Z",
  "kapasitet": 100,
- "antall": 87,
+ "antall": 85,
+ "personer": 87,
  "statistikk": {
   "kjonn": {
    "Kvinne": 26,
@@ -12,7 +13,7 @@
    "70.3": 57
   },
   "fylker": {
-   "Nordland": 31,
+   "Nordland": 34,
    "Telemark": 4,
    "Oslo": 3,
    "Vestland": 4,
@@ -29,7 +30,7 @@
    "Sverige": 3,
    "Storbritannia": 4
   },
-  "ukjent_sted": 3,
+  "ukjent_sted": 0,
   "kryss": [
    [
     "Kvinne",
@@ -268,22 +269,6 @@
    "alder": 39,
    "sted": "Vestvågøy Triathlonklubb",
    "distanse": "70.3"
-  },
-  {
-   "nr": 145,
-   "navn": "Remi E Flått",
-   "alder": 39,
-   "sted": "By1",
-   "distanse": "70.3 lag",
-   "lag": "Triologi"
-  },
-  {
-   "nr": 145,
-   "navn": "Synne E Flått",
-   "alder": 41,
-   "sted": "By1",
-   "distanse": "70.3 lag",
-   "lag": "Triologi"
   },
   {
    "nr": 82,
@@ -664,14 +649,6 @@
    "distanse": "70.3"
   },
   {
-   "nr": 145,
-   "navn": "Vidar L Strøm",
-   "alder": 41,
-   "sted": "By1",
-   "distanse": "70.3 lag",
-   "lag": "Triologi"
-  },
-  {
    "nr": 74,
    "navn": "Erik Kjønnø Støa",
    "alder": 26,
@@ -691,6 +668,30 @@
    "alder": 34,
    "sted": "Bodø/Bergen",
    "distanse": "70.3"
+  },
+  {
+   "nr": 145,
+   "navn": "Triologi",
+   "alder": null,
+   "sted": "Narvik",
+   "distanse": "70.3 lag",
+   "medlemmer": [
+    {
+     "etappe": "Swim",
+     "navn": "Synne E Flått",
+     "alder": 41
+    },
+    {
+     "etappe": "Bike",
+     "navn": "Remi E Flått",
+     "alder": 39
+    },
+    {
+     "etappe": "Run",
+     "navn": "Vidar L Strøm",
+     "alder": 41
+    }
+   ]
   },
   {
    "nr": 92,
