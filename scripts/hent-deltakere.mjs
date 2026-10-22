@@ -39,6 +39,10 @@ const nokkel = (navn) => (navn ?? '').replace(/\s+/g, ' ').trim().toLowerCase();
 const INKLUDER = new Set((KORR.inkluder ?? []).map(nokkel));
 const INKLUDER_ORDRER = new Set((KORR.inkluder_ordrer ?? []).map((o) => '#' + String(o).replace(/\D/g, '')));
 const PERSONER = Object.fromEntries(Object.entries(KORR.personer ?? {}).map(([k, v]) => [nokkel(k), v]));
+// Rettelser per lag, med lagnavnet slik det står i Shopify: { "sted": "Narvik", "etapper": { "Swim": "Navn", "Bike": "Navn", "Run": "Navn" } }
+const LAG = Object.fromEntries(Object.entries(KORR.lag ?? {}).map(([k, v]) => [nokkel(k), v]));
+// Deltaker 1, 2 og 3 i lagpåmeldingen tar svøm, sykkel og løp i den rekkefølgen
+const ETAPPER = ['Swim', 'Bike', 'Run'];
 // Personer på inkluder-listen hentes også hvis de meldte seg på før salgsstart
 const HENT_FRA = INKLUDER.size ? '2026-01-01T00:00:00+01:00' : null;
 
@@ -167,7 +171,7 @@ function deltakere(ordrer) {
   for (const o of ordrer) {
     const forTidlig = new Date(o.createdAt) < new Date(SALG_START);
     const ugyldig = o.cancelledAt ? 'kansellert' : ['REFUNDED', 'VOIDED'].includes(o.displayFinancialStatus) ? 'refundert' : null;
-    for (const li of o.lineItems.nodes) {
+    o.lineItems.nodes.forEach((li, linje) => {
       const distanse = distanseFra(li.title);
       const a = Object.fromEntries(li.customAttributes.map((x) => [x.key, x.value]));
       const personer = [];
@@ -175,7 +179,7 @@ function deltakere(ordrer) {
         for (let i = 1; i <= 3; i++) {
           const navn = navnPen(a[`Fullt navn på deltaker ${i}`]);
           if (navn) personer.push({ navn, alder: alder(a[`Fødselsdag til deltaker ${i}`]), kjonn: a[`Kjønn på deltaker ${i}`],
-            distanse, lag: pen(a['Lagnavn']) || null, fra: a['Hvor kommer dere fra?'] });
+            distanse, lag: pen(a['Lagnavn']) || 'Lag uten navn', lagId: `${o.name}/${linje}`, etappe: ETAPPER[i - 1], fra: a['Hvor kommer dere fra?'] });
         }
       } else {
         personer.push({ navn: navnPen(a['Fullt navn']), alder: alder(a['Fødselsdag']), kjonn: a['Kjønn'],
@@ -190,7 +194,7 @@ function deltakere(ordrer) {
         }
         ut.push({ ...p, nr: nummer(o.name) });
       }
-    }
+    });
   }
   return ut;
 }
@@ -198,7 +202,7 @@ function deltakere(ordrer) {
 // Manuelle rettelser fra korrigeringer.json
 function korriger(p) {
   const k = PERSONER[nokkel(p.navn)] ?? {};
-  const fra = k.sted ?? KORR.steder?.[pen(p.fra)] ?? p.fra;
+  const fra = k.sted ?? (p.lagId && LAG[nokkel(p.lag)]?.sted) ?? KORR.steder?.[pen(p.fra)] ?? p.fra;
   return { ...p, ...k, fra, distanse: k.distanse ?? p.distanse };
 }
 
@@ -208,13 +212,36 @@ const tell = (liste) => liste.reduce((m, k) => (k ? ((m[k] = (m[k] ?? 0) + 1), m
 const fraShopify = deltakere(await hentOrdrer(await token()));
 const finnes = new Set(fraShopify.map((p) => nokkel(p.navn)));
 const ekstra = (KORR.ekstra ?? []).filter((e) => !finnes.has(nokkel(e.navn))).map((e) => ({ navn: e.navn, alder: e.alder ?? null, kjonn: e.kjonn, distanse: e.distanse,
-  lag: e.lag ?? null, fra: e.sted, nr: e.nr ?? null }));
+  lag: e.lag ?? null, lagId: e.lag ? `ekstra/${e.lag}` : null, etappe: e.etappe ?? null, fra: e.sted, nr: e.nr ?? null }));
 const alle = [...fraShopify, ...ekstra].map(korriger).map((p) => ({ ...p, ...plasser(p.fra) }));
+
+// Et lag tar én startplass og vises som én rad, med medlemmene per etappe
+function paameldinger(personer) {
+  const lag = new Map(), ut = [];
+  for (const p of personer) {
+    if (!p.lagId) { ut.push({ nr: p.nr, navn: p.navn, alder: p.alder, sted: pen(p.fra) || '–', distanse: p.distanse }); continue; }
+    if (!lag.has(p.lagId)) {
+      const e = { nr: p.nr, navn: p.lag, alder: null, sted: pen(p.fra) || '–', distanse: p.distanse, medlemmer: [] };
+      lag.set(p.lagId, e); ut.push(e);
+    }
+    lag.get(p.lagId).medlemmer.push({ etappe: p.etappe, navn: p.navn, alder: p.alder });
+  }
+  for (const e of lag.values()) {
+    const k = LAG[nokkel(e.navn)]?.etapper;
+    const alderFor = (navn) => e.medlemmer.find((m) => nokkel(m.navn) === nokkel(navn))?.alder ?? null;
+    e.medlemmer = k ? ETAPPER.filter((x) => k[x]).map((x) => ({ etappe: x, navn: k[x], alder: alderFor(k[x]) }))
+      : e.medlemmer.sort((a, b) => ETAPPER.indexOf(a.etappe) - ETAPPER.indexOf(b.etappe));
+  }
+  return ut;
+}
+const liste = paameldinger(alle);
 
 const data = {
   oppdatert: new Date().toISOString(),
   kapasitet: KAPASITET,
-  antall: alle.length,
+  // Antall startplasser som er tatt (et lag teller som én). Statistikken under gjelder personer.
+  antall: liste.length,
+  personer: alle.length,
   statistikk: {
     kjonn: tell(alle.map((p) => p.kjonn)),
     distanse: tell(alle.map((p) => (p.distanse === 'Olympisk +' ? 'Olympisk +' : '70.3'))),
@@ -225,8 +252,7 @@ const data = {
     kryss: Object.entries(tell(alle.map((p) => [p.kjonn ?? 'Ukjent', p.distanse, aldersgruppe(p.alder)].join('|'))))
       .map(([k, n]) => [...k.split('|'), n]),
   },
-  deltakere: alle
-    .map((p) => ({ nr: p.nr, navn: p.navn, alder: p.alder, sted: pen(p.fra) || '–', distanse: p.distanse, ...(p.lag ? { lag: p.lag } : {}) }))
+  deltakere: liste
     .sort((a, b) => (a.navn.split(' ').at(-1) + a.navn).localeCompare(b.navn.split(' ').at(-1) + b.navn, 'nb')),
 };
 
@@ -245,4 +271,4 @@ writeFileSync('data/kontroll.json', JSON.stringify({
   eldste_ordre: ELDSTE,
 }, null, 1) + '\n');
 console.log(`Utelatt: ${utelatt.length} ordrelinjer. Se data/kontroll.json`);
-console.log(`${data.antall} deltakere, ${data.deltakere.length} i listen, ${data.statistikk.ukjent_sted} uten kjent sted`);
+console.log(`${data.antall} påmeldinger (${data.personer} personer), ${data.statistikk.ukjent_sted} uten kjent sted`);

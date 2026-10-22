@@ -66,5 +66,21 @@
   "steder": {
     "SKARSTAD !": "Skarstad"
   },
-  "_ekstra_forklaring": "Brukes bare hvis personen ikke allerede finnes i Shopify-dataene, så det blir ingen duplikater."
+  "_ekstra_forklaring": "Brukes bare hvis personen ikke allerede finnes i Shopify-dataene, så det blir ingen duplikater.",
+  "_lag_forklaring": "Rettelser per lag, med lagnavnet slik det står i Shopify. Deltaker 1, 2 og 3 i påmeldingen blir Swim, Bike og Run, men kan overstyres med \"etapper\".",
+  "_lag_eksempel": {
+    "Lagnavn": {
+      "sted": "Narvik",
+      "etapper": {
+        "Swim": "Navn",
+        "Bike": "Navn",
+        "Run": "Navn"
+      }
+    }
+  },
+  "lag": {
+    "Triologi": {
+      "sted": "Narvik"
+    }
+  }
 }

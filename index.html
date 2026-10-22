@@ -806,6 +806,16 @@ document.addEventListener('DOMContentLoaded', function(){
 .dk-table th{white-space:nowrap}
 .dk-tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;border:1px solid var(--line);border-radius:100px;padding:4px 11px;color:var(--body);white-space:nowrap}
 .dk-tag.oly{border-color:#3a3a46;color:var(--slate)}
+/* Lag: én rad som kan åpnes for å se hvem som tar hvilken etappe */
+.dk-table tr.dk-lagrad{cursor:pointer}
+.dk-lagbtn{display:inline-flex;align-items:center;gap:10px;background:none;border:none;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:left}
+.dk-lagbtn svg{width:14px;height:14px;flex:none;color:var(--slate);transition:transform .25s}
+.dk-lagrad.open .dk-lagbtn svg{transform:rotate(180deg)}
+.dk-table tr.dk-lagrad.open td{border-bottom-color:transparent}
+.dk-table tr.dk-lagmed td{padding:5px 12px;border-bottom:none}
+.dk-table tr.dk-lagmed td.nm{font-weight:400}
+.dk-table tr.dk-lagmed.siste td{padding-bottom:16px;border-bottom:1px solid var(--line)}
+.dk-lagmed .et{display:inline-block;min-width:52px;font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--slate)}
 .dk-meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:20px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--slate)}
 .dk-pager{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:24px}
 .dk-pager[hidden]{display:none}
@@ -837,6 +847,13 @@ document.addEventListener('DOMContentLoaded', function(){
   .dk-table td.di{grid-column:2;grid-row:1 / span 2;align-self:center}
   .dk-table td.age,.dk-table td.pl{display:none}
   .dk-table .mob{display:block;font-weight:400;font-size:13.5px;color:var(--slate);margin-top:3px}
+  .dk-table tr.dk-lagrad.open{border-bottom-color:transparent}
+  .dk-table tr.dk-lagmed{padding:3px 2px;border-bottom:none}
+  .dk-table tr.dk-lagmed.siste{padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .dk-table tr.dk-lagmed td{padding:0}
+  .dk-table tr.dk-lagmed.siste td{padding:0;border:none}
+  .dk-table tr.dk-lagmed td.di{display:none}
+  .dk-table tr.dk-lagmed .mob{display:inline;margin:0 0 0 6px}
   .dk-chips{flex-wrap:nowrap;overflow-x:auto;width:100%;scrollbar-width:none}
   .dk-right{width:100%}
   .dk-sort{width:100%}
@@ -1013,11 +1030,12 @@ document.addEventListener('DOMContentLoaded', function(){
   function aktive(){ return ['k','d','a'].filter(function(x){ return F[x]; }); }
 
   function settAntall(){
-    var tot = DATA.antall, n = sum(function(r){ return treff(r); }), cap = DATA.kapasitet;
+    // Plasser telles i påmeldinger (et lag er én), filtrene teller personer
+    var tot = DATA.antall, alle = DATA.personer || DATA.antall, n = sum(function(r){ return treff(r); }), cap = DATA.kapasitet;
     var filt = aktive().length > 0;
     document.getElementById('dkAntall').textContent = filt ? n : tot;
-    document.getElementById('dkAv').textContent = filt ? 'av ' + tot + ' påmeldte' : (tot >= cap ? 'av ' + cap + ' plasser. Fullt!' : 'av ' + cap + ' plasser er tatt');
-    document.getElementById('dkCap').style.width = Math.min(100, pct(filt ? n : tot, filt ? tot : cap)) + '%';
+    document.getElementById('dkAv').textContent = filt ? 'av ' + alle + ' påmeldte' : (tot >= cap ? 'av ' + cap + ' plasser. Fullt!' : 'av ' + cap + ' plasser er tatt');
+    document.getElementById('dkCap').style.width = Math.min(100, pct(filt ? n : tot, filt ? alle : cap)) + '%';
   }
   function beskriv(){
     var a = aktive();
@@ -1128,7 +1146,7 @@ document.addEventListener('DOMContentLoaded', function(){
   function color(p){ return p === 0 ? '#2b2b34' : p < 5 ? '#7a5238' : p <= 20 ? '#a64d14' : '#F55303'; }
 
   // Andeler regnes av dem som har oppgitt et sted vi kjenner igjen
-  function kjent(){ return Math.max(0, DATA.antall - (DATA.statistikk.ukjent_sted || 0)); }
+  function kjent(){ return Math.max(0, (DATA.personer || DATA.antall) - (DATA.statistikk.ukjent_sted || 0)); }
 
   function renderDemografi(){
     var s = DATA.statistikk, n = kjent();
@@ -1227,7 +1245,8 @@ document.addEventListener('DOMContentLoaded', function(){
   function renderListe(){
     var q = query.trim().toLowerCase();
     var rows = DATA.deltakere.filter(function(p){
-      return (!filter || p.distanse === filter) && (!q || (p.navn + ' ' + p.sted + ' ' + (p.lag || '')).toLowerCase().indexOf(q) > -1);
+      var medl = (p.medlemmer || []).map(function(m){ return m.navn; }).join(' ');
+      return (!filter || p.distanse === filter) && (!q || (p.navn + ' ' + p.sted + ' ' + medl).toLowerCase().indexOf(q) > -1);
     });
     var by = function(f){ return function(a, b){ return f(a, b) || a.navn.localeCompare(b.navn, 'nb'); }; };
     var num = function(v, ned){ return v == null ? (ned ? -1 : 1e9) : v; };
@@ -1246,6 +1265,7 @@ document.addEventListener('DOMContentLoaded', function(){
     var fra = side * PER_SIDE;
     body.innerHTML = rows.slice(fra, fra + PER_SIDE).map(function(p){
       var cls = p.distanse === 'Olympisk +' ? ' oly' : '';
+      if(p.medlemmer) return lagRad(p, cls);
       return '<tr><td class="num">' + (p.nr != null ? esc(p.nr) : '–') + '</td>' +
         '<td class="nm">' + esc(p.navn) + (p.lag ? '<small>' + esc(p.lag) + '</small>' : '') + '<span class="mob">' + (p.nr != null ? 'Nr. ' + esc(p.nr) + ' · ' : '') + esc(p.alder) + ' år · ' + esc(p.sted) + '</span></td>' +
         '<td class="age">' + esc(p.alder) + '</td><td class="pl">' + esc(p.sted) + '</td>' +
@@ -1255,6 +1275,33 @@ document.addEventListener('DOMContentLoaded', function(){
     tegnSider(sider, rows.length);
     document.getElementById('dkTreff').textContent = rows.length ? (fra + 1) + '–' + Math.min(fra + PER_SIDE, rows.length) + ' av ' + rows.length + ' deltakere' : '0 deltakere';
   }
+  // Et lag vises som én rad med lagnavnet, og kan åpnes for å se etappene
+  var apneLag = {};
+  function lagRad(p, cls){
+    var id = 'lag-' + String(p.nr != null ? p.nr : p.navn).replace(/[^a-z0-9]/gi, ''), apen = !!apneLag[id];
+    return '<tr class="dk-lagrad' + (apen ? ' open' : '') + '" data-lag="' + id + '"><td class="num">' + (p.nr != null ? esc(p.nr) : '–') + '</td>' +
+      '<td class="nm"><button class="dk-lagbtn" type="button" aria-expanded="' + apen + '" aria-controls="' + p.medlemmer.map(function(m, i){ return id + '-' + i; }).join(' ') + '"><span>' + esc(p.navn) + '</span>' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>' +
+      '<span class="mob">' + (p.nr != null ? 'Nr. ' + esc(p.nr) + ' · ' : '') + 'Lag · ' + esc(p.sted) + '</span></td>' +
+      '<td class="age">–</td><td class="pl">' + esc(p.sted) + '</td>' +
+      '<td class="di"><span class="dk-tag' + cls + '">' + esc(p.distanse) + '</span></td></tr>' +
+      p.medlemmer.map(function(m, i){
+        var a = m.alder != null ? esc(m.alder) : '–';
+        return '<tr class="dk-lagmed' + (i === p.medlemmer.length - 1 ? ' siste' : '') + '" id="' + id + '-' + i + '" data-for="' + id + '"' + (apen ? '' : ' hidden') + '>' +
+          '<td class="num"></td><td class="nm"><span class="et">' + esc(m.etappe) + ':</span>' + esc(m.navn) +
+          (m.alder != null ? '<span class="mob">· ' + a + ' år</span>' : '') + '</td>' +
+          '<td class="age">' + a + '</td><td class="pl"></td><td class="di"></td></tr>';
+      }).join('');
+  }
+  body.addEventListener('click', function(e){
+    var tr = e.target.closest('tr.dk-lagrad');
+    if(!tr) return;
+    var id = tr.dataset.lag, apen = !apneLag[id];
+    apneLag[id] = apen;
+    tr.classList.toggle('open', apen);
+    tr.querySelector('.dk-lagbtn').setAttribute('aria-expanded', apen);
+    body.querySelectorAll('tr.dk-lagmed[data-for="' + id + '"]').forEach(function(r){ r.hidden = !apen; });
+  });
   // Sidevelger: forrige, sidetall og neste
   var pager = document.getElementById('dkPager');
   function tegnSider(sider, antall){
@@ -2661,6 +2708,8 @@ var I18N_REGLER = [
   [/^Oppdatert (\d+)\. ([a-zæøå]+) kl\. (\d\d[:.]\d\d)$/, function(m, d, mnd, t){ return 'Updated ' + d + ' ' + (I18N_MND[mnd] || mnd) + ' at ' + t.replace('.', ':'); }],
   [/^(\d+) % fra Norge · (\d+) % fra utlandet(?: · (\d+) uten oppgitt sted)?$/, function(m, a, b, c){ return a + ' % from Norway · ' + b + ' % from abroad' + (c ? ' · ' + c + ' without a stated place' : ''); }],
   [/^Nr\. (\d+) · (\d+) år · (.*)$/, 'No. $1 · age $2 · $3'],
+  [/^Nr\. (\d+) · Lag · (.*)$/, 'No. $1 · Team · $2'],
+  [/^· (\d+) år$/, '· age $1'],
   [/^(\d+) år · (.*)$/, 'Age $1 · $2'],
   [/^Vis alle (\d+)$/, 'Show all $1'],
   [/^(\d+) av (\d+) deltakere$/, '$1 of $2 participants'],
