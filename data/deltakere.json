@@ -1,24 +1,24 @@
 {
- "oppdatert": "2026-10-22T13:52:34.181Z",
+ "oppdatert": "2026-10-22T16:12:56.840Z",
  "kapasitet": 100,
- "antall": 93,
- "personer": 95,
+ "antall": 96,
+ "personer": 98,
  "statistikk": {
   "kjonn": {
-   "Kvinne": 27,
-   "Mann": 68
+   "Kvinne": 28,
+   "Mann": 70
   },
   "distanse": {
-   "Olympisk +": 31,
-   "70.3": 64
+   "Olympisk +": 33,
+   "70.3": 65
   },
   "fylker": {
-   "Nordland": 35,
+   "Nordland": 36,
    "Telemark": 4,
    "Oslo": 3,
    "Vestland": 4,
    "Akershus": 5,
-   "Troms": 18,
+   "Troms": 20,
    "Agder": 3,
    "Trøndelag": 9,
    "Møre og Romsdal": 1,
@@ -48,7 +48,7 @@
     "Mann",
     "70.3",
     "Under 30",
-    23
+    24
    ],
    [
     "Kvinne",
@@ -66,7 +66,7 @@
     "Mann",
     "Olympisk +",
     "40–49",
-    4
+    5
    ],
    [
     "Mann",
@@ -90,7 +90,7 @@
     "Kvinne",
     "Olympisk +",
     "30–39",
-    4
+    5
    ],
    [
     "Kvinne",
@@ -236,6 +236,13 @@
    "distanse": "70.3"
   },
   {
+   "nr": 159,
+   "navn": "Irmelin Luneng Dørum",
+   "alder": 39,
+   "sted": "Tromsø",
+   "distanse": "Olympisk +"
+  },
+  {
    "nr": 98,
    "navn": "Kjartan Eide",
    "alder": 33,
@@ -268,6 +275,13 @@
    "navn": "Tor Emil Fløan",
    "alder": 39,
    "sted": "Vestvågøy Triathlonklubb",
+   "distanse": "70.3"
+  },
+  {
+   "nr": 157,
+   "navn": "Gabriel Bakkejord Framvik",
+   "alder": 24,
+   "sted": "Ballangen",
    "distanse": "70.3"
   },
   {
@@ -755,6 +769,13 @@
    "alder": 24,
    "sted": "Harstad",
    "distanse": "70.3"
+  },
+  {
+   "nr": 158,
+   "navn": "Marius Tzatchev",
+   "alder": 44,
+   "sted": "Tromsø Triathlonklubb",
+   "distanse": "Olympisk +"
   },
   {
    "nr": 138,
