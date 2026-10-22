@@ -1,5 +1,5 @@
 {
- "oppdatert": "2026-10-22T16:12:56.840Z",
+ "oppdatert": "2026-10-22T16:15:26.612Z",
  "kapasitet": 100,
  "antall": 96,
  "personer": 98,
@@ -18,7 +18,7 @@
    "Oslo": 3,
    "Vestland": 4,
    "Akershus": 5,
-   "Troms": 20,
+   "Troms": 21,
    "Agder": 3,
    "Trøndelag": 9,
    "Møre og Romsdal": 1,
@@ -30,7 +30,7 @@
    "Sverige": 3,
    "Storbritannia": 4
   },
-  "ukjent_sted": 1,
+  "ukjent_sted": 0,
   "kryss": [
    [
     "Kvinne",
@@ -393,7 +393,7 @@
    "nr": 152,
    "navn": "Tor Kristian R Innbjør",
    "alder": 52,
-   "sted": "–",
+   "sted": "Tromsø",
    "distanse": "70.3"
   },
   {
@@ -477,7 +477,7 @@
    "nr": 154,
    "navn": "Michael Krøyserth-Simsø",
    "alder": 39,
-   "sted": "Korgen (bor I Tromsø)",
+   "sted": "Tromsø",
    "distanse": "Olympisk +"
   },
   {
