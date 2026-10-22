@@ -1,16 +1,16 @@
 {
- "oppdatert": "2026-10-22T18:36:31.451Z",
+ "oppdatert": "2026-10-22T22:25:00.077Z",
  "kapasitet": 100,
- "antall": 96,
- "personer": 98,
+ "antall": 97,
+ "personer": 99,
  "statistikk": {
   "kjonn": {
    "Kvinne": 28,
-   "Mann": 70
+   "Mann": 71
   },
   "distanse": {
    "Olympisk +": 33,
-   "70.3": 65
+   "70.3": 66
   },
   "fylker": {
    "Nordland": 36,
@@ -18,7 +18,7 @@
    "Oslo": 3,
    "Vestland": 4,
    "Akershus": 5,
-   "Troms": 21,
+   "Troms": 22,
    "Agder": 3,
    "Trøndelag": 9,
    "Møre og Romsdal": 1,
@@ -48,7 +48,7 @@
     "Mann",
     "70.3",
     "Under 30",
-    24
+    25
    ],
    [
     "Kvinne",
@@ -796,6 +796,13 @@
    "navn": "Kenneth Valnes",
    "alder": 37,
    "sted": "Tromsø, Norge",
+   "distanse": "70.3"
+  },
+  {
+   "nr": 160,
+   "navn": "Kjell Petter Vold",
+   "alder": 26,
+   "sted": "Tromsø",
    "distanse": "70.3"
   },
   {
