@@ -1,24 +1,24 @@
 {
- "oppdatert": "2026-10-22T07:41:35.013Z",
+ "oppdatert": "2026-10-22T11:09:43.829Z",
  "kapasitet": 100,
- "antall": 85,
- "personer": 87,
+ "antall": 88,
+ "personer": 90,
  "statistikk": {
   "kjonn": {
-   "Kvinne": 26,
-   "Mann": 61
+   "Kvinne": 27,
+   "Mann": 63
   },
   "distanse": {
    "Olympisk +": 30,
-   "70.3": 57
+   "70.3": 60
   },
   "fylker": {
-   "Nordland": 34,
+   "Nordland": 35,
    "Telemark": 4,
    "Oslo": 3,
    "Vestland": 4,
    "Akershus": 5,
-   "Troms": 12,
+   "Troms": 13,
    "Agder": 3,
    "Trøndelag": 9,
    "Møre og Romsdal": 1,
@@ -42,7 +42,7 @@
     "Mann",
     "70.3",
     "30–39",
-    11
+    12
    ],
    [
     "Mann",
@@ -102,7 +102,7 @@
     "Kvinne",
     "70.3",
     "Under 30",
-    8
+    9
    ],
    [
     "Mann",
@@ -114,7 +114,7 @@
     "Mann",
     "70.3",
     "50–59",
-    2
+    3
    ],
    [
     "Kvinne",
@@ -362,6 +362,13 @@
    "distanse": "70.3"
   },
   {
+   "nr": 151,
+   "navn": "Amund Kvisterø Jakobsen",
+   "alder": 31,
+   "sted": "Tromsø",
+   "distanse": "70.3"
+  },
+  {
    "nr": 113,
    "navn": "Emil Aune Jakobsen",
    "alder": 28,
@@ -465,6 +472,13 @@
    "alder": 37,
    "sted": "Harstad",
    "distanse": "Olympisk +"
+  },
+  {
+   "nr": 149,
+   "navn": "Mona",
+   "alder": 21,
+   "sted": "Bjerkvik",
+   "distanse": "70.3"
   },
   {
    "nr": 120,
@@ -661,6 +675,13 @@
    "alder": 36,
    "sted": "Harstad",
    "distanse": "Olympisk +"
+  },
+  {
+   "nr": 150,
+   "navn": "Jan Hugo Svendsen",
+   "alder": 56,
+   "sted": "Norge",
+   "distanse": "70.3"
   },
   {
    "nr": 133,
