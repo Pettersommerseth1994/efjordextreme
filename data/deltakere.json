@@ -1,16 +1,16 @@
 {
- "oppdatert": "2026-10-22T11:13:51.097Z",
+ "oppdatert": "2026-10-22T13:52:34.181Z",
  "kapasitet": 100,
- "antall": 88,
- "personer": 90,
+ "antall": 93,
+ "personer": 95,
  "statistikk": {
   "kjonn": {
    "Kvinne": 27,
-   "Mann": 63
+   "Mann": 68
   },
   "distanse": {
-   "Olympisk +": 30,
-   "70.3": 60
+   "Olympisk +": 31,
+   "70.3": 64
   },
   "fylker": {
    "Nordland": 35,
@@ -18,7 +18,7 @@
    "Oslo": 3,
    "Vestland": 4,
    "Akershus": 5,
-   "Troms": 14,
+   "Troms": 18,
    "Agder": 3,
    "Trøndelag": 9,
    "Møre og Romsdal": 1,
@@ -30,7 +30,7 @@
    "Sverige": 3,
    "Storbritannia": 4
   },
-  "ukjent_sted": 0,
+  "ukjent_sted": 1,
   "kryss": [
    [
     "Kvinne",
@@ -42,7 +42,7 @@
     "Mann",
     "70.3",
     "30–39",
-    12
+    13
    ],
    [
     "Mann",
@@ -84,7 +84,7 @@
     "Mann",
     "Olympisk +",
     "30–39",
-    11
+    12
    ],
    [
     "Kvinne",
@@ -108,13 +108,13 @@
     "Mann",
     "70.3",
     "40–49",
-    4
+    5
    ],
    [
     "Mann",
     "70.3",
     "50–59",
-    3
+    5
    ],
    [
     "Kvinne",
@@ -299,6 +299,13 @@
    "distanse": "70.3"
   },
   {
+   "nr": 155,
+   "navn": "Sigurd Hadler-Olsen",
+   "alder": 53,
+   "sted": "Tromsø",
+   "distanse": "70.3"
+  },
+  {
    "nr": 123,
    "navn": "Henrik Westgaard Hanssen",
    "alder": 20,
@@ -366,6 +373,13 @@
    "navn": "Kristoffer Håkonsen",
    "alder": 29,
    "sted": "Leknes",
+   "distanse": "70.3"
+  },
+  {
+   "nr": 152,
+   "navn": "Tor Kristian R Innbjør",
+   "alder": 52,
+   "sted": "–",
    "distanse": "70.3"
   },
   {
@@ -444,6 +458,13 @@
    "alder": 33,
    "sted": "Nittedal",
    "distanse": "70.3"
+  },
+  {
+   "nr": 154,
+   "navn": "Michael Krøyserth-Simsø",
+   "alder": 39,
+   "sted": "Korgen (bor I Tromsø)",
+   "distanse": "Olympisk +"
   },
   {
    "nr": 121,
@@ -577,6 +598,13 @@
    "alder": 34,
    "sted": "Oslo",
    "distanse": "Olympisk +"
+  },
+  {
+   "nr": 156,
+   "navn": "Alexander Benjaminsen Rygh",
+   "alder": 40,
+   "sted": "Tromsø",
+   "distanse": "70.3"
   },
   {
    "nr": 108,
@@ -740,6 +768,13 @@
    "navn": "Matilda Utheim",
    "alder": 18,
    "sted": "Narvik",
+   "distanse": "70.3"
+  },
+  {
+   "nr": 153,
+   "navn": "Kenneth Valnes",
+   "alder": 37,
+   "sted": "Tromsø, Norge",
    "distanse": "70.3"
   },
   {
