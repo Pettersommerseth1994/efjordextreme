@@ -2705,7 +2705,6 @@ var ordEn = function(w){ return I18N_ORD[w] || w; };
 var I18N_REGLER = [
   [/^av (\d+) plasser er tatt$/, 'of $1 spots taken'],
   [/^Kun (\d+) plasser igjen$/, 'Only $1 spots left'],
-  [/^Fullt påmeldt · (\d+) på venteliste$/, 'Sold out · $1 on the waitlist'],
   [/^Kun 1 plass igjen$/, 'Only 1 spot left'],
   [/^av (\d+) plasser\. Fullt!$/, 'of $1 spots. Sold out!'],
   [/^av (\d+) påmeldte$/, 'of $1 registered'],
@@ -2848,8 +2847,7 @@ function setLang(to){
   var distFra = function(href){ return /relay/.test(href) ? '70.3 lag' : /olympisk/.test(href) ? 'Olympisk +' : '70.3'; };
   var lenke = function(dist){ return VL + (dist ? '?distanse=' + encodeURIComponent(dist) : ''); };
   function fullt(d){
-    var n = (d && d.venteliste && d.venteliste.antall) || 0;
-    var tekst = n ? 'Fullt påmeldt · ' + n + ' på venteliste' : 'Fullt påmeldt · venteliste åpen';
+    var tekst = 'Fullt påmeldt · venteliste åpen';
     var kick = document.getElementById('heroPlasser'); if(kick) kick.textContent = tekst;
     document.querySelectorAll('.hero-actions a[href="#pamelding"], .nav-cta').forEach(function(a){ a.textContent = 'Venteliste'; a.href = lenke(); });
     // Billettknappene: distansen leses fra billettlenken når man trykker, så valget Individuell/Lag følger med
