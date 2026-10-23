@@ -1,16 +1,16 @@
 {
- "oppdatert": "2026-10-23T08:27:31.633Z",
+ "oppdatert": "2026-10-23T11:09:54.297Z",
  "kapasitet": 100,
- "antall": 97,
- "personer": 99,
+ "antall": 99,
+ "personer": 101,
  "statistikk": {
   "kjonn": {
-   "Kvinne": 28,
-   "Mann": 71
+   "Kvinne": 29,
+   "Mann": 72
   },
   "distanse": {
-   "Olympisk +": 33,
-   "70.3": 66
+   "Olympisk +": 34,
+   "70.3": 67
   },
   "fylker": {
    "Nordland": 36,
@@ -18,7 +18,7 @@
    "Oslo": 3,
    "Vestland": 4,
    "Akershus": 5,
-   "Troms": 22,
+   "Troms": 24,
    "Agder": 3,
    "Trøndelag": 9,
    "Møre og Romsdal": 1,
@@ -96,7 +96,7 @@
     "Kvinne",
     "Olympisk +",
     "Under 30",
-    5
+    6
    ],
    [
     "Kvinne",
@@ -114,7 +114,7 @@
     "Mann",
     "70.3",
     "50–59",
-    5
+    6
    ],
    [
     "Kvinne",
@@ -137,10 +137,8 @@
   ]
  },
  "venteliste": {
-  "antall": 1,
-  "distanse": {
-   "70.3": 1
-  }
+  "antall": 0,
+  "distanse": {}
  },
  "deltakere": [
   {
@@ -791,10 +789,24 @@
    "distanse": "70.3"
   },
   {
+   "nr": 164,
+   "navn": "Bertine Tøllefsen",
+   "alder": 24,
+   "sted": "Harstad",
+   "distanse": "Olympisk +"
+  },
+  {
    "nr": 80,
    "navn": "Matilda Utheim",
    "alder": 18,
    "sted": "Narvik",
+   "distanse": "70.3"
+  },
+  {
+   "nr": 163,
+   "navn": "Baar Arne Vaeng",
+   "alder": 52,
+   "sted": "Harstad",
    "distanse": "70.3"
   },
   {
