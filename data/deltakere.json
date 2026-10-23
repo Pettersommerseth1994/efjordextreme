@@ -1,5 +1,5 @@
 {
- "oppdatert": "2026-10-23T11:19:29.418Z",
+ "oppdatert": "2026-10-23T13:32:38.807Z",
  "kapasitet": 100,
  "antall": 100,
  "personer": 102,
@@ -137,8 +137,11 @@
   ]
  },
  "venteliste": {
-  "antall": 0,
-  "distanse": {}
+  "antall": 3,
+  "distanse": {
+   "70.3": 2,
+   "70.3 lag": 1
+  }
  },
  "deltakere": [
   {
