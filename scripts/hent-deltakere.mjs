@@ -165,6 +165,8 @@ const navnPen = (s) => {
 const nummer = (navn) => { const n = parseInt(String(navn ?? '').replace(/\D/g, ''), 10); return isNaN(n) ? null : n >= 1000 ? n - 1000 : n; };
 
 const utelatt = [];
+// Venteliste: gratisproduktet «Venteliste 2027». Bare antall og ønsket distanse publiseres, ingen navn.
+const venteliste = [];
 
 function deltakere(ordrer) {
   const ut = [];
@@ -174,6 +176,10 @@ function deltakere(ordrer) {
     o.lineItems.nodes.forEach((li, linje) => {
       const distanse = distanseFra(li.title);
       const a = Object.fromEntries(li.customAttributes.map((x) => [x.key, x.value]));
+      if (/venteliste/i.test(li.title ?? '')) {
+        if (!forTidlig && !ugyldig && li.currentQuantity > 0) venteliste.push({ nr: nummer(o.name), distanse: pen(a['Ønsket distanse']) || null });
+        return;
+      }
       const personer = [];
       if (distanse === '70.3 lag') {
         for (let i = 1; i <= 3; i++) {
@@ -252,6 +258,7 @@ const data = {
     kryss: Object.entries(tell(alle.map((p) => [p.kjonn ?? 'Ukjent', p.distanse, aldersgruppe(p.alder)].join('|'))))
       .map(([k, n]) => [...k.split('|'), n]),
   },
+  venteliste: { antall: venteliste.length, distanse: tell(venteliste.map((v) => v.distanse)) },
   deltakere: liste
     .sort((a, b) => (a.navn.split(' ').at(-1) + a.navn).localeCompare(b.navn.split(' ').at(-1) + b.navn, 'nb')),
 };
@@ -271,4 +278,4 @@ writeFileSync('data/kontroll.json', JSON.stringify({
   eldste_ordre: ELDSTE,
 }, null, 1) + '\n');
 console.log(`Utelatt: ${utelatt.length} ordrelinjer. Se data/kontroll.json`);
-console.log(`${data.antall} påmeldinger (${data.personer} personer), ${data.statistikk.ukjent_sted} uten kjent sted`);
+console.log(`${data.antall} påmeldinger (${data.personer} personer), ${data.statistikk.ukjent_sted} uten kjent sted, ${venteliste.length} på venteliste`);
