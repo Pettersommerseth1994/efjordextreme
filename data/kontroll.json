@@ -1,5 +1,5 @@
 {
- "oppdatert": "2026-10-24T07:22:57.518Z",
+ "oppdatert": "2026-10-24T08:11:59.157Z",
  "antall": 100,
  "utelatt": [
   {
@@ -361,6 +361,11 @@
    "ordre": "#1064",
    "grunn": "refundert",
    "produkt": "70.3 / Halvdistanse – Lag"
+  },
+  {
+   "nr": 176,
+   "grunn": "over kapasitet",
+   "produkt": "70.3 lag"
   }
  ],
  "inkluder_ikke_funnet": 1,
