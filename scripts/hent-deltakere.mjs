@@ -219,7 +219,15 @@ const fraShopify = deltakere(await hentOrdrer(await token()));
 const finnes = new Set(fraShopify.map((p) => nokkel(p.navn)));
 const ekstra = (KORR.ekstra ?? []).filter((e) => !finnes.has(nokkel(e.navn))).map((e) => ({ navn: e.navn, alder: e.alder ?? null, kjonn: e.kjonn, distanse: e.distanse,
   lag: e.lag ?? null, lagId: e.lag ? `ekstra/${e.lag}` : null, etappe: e.etappe ?? null, fra: e.sted, nr: e.nr ?? null }));
-const alle = [...fraShopify, ...ekstra].map(korriger).map((p) => ({ ...p, ...plasser(p.fra) }));
+const paameldte = [...fraShopify, ...ekstra].map(korriger).map((p) => ({ ...p, ...plasser(p.fra) }));
+
+// Startplassene fylles i ordrerekkefølge (et lag er én). Påmeldinger utover kapasiteten vises ingen steder
+// på nettsiden før KAPASITET økes, f.eks. når nye billetter slippes.
+const enhet = (p) => p.lagId ?? `${p.nr}/${nokkel(p.navn)}`;
+const iRekkefolge = [...new Map(paameldte.map((p) => [enhet(p), p])).values()].sort((a, b) => (a.nr ?? 0) - (b.nr ?? 0));
+const innenfor = new Set(iRekkefolge.slice(0, KAPASITET).map(enhet));
+for (const p of iRekkefolge.slice(KAPASITET)) utelatt.push({ nr: p.nr, grunn: 'over kapasitet', produkt: p.distanse });
+const alle = paameldte.filter((p) => innenfor.has(enhet(p)));
 
 // Et lag tar én startplass og vises som én rad, med medlemmene per etappe
 function paameldinger(personer) {
