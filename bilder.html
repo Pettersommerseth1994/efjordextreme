@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bilder — Efjord Extreme</title>
+<meta name="description" content="Bilder fra Efjord Extreme, verdens vakreste triatlon i Efjord i Nord-Norge. Velg mellom 2025, 2026 og 2027.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" type="image/png" sizes="64x64" href="assets/img/bilde-f7740df3.webp">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/bilde-79e555f9.webp">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62.5..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0B0B;
+  --card:#161619;
+  --line:#282830;
+  --text:#F6F5F3;
+  --body:#C9C9C9;
+  --slate:#93939b;
+  --slate-light:#74747c;
+  --accent:#F55303;
+  --accent-bright:#FF6A2E;
+  --font:'Archivo',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);color:var(--body);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+button{font:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+
+.topbar{border-bottom:1px solid var(--line);padding:22px 32px}
+.topbar .inner{max-width:1116px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.topbar a{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);transition:color .2s}
+.topbar a:hover{color:var(--accent-bright)}
+.topbar .brand{color:var(--text);font-family:var(--font);font-stretch:125%;font-weight:800;text-transform:uppercase;letter-spacing:-.01em;font-size:15px}
+
+/* Overskrift og årsvalg */
+.hode{padding-top:64px;padding-bottom:36px}
+.sec-eyebrow{font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--slate);margin-bottom:20px}
+.sec-title{font-family:var(--font);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:clamp(30px,4.4vw,56px);line-height:1.02;letter-spacing:-.015em;color:var(--text);margin-bottom:18px}
+.sec-title em{font-style:normal;color:transparent;-webkit-text-stroke:1.5px var(--text)}
+.lead{font-size:16.5px;color:var(--slate);max-width:600px}
+.valg{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:30px}
+.seg{display:flex;border:1px solid var(--line);border-radius:100px;padding:4px;width:fit-content}
+.seg button{border:none;background:none;cursor:pointer;font-family:var(--font);font-size:14px;font-weight:700;color:var(--slate);padding:9px 22px;border-radius:100px;transition:background .25s,color .25s}
+.seg button:hover{color:var(--text)}
+.seg button.sel{background:var(--text);color:var(--bg)}
+.antall{font-family:var(--mono);font-size:12.5px;color:var(--slate-light);letter-spacing:.04em}
+
+/* Bildene i spalter. Hvert bilde legges i den korteste spalten, så rekkefølgen leses bortover. */
+#galleri{transition:opacity .25s}
+#galleri.ut{opacity:0}
+.mur{display:flex;gap:14px;align-items:flex-start;margin-bottom:110px}
+.spalte{flex:1;min-width:0;display:flex;flex-direction:column;gap:14px}
+.spalte button{display:block;width:100%;padding:0;border:0;background:var(--card);border-radius:14px;overflow:hidden;cursor:zoom-in}
+.spalte img{width:100%;height:auto;transition:transform .6s cubic-bezier(.2,.7,.2,1),filter .3s}
+.spalte button:hover img{transform:scale(1.035);filter:brightness(1.08)}
+.spalte button:focus-visible{outline:2px solid var(--text);outline-offset:3px}
+
+.tom{border:1px dashed var(--line);border-radius:24px;padding:72px 28px;text-align:center;color:var(--slate);margin-bottom:110px}
+.tom b{display:block;font-family:var(--font);font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:clamp(22px,3vw,30px);color:var(--text);margin-bottom:10px}
+.tom a{display:inline-block;margin-top:22px;border:1px solid var(--slate);color:var(--text);border-radius:100px;padding:12px 26px;font-weight:700;font-size:14.5px;transition:background .25s,color .25s}
+.tom a:hover{background:var(--text);color:var(--bg)}
+
+/* Fullskjerm */
+.lb{position:fixed;inset:0;z-index:50;background:rgba(8,8,10,.96);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.lb.open{opacity:1;pointer-events:auto}
+.lb img{max-width:calc(100vw - 160px);max-height:calc(100vh - 120px);width:auto;height:auto;border-radius:6px;user-select:none;-webkit-user-drag:none}
+.lb-knapp{position:absolute;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:rgba(15,15,18,.7);backdrop-filter:blur(8px);color:var(--text);font-size:22px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s}
+.lb-knapp:hover{background:var(--card);border-color:var(--slate)}
+.lb-knapp:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+.lb-forrige{left:24px;top:50%;transform:translateY(-50%)}
+.lb-neste{right:24px;top:50%;transform:translateY(-50%)}
+.lb-lukk{right:24px;top:20px;font-size:20px}
+.lb-teller{position:absolute;left:28px;top:32px;font-family:var(--mono);font-size:12.5px;color:var(--slate);letter-spacing:.06em}
+
+@media(max-width:760px){
+  .wrap{padding:0 20px}
+  .topbar{padding:18px 20px}
+  .hode{padding-top:44px;padding-bottom:26px}
+  .seg button{padding:9px 18px}
+  .mur,.spalte{gap:8px}
+  .spalte button{border-radius:10px}
+  .lb img{max-width:100vw;max-height:calc(100vh - 140px);border-radius:0}
+  .lb-forrige,.lb-neste{top:auto;bottom:24px;transform:none}
+  .lb-forrige{left:20px}.lb-neste{right:20px}
+  .lb-lukk{right:16px;top:16px}
+  .lb-teller{left:20px;top:30px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="inner"><a class="brand" href="index.html">Efjord Extreme</a><a href="index.html">← Til nettsiden</a></div></div>
+
+<header class="hode wrap">
+  <div class="sec-eyebrow">Bilder</div>
+  <h1 class="sec-title">Efjord Extreme <em id="aarTittel">2026</em></h1>
+  <p class="lead" id="aarLead"></p>
+  <div class="valg"><div class="seg" id="aarSeg" role="group" aria-label="Velg år"></div><span class="antall" id="aarAntall"></span></div>
+</header>
+
+<main id="galleri" class="wrap"></main>
+
+<script>
+/* Bildene ligger i bilder/<år>/ og listes i bilder/bilder.json (lages med scripts/lag-bilder.py).
+   Året står i adressen (bilder.html#2026), så lenker kan åpne riktig år. */
+(function(){
+  var AAR = ['2025', '2026', '2027'];
+  var LEAD = {
+    '2025': 'Den første utgaven av Efjord Extreme. Her startet det.',
+    '2026': 'Den andre utgaven. Rått, vakkert og aldri stille, fra første tak i fjorden til siste meter over mål.',
+    '2027': 'Den tredje utgaven går 7. august 2027.'
+  };
+  var seg = document.getElementById('aarSeg'), el = document.getElementById('galleri');
+  var BILDER = {}, naa = null, liste = [], spalter = 0;
+
+  seg.innerHTML = AAR.map(function(a){ return '<button type="button" data-aar="' + a + '">' + a + '</button>'; }).join('');
+  seg.addEventListener('click', function(e){ var b = e.target.closest('button'); if(b) velg(b.dataset.aar, true); });
+
+  function antallSpalter(){ return innerWidth <= 900 ? 2 : 3; }
+
+  function tegn(){
+    if(!liste.length){
+      el.innerHTML = '<div class="tom"><b>Bildene kommer</b>Bildene fra ' + naa + ' legges ut her etter løpet.<br><a href="index.html#pamelding">Til påmeldingen</a></div>';
+      return;
+    }
+    spalter = antallSpalter();
+    var hoyde = [], innhold = [];
+    for(var s = 0; s < spalter; s++){ hoyde.push(0); innhold.push(''); }
+    liste.forEach(function(b, i){
+      var k = hoyde.indexOf(Math.min.apply(null, hoyde));
+      hoyde[k] += b.h / b.w;
+      innhold[k] += '<button type="button" data-i="' + i + '" aria-label="Åpne bilde ' + (i + 1) + ' av ' + liste.length + '">' +
+        '<img src="' + b.liten + '" width="' + b.w + '" height="' + b.h + '"' + (i < 6 ? '' : ' loading="lazy"') + ' decoding="async" alt=""></button>';
+    });
+    el.innerHTML = '<div class="mur">' + innhold.map(function(x){ return '<div class="spalte">' + x + '</div>'; }).join('') + '</div>';
+  }
+  el.addEventListener('click', function(e){ var k = e.target.closest('button[data-i]'); if(k) visBilde(+k.dataset.i); });
+  window.addEventListener('resize', function(){ if(liste.length && antallSpalter() !== spalter) tegn(); });
+
+  function sett(id, t){ document.getElementById(id).textContent = t; }
+
+  function velg(aar, animer){
+    if(AAR.indexOf(aar) < 0) aar = '2026';
+    if(aar === naa) return;
+    naa = aar;
+    liste = (BILDER[aar] || []).map(function(b){ return { liten: 'bilder/' + aar + '/' + b[0] + '-liten.webp', stor: 'bilder/' + aar + '/' + b[0] + '.webp', w: b[1], h: b[2] }; });
+    seg.querySelectorAll('button').forEach(function(b){ var s = b.dataset.aar === aar; b.classList.toggle('sel', s); b.setAttribute('aria-pressed', s); });
+    sett('aarTittel', aar);
+    sett('aarLead', LEAD[aar]);
+    sett('aarAntall', liste.length ? liste.length + ' bilder' : '');
+    history.replaceState(null, '', '#' + aar);
+    if(!animer) return tegn();
+    el.classList.add('ut');
+    setTimeout(function(){ tegn(); el.classList.remove('ut'); }, 220);
+  }
+
+  fetch('bilder/bilder.json').then(function(r){ return r.json(); }).then(function(d){
+    BILDER = d;
+    velg((location.hash || '').slice(1), false);
+  });
+  window.addEventListener('hashchange', function(){ velg(location.hash.slice(1), true); });
+
+  // Fullskjerm: piler, tastatur og sveip
+  var lb = document.createElement('div');
+  lb.className = 'lb'; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-modal', 'true'); lb.setAttribute('aria-label', 'Bilde i fullskjerm');
+  lb.innerHTML = '<span class="lb-teller"></span><img alt=""><button class="lb-knapp lb-lukk" aria-label="Lukk">✕</button>' +
+    '<button class="lb-knapp lb-forrige" aria-label="Forrige bilde">‹</button><button class="lb-knapp lb-neste" aria-label="Neste bilde">›</button>';
+  document.body.appendChild(lb);
+  var lbImg = lb.querySelector('img'), lbTeller = lb.querySelector('.lb-teller'), lbI = 0, fokus = null;
+  function vis(i){
+    lbI = (i + liste.length) % liste.length;
+    lbImg.src = liste[lbI].stor;
+    lbTeller.textContent = (lbI + 1) + ' / ' + liste.length;
+    [1, -1].forEach(function(d){ new Image().src = liste[(lbI + d + liste.length) % liste.length].stor; });
+  }
+  function visBilde(i){
+    fokus = document.activeElement;
+    vis(i); lb.classList.add('open'); document.body.style.overflow = 'hidden';
+    lb.querySelector('.lb-lukk').focus();
+  }
+  function lukk(){ lb.classList.remove('open'); document.body.style.overflow = ''; if(fokus) fokus.focus(); }
+  lb.querySelector('.lb-lukk').onclick = lukk;
+  lb.querySelector('.lb-forrige').onclick = function(){ vis(lbI - 1); };
+  lb.querySelector('.lb-neste').onclick = function(){ vis(lbI + 1); };
+  lb.addEventListener('click', function(e){ if(e.target === lb) lukk(); });
+  document.addEventListener('keydown', function(e){
+    if(!lb.classList.contains('open')) return;
+    if(e.key === 'Escape') lukk();
+    if(e.key === 'ArrowLeft') vis(lbI - 1);
+    if(e.key === 'ArrowRight') vis(lbI + 1);
+  });
+  var x0 = null;
+  lb.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', function(e){ if(x0 === null) return; var dx = e.changedTouches[0].clientX - x0; if(Math.abs(dx) > 40) vis(lbI + (dx < 0 ? 1 : -1)); x0 = null; });
+})();
+</script>
+</body>
+</html>
