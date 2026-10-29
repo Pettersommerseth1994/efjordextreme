@@ -1,5 +1,5 @@
 {
- "oppdatert": "2026-10-29T19:00:00.663Z",
+ "oppdatert": "2026-10-29T23:20:46.184Z",
  "kapasitet": 100,
  "antall": 100,
  "personer": 102,
@@ -137,9 +137,9 @@
   ]
  },
  "venteliste": {
-  "antall": 17,
+  "antall": 18,
   "distanse": {
-   "70.3": 9,
+   "70.3": 10,
    "70.3 lag": 3,
    "Olympisk +": 5
   }
